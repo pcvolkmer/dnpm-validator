@@ -1,0 +1,1729 @@
+{
+  "$defs" : {
+    "CarePlan" : {
+      "$anchor" : "CarePlan",
+      "properties" : {
+        "geneticCounselingRecommended" : {
+          "type" : "boolean"
+        },
+        "boardType" : {
+          "$ref" : "#/$defs/Coding_CarePlan_BoardType"
+        },
+        "therapyRecommendations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/TherapyRecommendation"
+          }
+        },
+        "clinicalManagementRecommendation" : {
+          "$ref" : "#/$defs/ClinicalManagementRecommendation"
+        },
+        "studyEnrollmentRecommendations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/StudyEnrollmentRecommendation"
+          }
+        },
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "issuedOn" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "reevaluationRecommended" : {
+          "type" : "boolean"
+        },
+        "notes" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "noSequencingPerformedReason" : {
+          "$ref" : "#/$defs/Coding_CarePlan_NoSequencingPerformedReason"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "issuedOn" ]
+    },
+    "Code" : {
+      "$anchor" : "Code",
+      "type" : "string"
+    },
+    "HPOTerm" : {
+      "$anchor" : "HPOTerm",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "recordedOn" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "status" : {
+          "type" : "object",
+          "additionalProperties" : false,
+          "properties" : {
+            "history" : {
+              "type" : "array",
+              "minItems" : 1,
+              "items" : {
+                "$ref" : "#/$defs/HPOTerm-Status"
+              }
+            }
+          },
+          "required" : [ "history" ]
+        },
+        "onsetDate" : {
+          "$ref" : "#/$defs/YearMonth"
+        },
+        "value" : {
+          "$ref" : "#/$defs/Coding"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "value" ]
+    },
+    "Publication_Reference" : {
+      "$anchor" : "Publication_Reference",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string",
+          "enum" : [ "https://www.doi.org", "https://pubmed.ncbi.nlm.nih.gov" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "system" ]
+    },
+    "Coding_Hospitalization_NumberOfDays" : {
+      "$anchor" : "Coding_Hospitalization_NumberOfDays",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "unknown", "over-fifty", "none", "up-to-five", "up-to-fifteen", "up-to-fifty" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_RDDiagnosis_MissingCodeReason" : {
+      "$anchor" : "Coding_RDDiagnosis_MissingCodeReason",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "no-matching-code" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_CarePlan_NoSequencingPerformedReason" : {
+      "$anchor" : "Coding_CarePlan_NoSequencingPerformedReason",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "not-rare-disease", "targeted-diagnostics-recommended", "psychosomatic", "non-genetic-cause", "other" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_FollowUp_PatientStatus" : {
+      "$anchor" : "Coding_FollowUp_PatientStatus",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "lost-to-fu" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_CopyNumberVariant_Type" : {
+      "$anchor" : "Coding_CopyNumberVariant_Type",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "gain", "loss" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "GeneAlterationReference" : {
+      "$anchor" : "GeneAlterationReference",
+      "properties" : {
+        "variant" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "gene" : {
+          "$ref" : "#/$defs/Coding"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "variant" ]
+    },
+    "Coding_RDTherapy_Type" : {
+      "$anchor" : "Coding_RDTherapy_Type",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "prophylactic", "targeted-medication", "other", "combination", "genetic", "systemic-medication", "early-detection", "prevention-medication", "nutrition" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "FollowUp" : {
+      "$anchor" : "FollowUp",
+      "properties" : {
+        "date" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "lastContactDate" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "patientStatus" : {
+          "$ref" : "#/$defs/Coding_FollowUp_PatientStatus"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "date", "patient" ]
+    },
+    "Id" : {
+      "$anchor" : "Id",
+      "type" : "string"
+    },
+    "Coding_RDDiagnosis_FamilyControlLevel" : {
+      "$anchor" : "Coding_RDDiagnosis_FamilyControlLevel",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "duo-genome", "single-genome", "trio-genome" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "SmallVariant" : {
+      "$anchor" : "SmallVariant",
+      "properties" : {
+        "proteinChange" : {
+          "type" : "string"
+        },
+        "gDNAChange" : {
+          "type" : "string"
+        },
+        "modeOfInheritance" : {
+          "$ref" : "#/$defs/Coding_Variant_ModeOfInheritance"
+        },
+        "acmgClass" : {
+          "$ref" : "#/$defs/Coding_ACMG_Class"
+        },
+        "externalIds" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "additionalProperties" : false,
+            "properties" : {
+              "value" : {
+                "type" : "string"
+              },
+              "system" : {
+                "type" : "string",
+                "format" : "uri"
+              }
+            },
+            "required" : [ "value", "system" ]
+          }
+        },
+        "chromosome" : {
+          "$ref" : "#/$defs/Chromosome"
+        },
+        "zygosity" : {
+          "$ref" : "#/$defs/Coding_Variant_Zygosity"
+        },
+        "alt" : {
+          "type" : "string"
+        },
+        "cDNAChange" : {
+          "type" : "string"
+        },
+        "segregationAnalysis" : {
+          "$ref" : "#/$defs/Coding_Variant_SegregationAnalysis"
+        },
+        "startPosition" : {
+          "type" : "integer"
+        },
+        "acmgCriteria" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "additionalProperties" : false,
+            "properties" : {
+              "value" : {
+                "$ref" : "#/$defs/Coding_ACMG_Criterion_Type"
+              },
+              "modifier" : {
+                "$ref" : "#/$defs/Coding_ACMG_Criterion_Modifier"
+              }
+            },
+            "required" : [ "value" ]
+          },
+          "uniqueItems" : true
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "localization" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Coding_BaseVariant_Localization"
+          },
+          "uniqueItems" : true
+        },
+        "genes" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Coding"
+          },
+          "uniqueItems" : true
+        },
+        "significance" : {
+          "$ref" : "#/$defs/Coding_Variant_Significance"
+        },
+        "endPosition" : {
+          "type" : "integer"
+        },
+        "ref" : {
+          "type" : "string"
+        },
+        "publications" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Publication_Reference"
+          },
+          "uniqueItems" : true
+        },
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "chromosome", "startPosition", "endPosition", "ref", "alt" ]
+    },
+    "Coding_Variant_Zygosity" : {
+      "$anchor" : "Coding_Variant_Zygosity",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "homozygous", "comp-het", "heteroplasmic", "homoplasmic", "hemi", "heterozygous" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "YearMonth" : {
+      "$anchor" : "YearMonth",
+      "type" : "string",
+      "pattern" : "^\\d{4}\\-(0[1-9]|1[012])$"
+    },
+    "ClinicalManagementRecommendation" : {
+      "$anchor" : "ClinicalManagementRecommendation",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "notes" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "type" : {
+          "$ref" : "#/$defs/Coding_ClinicalManagementRecommendation_Type"
+        },
+        "issuedOn" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "issuedOn", "type" ]
+    },
+    "Period_Date" : {
+      "$anchor" : "Period_Date",
+      "properties" : {
+        "start" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "end" : {
+          "type" : "string",
+          "format" : "date"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "start" ]
+    },
+    "Coding_ACMG_Criterion_Modifier" : {
+      "$anchor" : "Coding_ACMG_Criterion_Modifier",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "pm", "bm", "pvs", "ps", "bp", "ba", "bs", "pp" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Study_Reference" : {
+      "$anchor" : "Study_Reference",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string",
+          "enum" : [ "NCT", "Eudra-CT", "other", "EUDAMED", "DRKS" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "system" ]
+    },
+    "Therapy" : {
+      "$anchor" : "Therapy",
+      "properties" : {
+        "medication" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Coding"
+          },
+          "uniqueItems" : true
+        },
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "recordedOn" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "notes" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "type" : {
+          "$ref" : "#/$defs/Coding_RDTherapy_Type"
+        },
+        "period" : {
+          "$ref" : "#/$defs/Period_Date"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "category" : {
+          "$ref" : "#/$defs/Coding_RDTherapy_Category"
+        },
+        "basedOn" : {
+          "$ref" : "#/$defs/Reference"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "recordedOn" ]
+    },
+    "StructuralVariant" : {
+      "$anchor" : "StructuralVariant",
+      "properties" : {
+        "proteinChange" : {
+          "type" : "string"
+        },
+        "gDNAChange" : {
+          "type" : "string"
+        },
+        "modeOfInheritance" : {
+          "$ref" : "#/$defs/Coding_Variant_ModeOfInheritance"
+        },
+        "acmgClass" : {
+          "$ref" : "#/$defs/Coding_ACMG_Class"
+        },
+        "externalIds" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "additionalProperties" : false,
+            "properties" : {
+              "value" : {
+                "type" : "string"
+              },
+              "system" : {
+                "type" : "string",
+                "format" : "uri"
+              }
+            },
+            "required" : [ "value", "system" ]
+          }
+        },
+        "cDNAChange" : {
+          "type" : "string"
+        },
+        "segregationAnalysis" : {
+          "$ref" : "#/$defs/Coding_Variant_SegregationAnalysis"
+        },
+        "acmgCriteria" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "additionalProperties" : false,
+            "properties" : {
+              "value" : {
+                "$ref" : "#/$defs/Coding_ACMG_Criterion_Type"
+              },
+              "modifier" : {
+                "$ref" : "#/$defs/Coding_ACMG_Criterion_Modifier"
+              }
+            },
+            "required" : [ "value" ]
+          },
+          "uniqueItems" : true
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "localization" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Coding_BaseVariant_Localization"
+          },
+          "uniqueItems" : true
+        },
+        "genes" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Coding"
+          },
+          "uniqueItems" : true
+        },
+        "significance" : {
+          "$ref" : "#/$defs/Coding_Variant_Significance"
+        },
+        "publications" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Publication_Reference"
+          },
+          "uniqueItems" : true
+        },
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "iscnDescription" : {
+          "type" : "string"
+        },
+        "zygosity" : {
+          "$ref" : "#/$defs/Coding_Variant_Zygosity"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient" ]
+    },
+    "ResearchConsent" : {
+      "$anchor" : "ResearchConsent",
+      "type" : "object",
+      "additionalProperties" : true
+    },
+    "Coding_Variant_SegregationAnalysis" : {
+      "$anchor" : "Coding_Variant_SegregationAnalysis",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "from-father", "from-both-parents", "de-novo", "from-mother", "not-performed" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "TherapyRecommendation" : {
+      "$anchor" : "TherapyRecommendation",
+      "properties" : {
+        "medication" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Coding"
+          },
+          "uniqueItems" : true
+        },
+        "supportingVariants" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/GeneAlterationReference"
+          }
+        },
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "category" : {
+          "$ref" : "#/$defs/Coding_RDTherapy_Category"
+        },
+        "type" : {
+          "$ref" : "#/$defs/Coding_RDTherapy_Type"
+        },
+        "issuedOn" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "issuedOn", "category", "type" ]
+    },
+    "GMFCS-Status" : {
+      "$anchor" : "GMFCS-Status",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "effectiveDate" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "value" : {
+          "$ref" : "#/$defs/Coding_GMFCS"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "effectiveDate", "value" ]
+    },
+    "Coding_ACMG_Criterion_Type" : {
+      "$anchor" : "Coding_ACMG_Criterion_Type",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "PM1", "BS1", "PVS1", "BP4", "BP2", "BP1", "PM5", "PP3", "PS3", "PS1", "PM6", "PM4", "BP6", "PP4", "BS2", "PP1", "PS2", "PP2", "BA1", "BP3", "PM3", "PP5", "BP7", "PS4", "BS4", "PM2", "BS3", "BP5" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "MVH_SubmissionType" : {
+      "$anchor" : "MVH_SubmissionType",
+      "type" : "string",
+      "enum" : [ "initial", "correction", "test", "addition", "followup" ]
+    },
+    "Coding_CarePlan_BoardType" : {
+      "$anchor" : "Coding_CarePlan_BoardType",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "indication-board", "therapy-board" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_NGSReport_Platform" : {
+      "$anchor" : "Coding_NGSReport_Platform",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "ont", "10xg", "pacb", "mgi", "other", "illu", "ug" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Consent_Provision_Type" : {
+      "$anchor" : "Consent_Provision_Type",
+      "type" : "string",
+      "enum" : [ "deny", "permit" ]
+    },
+    "Chromosome" : {
+      "$anchor" : "Chromosome",
+      "type" : "string",
+      "enum" : [ "chr5", "chr6", "chr8", "chr1", "chrX", "chr12", "chr11", "chr17", "chr21", "chr19", "chr14", "chr9", "chr4", "chrMT", "chr2", "chrY", "chr3", "chr7", "chr13", "chr10", "chr15", "chr22", "chr18", "chr16", "chr20" ]
+    },
+    "Coding_RDDiagnosis_VerificationStatus" : {
+      "$anchor" : "Coding_RDDiagnosis_VerificationStatus",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "confirmed", "partial", "provisional", "unconfirmed" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_NGSReport_Type" : {
+      "$anchor" : "Coding_NGSReport_Type",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "array", "genome-short-read", "exome", "karyotyping", "panel", "single", "genome-long-read", "other" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "EpisodeOfCare" : {
+      "$anchor" : "EpisodeOfCare",
+      "properties" : {
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "period" : {
+          "$ref" : "#/$defs/Period_Date"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "period" ]
+    },
+    "Coding_BaseVariant_Localization" : {
+      "$anchor" : "Coding_BaseVariant_Localization",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "intronic", "regulatory-region", "coding-region", "intergenic", "splicing-region" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Hospitalization" : {
+      "$anchor" : "Hospitalization",
+      "properties" : {
+        "numberOfStays" : {
+          "$ref" : "#/$defs/Coding_Hospitalization_NumberOfStays"
+        },
+        "numberOfDays" : {
+          "$ref" : "#/$defs/Coding_Hospitalization_NumberOfDays"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "numberOfStays", "numberOfDays" ]
+    },
+    "Coding_Hospitalization_NumberOfStays" : {
+      "$anchor" : "Coding_Hospitalization_NumberOfStays",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "unknown", "none", "over-fifteen", "up-to-five", "up-to-fifteen", "up-to-ten" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_Orphanet_ICD10GM_AlphaIDSE" : {
+      "$anchor" : "Coding_Orphanet_ICD10GM_AlphaIDSE",
+      "properties" : {
+        "code" : {
+          "$ref" : "#/$defs/Code"
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string",
+          "enum" : [ "https://www.bfarm.de/DE/Kodiersysteme/Terminologien/Alpha-ID-SE", "http://fhir.de/CodeSystem/bfarm/icd-10-gm", "https://www.orpha.net" ]
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code", "system" ]
+    },
+    "Age" : {
+      "$anchor" : "Age",
+      "properties" : {
+        "value" : {
+          "type" : "number"
+        },
+        "unit" : {
+          "type" : "string",
+          "enum" : [ "Months", "Years" ]
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "value", "unit" ]
+    },
+    "CopyNumberVariant" : {
+      "$anchor" : "CopyNumberVariant",
+      "properties" : {
+        "proteinChange" : {
+          "type" : "string"
+        },
+        "gDNAChange" : {
+          "type" : "string"
+        },
+        "modeOfInheritance" : {
+          "$ref" : "#/$defs/Coding_Variant_ModeOfInheritance"
+        },
+        "acmgClass" : {
+          "$ref" : "#/$defs/Coding_ACMG_Class"
+        },
+        "endPosition" : {
+          "type" : "integer"
+        },
+        "externalIds" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "additionalProperties" : false,
+            "properties" : {
+              "value" : {
+                "type" : "string"
+              },
+              "system" : {
+                "type" : "string",
+                "format" : "uri"
+              }
+            },
+            "required" : [ "value", "system" ]
+          }
+        },
+        "chromosome" : {
+          "$ref" : "#/$defs/Chromosome"
+        },
+        "zygosity" : {
+          "$ref" : "#/$defs/Coding_Variant_Zygosity"
+        },
+        "cDNAChange" : {
+          "type" : "string"
+        },
+        "startPosition" : {
+          "type" : "integer"
+        },
+        "acmgCriteria" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "additionalProperties" : false,
+            "properties" : {
+              "value" : {
+                "$ref" : "#/$defs/Coding_ACMG_Criterion_Type"
+              },
+              "modifier" : {
+                "$ref" : "#/$defs/Coding_ACMG_Criterion_Modifier"
+              }
+            },
+            "required" : [ "value" ]
+          },
+          "uniqueItems" : true
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "localization" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Coding_BaseVariant_Localization"
+          },
+          "uniqueItems" : true
+        },
+        "genes" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Coding"
+          },
+          "uniqueItems" : true
+        },
+        "significance" : {
+          "$ref" : "#/$defs/Coding_Variant_Significance"
+        },
+        "publications" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Publication_Reference"
+          },
+          "uniqueItems" : true
+        },
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "segregationAnalysis" : {
+          "$ref" : "#/$defs/Coding_Variant_SegregationAnalysis"
+        },
+        "type" : {
+          "$ref" : "#/$defs/Coding_CopyNumberVariant_Type"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "chromosome", "startPosition", "endPosition", "type" ]
+    },
+    "Reference" : {
+      "$anchor" : "Reference",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id" ]
+    },
+    "Coding_ACMG_Class" : {
+      "$anchor" : "Coding_ACMG_Class",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "1", "4", "3", "2", "5" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_GMFCS" : {
+      "$anchor" : "Coding_GMFCS",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "II", "IV", "V", "I", "III" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_Gender" : {
+      "$anchor" : "Coding_Gender",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "female", "male", "other", "unknown" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Patient" : {
+      "$anchor" : "Patient",
+      "properties" : {
+        "dateOfDeath" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "age" : {
+          "$ref" : "#/$defs/Age"
+        },
+        "healthInsurance" : {
+          "type" : "object",
+          "additionalProperties" : false,
+          "properties" : {
+            "type" : {
+              "$ref" : "#/$defs/Coding_HealthInsurance_Type"
+            },
+            "reference" : {
+              "$ref" : "#/$defs/Reference"
+            }
+          },
+          "required" : [ "type" ]
+        },
+        "address" : {
+          "type" : "object",
+          "additionalProperties" : false,
+          "properties" : {
+            "municipalityCode" : {
+              "$ref" : "#/$defs/MunicipalityCode"
+            }
+          },
+          "required" : [ "municipalityCode" ]
+        },
+        "vitalStatus" : {
+          "$ref" : "#/$defs/Coding_VitalStatus"
+        },
+        "birthDate" : {
+          "$ref" : "#/$defs/YearMonth"
+        },
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "gender" : {
+          "$ref" : "#/$defs/Coding_Gender"
+        },
+        "managingSite" : {
+          "$ref" : "#/$defs/Coding"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "gender", "birthDate", "healthInsurance" ]
+    },
+    "HPOTerm-Status" : {
+      "$anchor" : "HPOTerm-Status",
+      "properties" : {
+        "status" : {
+          "$ref" : "#/$defs/Coding_HPOTerm_Status"
+        },
+        "date" : {
+          "type" : "string",
+          "format" : "date"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "status", "date" ]
+    },
+    "Diagnosis" : {
+      "$anchor" : "Diagnosis",
+      "properties" : {
+        "verificationStatus" : {
+          "$ref" : "#/$defs/Coding_RDDiagnosis_VerificationStatus"
+        },
+        "recordedOn" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "onsetDate" : {
+          "$ref" : "#/$defs/YearMonth"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "familyControlLevel" : {
+          "$ref" : "#/$defs/Coding_RDDiagnosis_FamilyControlLevel"
+        },
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "codes" : {
+          "type" : "array",
+          "minItems" : 1,
+          "items" : {
+            "$ref" : "#/$defs/Coding_Orphanet_ICD10GM_AlphaIDSE"
+          }
+        },
+        "missingCodeReason" : {
+          "$ref" : "#/$defs/Coding_RDDiagnosis_MissingCodeReason"
+        },
+        "notes" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "recordedOn", "verificationStatus", "codes" ]
+    },
+    "NGSReport" : {
+      "$anchor" : "NGSReport",
+      "properties" : {
+        "sequencingInfo" : {
+          "type" : "object",
+          "additionalProperties" : false,
+          "properties" : {
+            "platform" : {
+              "$ref" : "#/$defs/Coding_NGSReport_Platform"
+            },
+            "kit" : {
+              "type" : "string"
+            }
+          },
+          "required" : [ "platform", "kit" ]
+        },
+        "conclusion" : {
+          "$ref" : "#/$defs/Coding_RDNGSReport_Conclusion"
+        },
+        "type" : {
+          "$ref" : "#/$defs/Coding_NGSReport_Type"
+        },
+        "issuedOn" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "results" : {
+          "type" : "object",
+          "additionalProperties" : false,
+          "properties" : {
+            "autozygosity" : {
+              "type" : "object",
+              "additionalProperties" : false,
+              "properties" : {
+                "id" : {
+                  "$ref" : "#/$defs/Id"
+                },
+                "patient" : {
+                  "$ref" : "#/$defs/Reference"
+                },
+                "value" : {
+                  "type" : "number"
+                }
+              },
+              "required" : [ "id", "patient", "value" ]
+            },
+            "smallVariants" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/$defs/SmallVariant"
+              }
+            },
+            "copyNumberVariants" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/$defs/CopyNumberVariant"
+              }
+            },
+            "structuralVariants" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/$defs/StructuralVariant"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "issuedOn", "type" ]
+    },
+    "BroadConsent_ReasonMissing" : {
+      "$anchor" : "BroadConsent_ReasonMissing",
+      "type" : "string",
+      "enum" : [ "organizational-issues", "technical-issues", "patient-inability", "other-patient-reason", "consent-not-returned", "patient-refusal" ]
+    },
+    "Coding_VitalStatus" : {
+      "$anchor" : "Coding_VitalStatus",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "alive", "deceased" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding" : {
+      "$anchor" : "Coding",
+      "properties" : {
+        "code" : {
+          "$ref" : "#/$defs/Code"
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "ModelProjectConsent_Purpose" : {
+      "$anchor" : "ModelProjectConsent_Purpose",
+      "type" : "string",
+      "enum" : [ "case-identification", "reidentification", "sequencing" ]
+    },
+    "Coding_Variant_Significance" : {
+      "$anchor" : "Coding_Variant_Significance",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "candidate", "incidental", "primary" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_RDTherapy_Category" : {
+      "$anchor" : "Coding_RDTherapy_Category",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "causal", "symptomatic" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_Variant_ModeOfInheritance" : {
+      "$anchor" : "Coding_Variant_ModeOfInheritance",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "recessive", "mitochondrial", "unclear", "X-linked", "dominant" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_RDNGSReport_Conclusion" : {
+      "$anchor" : "Coding_RDNGSReport_Conclusion",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "no-pathogenic-variant-detected", "partial-phenotype", "structural-variant-with-unclear-breakpoint", "unclear-variant-in-disease" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_HealthInsurance_Type" : {
+      "$anchor" : "Coding_HealthInsurance_Type",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "GKV", "BG", "PKV", "SKT", "SEL", "SOZ", "GPV", "UNK", "BEI", "PPV" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "MunicipalityCode" : {
+      "$anchor" : "MunicipalityCode",
+      "type" : "string",
+      "pattern" : "^\\d{5}$"
+    },
+    "MVH_Metadata" : {
+      "description" : "This DTO corresponds to a \"Prüfbericht\" for the Model Project.\nThe structure is slightly different from the schema defined for the BfArM API:\nthe conversion/mapping onto the later takes place in the central data node.\nAlso, this DTO contains additional fields not represented in the BfArM \"Prüfbericht\" itself,\nbut which are required for compilation of appendices 1/2 of the quarterly report.",
+      "$anchor" : "MVH_Metadata",
+      "properties" : {
+        "modelProjectConsent" : {
+          "type" : "object",
+          "additionalProperties" : false,
+          "properties" : {
+            "version" : {
+              "type" : "string"
+            },
+            "date" : {
+              "type" : "string",
+              "format" : "date"
+            },
+            "provisions" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object",
+                "additionalProperties" : false,
+                "properties" : {
+                  "date" : {
+                    "type" : "string",
+                    "format" : "date"
+                  },
+                  "purpose" : {
+                    "$ref" : "#/$defs/ModelProjectConsent_Purpose"
+                  },
+                  "type" : {
+                    "$ref" : "#/$defs/Consent_Provision_Type"
+                  }
+                },
+                "required" : [ "date", "purpose", "type" ]
+              }
+            }
+          },
+          "required" : [ "version", "provisions" ]
+        },
+        "researchConsents" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/ResearchConsent"
+          }
+        },
+        "episodeOfCare" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "reasonResearchConsentMissing" : {
+          "$ref" : "#/$defs/BroadConsent_ReasonMissing"
+        },
+        "transferTAN" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "type" : {
+          "$ref" : "#/$defs/MVH_SubmissionType"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "type", "transferTAN", "modelProjectConsent" ]
+    },
+    "StudyEnrollmentRecommendation" : {
+      "$anchor" : "StudyEnrollmentRecommendation",
+      "properties" : {
+        "supportingVariants" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/GeneAlterationReference"
+          }
+        },
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "issuedOn" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "study" : {
+          "type" : "array",
+          "minItems" : 1,
+          "items" : {
+            "$ref" : "#/$defs/Study_Reference"
+          }
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "issuedOn", "study" ]
+    },
+    "Coding_HPOTerm_Status" : {
+      "$anchor" : "Coding_HPOTerm_Status",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "abated", "degraded", "improved", "unchanged" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "Coding_ClinicalManagementRecommendation_Type" : {
+      "$anchor" : "Coding_ClinicalManagementRecommendation_Type",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "other-ambulatory-care", "local-crd", "specialist", "university-ambulatory-care", "other-crd", "gp", "disease-specific-ambulatory-care" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    }
+  },
+  "$id" : "RD-Patient-Record",
+  "properties" : {
+    "diagnoses" : {
+      "type" : "array",
+      "minItems" : 1,
+      "items" : {
+        "$ref" : "#/$defs/Diagnosis"
+      }
+    },
+    "hpoTerms" : {
+      "type" : "array",
+      "minItems" : 1,
+      "items" : {
+        "$ref" : "#/$defs/HPOTerm"
+      }
+    },
+    "ngsReports" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/$defs/NGSReport"
+      }
+    },
+    "gmfcsStatus" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/$defs/GMFCS-Status"
+      }
+    },
+    "followUps" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/$defs/FollowUp"
+      }
+    },
+    "therapies" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "additionalProperties" : false,
+        "properties" : {
+          "history" : {
+            "type" : "array",
+            "minItems" : 1,
+            "items" : {
+              "$ref" : "#/$defs/Therapy"
+            }
+          }
+        },
+        "required" : [ "history" ]
+      }
+    },
+    "metadata" : {
+      "$ref" : "#/$defs/MVH_Metadata"
+    },
+    "episodesOfCare" : {
+      "type" : "array",
+      "minItems" : 1,
+      "items" : {
+        "$ref" : "#/$defs/EpisodeOfCare"
+      }
+    },
+    "patient" : {
+      "$ref" : "#/$defs/Patient"
+    },
+    "hospitalization" : {
+      "$ref" : "#/$defs/Hospitalization"
+    },
+    "carePlans" : {
+      "type" : "array",
+      "minItems" : 1,
+      "items" : {
+        "$ref" : "#/$defs/CarePlan"
+      }
+    }
+  },
+  "additionalProperties" : false,
+  "$schema" : "https://json-schema.org/draft/2020-12/schema",
+  "type" : "object",
+  "required" : [ "patient", "episodesOfCare", "diagnoses", "hpoTerms", "carePlans" ]
+}
