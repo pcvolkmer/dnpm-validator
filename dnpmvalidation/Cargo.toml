@@ -2,7 +2,7 @@
 name = "dnpmvalidation"
 version = "0.1.0"
 authors = ["Paul-Christian Volkmer"]
-description = "Library for DNPM Datenmodell 2.1 and SE:dip data model validation"
+description = "Library for DNPM Datenmodell 2.1, SE:dip data model and GRZ Metadata format validation"
 license = "LGPL-2"
 edition = "2024"
 
@@ -23,7 +23,7 @@ cxx-build = "1.0"
 [package.metadata.deb]
 name = "libdnpmvalidation"
 copyright = "Copyright (C) 2026 the original author or authors"
-extended-description = "Library for DNPM Datenmodell 2.1 and SE:dip data model validation"
+extended-description = "Library for DNPM Datenmodell 2.1, SE:dip data model and GRZ Metadata format validation"
 assets = [
     ["target/release/libdnpmvalidation.so", "usr/lib64/", "755"],
     ["target/cxxbridge/dnpmvalidation/src/lib.rs.cc", "usr/include/dnpmvalidation", "644"],

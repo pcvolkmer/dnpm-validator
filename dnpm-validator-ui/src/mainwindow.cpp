@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget* parent) :
                            R"(
 <html><body>
 <p style="font-size: large; font-weight: bold;">DNPM-Validator</p>
-<p>Application to validate and edit a data set in DNPM Datenmodell 2.1 and SE:dip data model format</p>
+<p>Application to validate and edit a data set in DNPM Datenmodell 2.1, SE:dip data model and GRZ Metadata format</p>
 <p><a href="https://github.com/pcvolkmer/dnpm-validator">https://github.com/pcvolkmer/dnpm-validator</a></p>
 </body></html>)"
         );

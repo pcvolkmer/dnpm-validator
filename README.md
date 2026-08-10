@@ -1,6 +1,6 @@
 # DNPM Validator
 
-Application to validate a data set in DNPM Datenmodell 2.1 and SE:dip data model format
+Application to validate a data set in DNPM Datenmodell 2.1, SE:dip data model and GRZ Metadata format
 
 ## Usage
 
