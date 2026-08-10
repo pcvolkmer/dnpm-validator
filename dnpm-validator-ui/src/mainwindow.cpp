@@ -15,7 +15,8 @@ MainWindow::MainWindow(QWidget* parent) :
     this->positionLabel = new QLabel(this);
     this->formatSelection = new QComboBox(this);
     this->formatSelection->addItem("DNPM Datenmodell 2.1");
-    this->formatSelection->addItem("SE:dip");
+    this->formatSelection->addItem("SE:dip Datenmodell");
+    this->formatSelection->addItem("GRZ Metadata 1.3.1");
     this->ui->toolBar->addWidget(this->formatSelection);
     this->ui->statusbar->addPermanentWidget(this->positionLabel);
 
@@ -131,6 +132,8 @@ void MainWindow::onValidateAction()
     if (this->formatSelection->currentIndex() == 1)
     {
         validationType = dnpmvalidation::ValidationType::Rd;
+    } else if (this->formatSelection->currentIndex() == 2) {
+        validationType = dnpmvalidation::ValidationType::Grz;
     }
     auto errors = dnpmvalidation::validate(rust::String(json.toStdString()), validationType);
 
