@@ -9,6 +9,7 @@ mod ffi {
     pub enum ValidationType {
         Mtb,
         Rd,
+        Grz
     }
 
     struct ValidationError {
@@ -29,6 +30,7 @@ pub fn validate_cxx(json: String, validation_type: FfiValidationType) -> Vec<ffi
     match validate(json.as_str(), match validation_type {
         FfiValidationType::Mtb => ValidationType::Mtb,
         FfiValidationType::Rd => ValidationType::Rd,
+        FfiValidationType::Grz => ValidationType::Grz,
         _ => ValidationType::Mtb,
     }) {
         Ok(validations) => validations

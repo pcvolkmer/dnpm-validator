@@ -10,6 +10,7 @@ pub fn validate(
     let schema_str = match validation_type {
         ValidationType::Mtb => include_str!("../schema/mtb.json"),
         ValidationType::Rd => include_str!("../schema/rd.json"),
+        ValidationType::Grz => include_str!("../schema/grz.json"),
     };
 
     let validator =

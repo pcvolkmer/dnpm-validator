@@ -30,6 +30,7 @@ impl Position {
 pub enum ValidationType {
     Mtb,
     Rd,
+    Grz
 }
 
 pub fn validate(
