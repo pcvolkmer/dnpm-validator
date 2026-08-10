@@ -46,6 +46,13 @@ pub fn validate(
 
     errors.append(&mut validate_refs(
         json,
+        "Diagnosis",
+        "$.diagnoses[*].id",
+        "$..diagnoses[*].id",
+    )?);
+
+    errors.append(&mut validate_refs(
+        json,
         "Variant",
         "$.ngsReports[*]..id",
         "$..variant.id",
