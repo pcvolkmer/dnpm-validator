@@ -18,6 +18,10 @@ Options:
 
 ![](image.png)
 
+This project also provides a desktop UI frontend to validate and edit DNPM/SE:dip JSON files.
+
+![](ui-image.png)
+
 ## Implemented validations
 
 | Validation                           | MTB | RD |
