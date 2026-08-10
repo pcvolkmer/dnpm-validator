@@ -2,14 +2,54 @@
 name = "dnpm-validator"
 version = "0.1.0"
 authors = ["Paul-Christian Volkmer"]
+description = "Application to validate a data set in DNPM Datenmodell 2.1 and SE:dip data model format"
 license = "GPL-3"
 edition = "2024"
 
-[dependencies]
-clap = { version = "4.6", features = ["usage", "derive"] }
+[workspace]
+members = [".", "dnpmvalidation"]
+resolver = "2"
+
+[workspace.dependencies]
 serde_json = "1.0"
-jsonschema = { version ="0.49", default-features = false }
+jsonschema = { version = "0.49", default-features = false }
 jsonpath-rust = "1.0"
 tree-sitter = "0.26"
 tree-sitter-json = "0.24"
+
+[dependencies]
+clap = { version = "4.6", features = ["usage", "derive", "cargo"] }
 console = "0.16"
+dnpmvalidation = { path = "./dnpmvalidation" }
+
+[profile.release]
+opt-level = "z"
+codegen-units = 1
+lto = true
+strip = true
+panic = "abort"
+
+# Lints
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+pedantic = { level = "warn", priority = -1 }
+
+[lints.rust]
+unused_must_use = "deny"
+
+# Packaging
+
+[package.metadata.deb]
+copyright = "Copyright (C) 2026 the original author or authors"
+extended-description = "Application to validate a data set in DNPM Datenmodell 2.1 and SE:dip data model format"
+assets = [
+    ["target/release/dnpm-validator", "usr/bin/", "755"]
+]
+
+[package.metadata.generate-rpm]
+assets = [
+    { source = "target/release/dnpm-validator", dest = "/usr/bin/", mode = "755" }
+]

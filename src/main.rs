@@ -1,27 +1,26 @@
-mod validation;
-
-use crate::validation::{ValidationError, validate};
 use clap::{Parser as ClapParser, ValueEnum};
 use console::style;
+use dnpmvalidation::{ValidationType, validate};
 use std::fs;
 use std::path::PathBuf;
 use std::process::exit;
 
 #[derive(ClapParser)]
 #[command(author, version, about)]
+#[command(help_template = "{name} {version}\n{about}\n\n{usage-heading} {usage}\n\n{all-args}")]
 #[command(arg_required_else_help(true))]
 pub struct Cli {
-    #[arg(help = "The file to be checked")]
+    #[arg(help = "The file to be validated")]
     pub file: PathBuf,
 
-    #[arg(long = "type", default_value = "mtb", help = "The schema to be used")]
+    #[arg(long = "type", default_value = "mtb", help = "The schema to be used for validation")]
     pub schema: SchemaType,
 }
 
 #[derive(Debug, Clone, Copy, ValueEnum, PartialEq)]
 pub enum SchemaType {
-    MTB,
-    RD,
+    Mtb,
+    Rd,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -32,13 +31,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     print!(
         "Validation using {} schema: ",
         style(match cli.schema {
-            SchemaType::MTB => "MTB",
-            SchemaType::RD => "RD",
+            SchemaType::Mtb => "MTB",
+            SchemaType::Rd => "RD",
         })
         .underlined()
     );
 
-    let errors = validate(&file, cli.schema).unwrap_or_default();
+    let errors = validate(
+        &file,
+        match cli.schema {
+            SchemaType::Mtb => ValidationType::Mtb,
+            SchemaType::Rd => ValidationType::Rd,
+        },
+    )
+    .unwrap_or_default();
 
     if errors.is_empty() {
         println!("{}", style("No validation errors found").green().bold());
@@ -54,32 +60,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
     }
 
-    errors.iter().for_each(|err| match err {
-        ValidationError::Error { message, path } => println!(
+    errors.iter().for_each(|err| {
+        println!(
             "{} {} {}",
-            style("Validation error").red(),
-            message,
-            if path.is_empty() {
+            style(format!(
+                "🔥 Validation error {:<11}",
+                format!("[{}:{}]", err.start.line, err.start.column)
+            ))
+            .red(),
+            err.message,
+            if err.path.is_empty() {
                 String::new()
             } else {
-                format!("at '{}'", path)
+                format!("at '{}'", err.path)
             }
-        ),
-        ValidationError::PosError {
-            line,
-            column,
-            message,
-            path,
-        } => println!(
-            "{} {} {}",
-            style(format!("Validation error [{:>4}:{:>4}]", line, column)).red(),
-            message,
-            if path.is_empty() {
-                String::new()
-            } else {
-                format!("at '{}'", path)
-            }
-        ),
+        )
     });
 
     exit(1)

@@ -1,0 +1,41 @@
+[package]
+name = "dnpmvalidation"
+version = "0.1.0"
+authors = ["Paul-Christian Volkmer"]
+description = "Library for DNPM Datenmodell 2.1 and SE:dip data model validation"
+license = "LGPL-2"
+edition = "2024"
+
+[lib]
+crate-type = ["staticlib", "cdylib", "lib"]
+
+[dependencies]
+serde_json = { workspace = true }
+jsonschema = { workspace = true }
+jsonpath-rust = { workspace = true }
+tree-sitter = { workspace = true }
+tree-sitter-json = { workspace = true }
+cxx = "1.0"
+
+[build-dependencies]
+cxx-build = "1.0"
+
+[package.metadata.deb]
+name = "libdnpmvalidation"
+copyright = "Copyright (C) 2026 the original author or authors"
+extended-description = "Library for DNPM Datenmodell 2.1 and SE:dip data model validation"
+assets = [
+    ["target/release/libdnpmvalidation.so", "usr/lib64/", "755"],
+    ["target/cxxbridge/dnpmvalidation/src/lib.rs.cc", "usr/include/dnpmvalidation", "644"],
+    ["target/cxxbridge/dnpmvalidation/src/lib.rs.h", "usr/include/dnpmvalidation", "644"],
+    ["target/cxxbridge/rust/cxx.h", "usr/include/dnpmvalidation", "644"]
+]
+
+[package.metadata.generate-rpm]
+name = "libdnpmvalidation"
+assets = [
+    { source = "target/release/libdnpmvalidation.so", dest = "/usr/lib64/", mode = "755" },
+    { source = "target/cxxbridge/dnpmvalidation/src/lib.rs.cc", dest = "/usr/include/dnpmvalidation/", mode = "644" },
+    { source = "target/cxxbridge/dnpmvalidation/src/lib.rs.h", dest = "/usr/include/dnpmvalidation/", mode = "644" },
+    { source = "target/cxxbridge/rust/cxx.h", dest = "/usr/include/dnpmvalidation/", mode = "644" }
+]

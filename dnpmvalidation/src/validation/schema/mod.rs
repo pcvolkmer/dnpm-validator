@@ -1,16 +1,15 @@
-use crate::SchemaType;
-use crate::validation::{ValidationError, map_to_validation_error};
+use crate::validation::{ValidationError, ValidationType, map_to_validation_error};
 use tree_sitter::Parser;
 
 pub fn validate(
     json: &str,
-    schema: SchemaType,
+    validation_type: ValidationType,
 ) -> Result<Vec<ValidationError>, Box<dyn std::error::Error>> {
     let value = serde_json::from_str::<serde_json::Value>(json)?;
 
-    let schema_str = match schema {
-        SchemaType::MTB => include_str!("../schema/mtb.json"),
-        SchemaType::RD => include_str!("../schema/rd.json"),
+    let schema_str = match validation_type {
+        ValidationType::Mtb => include_str!("../schema/mtb.json"),
+        ValidationType::Rd => include_str!("../schema/rd.json"),
     };
 
     let validator =

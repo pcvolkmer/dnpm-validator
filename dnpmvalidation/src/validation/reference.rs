@@ -1,12 +1,11 @@
-use crate::SchemaType;
-use crate::validation::{ValidationError, map_to_validation_error};
+use crate::validation::{ValidationError, ValidationType, map_to_validation_error};
 use jsonpath_rust::JsonPath;
 use serde_json::Value;
 use tree_sitter::Parser;
 
 pub fn validate(
     json: &str,
-    schema: SchemaType,
+    validation_type: ValidationType,
 ) -> Result<Vec<ValidationError>, Box<dyn std::error::Error>> {
     let mut errors = Vec::new();
 
@@ -73,14 +72,14 @@ pub fn validate(
         "$..responses[*].therapy.id",
     )?);
 
-    if schema == SchemaType::MTB {
+    if validation_type == ValidationType::Mtb {
         errors.append(&mut validate_refs(
             json,
             "Recommendation",
             "$..medicationRecommendations[*].id",
             "$..basedOn.id",
         )?);
-    } else if schema == SchemaType::RD {
+    } else if validation_type == ValidationType::Rd {
         errors.append(&mut validate_refs(
             json,
             "Recommendation",
@@ -129,7 +128,7 @@ fn validate_refs(
                 (
                     err_path,
                     format!(
-                        "Unknown reference to {} {}",
+                        "Invalid reference to {} {}",
                         item_type,
                         value.replace("\"", "'")
                     ),

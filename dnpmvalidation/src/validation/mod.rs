@@ -1,30 +1,46 @@
 mod reference;
 pub mod schema;
 
-use crate::SchemaType;
-use std::cmp::Ordering;
 use tree_sitter::{Node, Parser};
 
-pub enum ValidationError {
-    PosError {
-        line: usize,
-        column: usize,
-        message: String,
-        path: String,
-    },
-    Error {
-        message: String,
-        path: String,
-    },
+#[allow(unused)]
+pub struct ValidationError {
+    pub start: Position,
+    pub end: Position,
+    pub message: String,
+    pub path: String,
+}
+
+pub struct Position {
+    pub line: usize,
+    pub column: usize,
+}
+
+impl Position {
+    pub fn empty() -> Self {
+        Self { line: 0, column: 0 }
+    }
+
+    pub fn new(line: usize, column: usize) -> Self {
+        Self { line, column }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum ValidationType {
+    Mtb,
+    Rd,
 }
 
 pub fn validate(
     json: &str,
-    schema: SchemaType,
+    schema: ValidationType,
 ) -> Result<Vec<ValidationError>, Box<dyn std::error::Error>> {
     if serde_json::from_str::<serde_json::Value>(json).is_err() {
-        return Ok(vec![ValidationError::Error {
-            message: "No JSON file".to_string(),
+        return Ok(vec![ValidationError {
+            start: Position::empty(),
+            end: Position::empty(),
+            message: "Invalid JSON file".to_string(),
             path: String::new(),
         }]);
     }
@@ -32,23 +48,8 @@ pub fn validate(
     let mut errors = schema::validate(json, schema)?;
     errors.append(&mut reference::validate(json, schema)?);
 
-    errors.sort_by(|e1, e2| match e1 {
-        ValidationError::Error { .. } => Ordering::Less,
-        ValidationError::PosError { column, .. } => match e2 {
-            ValidationError::Error { .. } => Ordering::Greater,
-            ValidationError::PosError {
-                column: column2, ..
-            } => column.cmp(column2),
-        },
-    });
-
-    errors.sort_by(|e1, e2| match e1 {
-        ValidationError::Error { .. } => Ordering::Less,
-        ValidationError::PosError { line, .. } => match e2 {
-            ValidationError::Error { .. } => Ordering::Greater,
-            ValidationError::PosError { line: line2, .. } => line.cmp(line2),
-        },
-    });
+    errors.sort_by_key(|ve| ve.start.column);
+    errors.sort_by_key(|ve| ve.start.line);
 
     Ok(errors)
 }
@@ -114,23 +115,35 @@ fn map_to_validation_error(
             .collect::<Vec<&str>>();
 
         let Some(node) = find_node(root, json, &path_parts) else {
-            return ValidationError::Error {
+            return ValidationError {
+                start: Position::empty(),
+                end: Position::empty(),
                 message: err,
                 path: err_path,
             };
         };
 
         let start = node.start_byte();
+        let end = node.end_byte();
         let line_start = json[..start].rfind('\n').map(|i| i + 1).unwrap_or(0);
+        let line_end = json[..end].rfind('\n').map(|i| i + 1).unwrap_or(0);
 
-        ValidationError::PosError {
-            line: node.start_position().row + 1,
-            column: json[line_start..start].chars().count() + 1,
+        ValidationError {
+            start: Position::new(
+                node.start_position().row + 1,
+                json[line_start..start].chars().count() + 1,
+            ),
+            end: Position::new(
+                node.end_position().row + 1,
+                json[line_end..end].chars().count() + 1,
+            ),
             message: err,
             path: err_path,
         }
     } else {
-        ValidationError::Error {
+        ValidationError {
+            start: Position::empty(),
+            end: Position::empty(),
             message: err,
             path: err_path,
         }
@@ -139,22 +152,21 @@ fn map_to_validation_error(
 
 #[cfg(test)]
 mod tests {
-    use crate::SchemaType;
-    use crate::validation::validate;
+    use crate::validation::{ValidationType, validate};
 
     #[test]
     fn test_should_validate_mtb_patient_record() {
-        const INPUT: &str = include_str!("../../test/mtb-patient-record.json");
-        let validation_errors =
-            validate(INPUT, SchemaType::MTB).expect("Validation should not end in error result");
+        const INPUT: &str = include_str!("../../../test/mtb-patient-record.json");
+        let validation_errors = validate(INPUT, ValidationType::Mtb)
+            .expect("Validation should not end in error result");
         assert!(validation_errors.is_empty());
     }
 
     #[test]
     fn test_should_validate_rd_patient_record() {
-        const INPUT: &str = include_str!("../../test/rd-patient-record.json");
+        const INPUT: &str = include_str!("../../../test/rd-patient-record.json");
         let validation_errors =
-            validate(INPUT, SchemaType::RD).expect("Validation should not end in error result");
+            validate(INPUT, ValidationType::Rd).expect("Validation should not end in error result");
         assert!(validation_errors.is_empty());
     }
 }
