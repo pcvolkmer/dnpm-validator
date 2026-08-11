@@ -6,6 +6,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     this->onLineNumbersChanged(1);
+    this->highlightCurrentLine();
 
     QFont monospaceFont("monospace");
     monospaceFont.setStyleHint(QFont::TypeWriter);
@@ -14,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->ui->plainTextEdit->setFont(monospaceFont);
     this->ui->errorListWidget->setFont(monospaceFont);
 
-    this->positionLabel = new QLabel(this);
+    this->positionLabel = new QLabel("[1:1]", this);
     this->formatSelection = new QComboBox(this);
     this->formatSelection->addItem("DNPM Datenmodell 2.1");
     this->formatSelection->addItem("SE:dip Datenmodell");
@@ -44,6 +45,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->plainTextEdit, &QPlainTextEdit::blockCountChanged, this, &MainWindow::onLineNumbersChanged);
     connect(ui->plainTextEdit->verticalScrollBar(), &QScrollBar::valueChanged, [this](const int value) {
         ui->lineNumbers->verticalScrollBar()->setValue(value);
+    });
+    connect(ui->plainTextEdit, &QPlainTextEdit::cursorPositionChanged, [this] {
+        this->highlightCurrentLine();
+        this->positionLabel->setText(
+            QString("[%1:%2]")
+            .arg(ui->plainTextEdit->textCursor().blockNumber() + 1)
+            .arg(ui->plainTextEdit->textCursor().columnNumber() + 1)
+        );
     });
 
     connect(ui->errorListWidget, &QListWidget::itemClicked,
@@ -152,12 +161,12 @@ void MainWindow::onErrorSelected(const int index) const {
         QTextCursor::Start
     );
 
-    auto startTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.startLine - 1);
+    const auto startTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.startLine - 1);
     cursor.setPosition(startTextBlock.position() + error.startColumn - 1, QTextCursor::MoveAnchor);
     ui->plainTextEdit->setTextCursor(cursor);
     ui->plainTextEdit->ensureCursorVisible();
 
-    ui->lineNumbers->verticalScrollBar()->setValue(ui->plainTextEdit->verticalScrollBar()->value());
+    this->highlightCurrentLine();
 }
 
 void MainWindow::onLineNumbersChanged(int lineCount) const {
@@ -168,25 +177,79 @@ void MainWindow::onLineNumbersChanged(int lineCount) const {
     this->ui->lineNumbers->setPlainText(lines.join('\n'));
 }
 
+void MainWindow::highlightCurrentLine() const {
+    ui->lineNumbers->verticalScrollBar()->setValue(ui->plainTextEdit->verticalScrollBar()->value());
+
+    const auto currentBlock = ui->plainTextEdit->textCursor().block();
+
+    QTextCharFormat lineFormat;
+    QBrush brush;
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(QColor::fromRgba(qRgba(127, 127, 127, 16)));
+    lineFormat.setBackground(brush);
+    lineFormat.setProperty(QTextFormat::FullWidthSelection, true);
+
+    if (const auto lineCursor = QTextCursor(
+            ui->lineNumbers->document()->findBlockByLineNumber(currentBlock.firstLineNumber())); lineCursor.block().
+        isValid()) {
+        QList<QTextEdit::ExtraSelection> extraSelections;
+
+        QTextEdit::ExtraSelection textSelection;
+        textSelection.cursor = lineCursor;
+        textSelection.format = lineFormat;
+
+        extraSelections.append(textSelection);
+        for (const auto &extra_selection: ui->lineNumbers->extraSelections()) {
+            if (extra_selection.format.foreground() == Qt::red) {
+                extraSelections.append(extra_selection);
+            }
+        }
+
+        ui->lineNumbers->setExtraSelections(extraSelections);
+    }
+
+    if (const auto textCursor = QTextCursor(currentBlock); textCursor.block().isValid()) {
+        QList<QTextEdit::ExtraSelection> extraSelections;
+
+        QTextEdit::ExtraSelection textSelection;
+        textSelection.cursor = textCursor;
+        textSelection.format = lineFormat;
+
+        extraSelections.append(textSelection);
+        for (const auto &extra_selection: ui->plainTextEdit->extraSelections()) {
+            if (extra_selection.format.property(QTextFormat::FullWidthSelection) != true) {
+                extraSelections.append(extra_selection);
+            }
+        }
+
+        ui->plainTextEdit->setExtraSelections(extraSelections);
+    }
+}
+
 void MainWindow::markErrors() {
     auto cursor = ui->plainTextEdit->textCursor();
 
     QList<QTextEdit::ExtraSelection> lineExtraSelections;
     QList<QTextEdit::ExtraSelection> textExtraSelections;
 
+    QList<int> markedLines;
+
     for (const auto &error: this->errorList) {
         if (error.startLine == 0 || error.startColumn == 0) {
             continue;
         }
 
-        QTextEdit::ExtraSelection lineSelection;
-        lineSelection.cursor = QTextCursor(ui->lineNumbers->document()->findBlockByLineNumber(error.startLine - 1));
-        QTextCharFormat lineFormat;
-        lineFormat.setForeground(Qt::red);
-        lineFormat.setFontWeight(QFont::Bold);
-        lineFormat.setProperty(QTextFormat::FullWidthSelection, true);
-        lineSelection.format = lineFormat;
-        lineExtraSelections.append(lineSelection);
+        if (!markedLines.contains(error.startLine - 1)) {
+            QTextEdit::ExtraSelection lineSelection;
+            lineSelection.cursor = QTextCursor(ui->lineNumbers->document()->findBlockByLineNumber(error.startLine - 1));
+            QTextCharFormat lineFormat;
+            lineFormat.setForeground(Qt::red);
+            lineFormat.setBackground(QColor::fromRgba(qRgba(200, 0, 0, 24)));
+            lineFormat.setProperty(QTextFormat::FullWidthSelection, true);
+            lineSelection.format = lineFormat;
+            lineExtraSelections.append(lineSelection);
+            markedLines.append(error.startLine - 1);
+        }
 
         auto startTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.startLine - 1);
         cursor.setPosition(startTextBlock.position() + error.startColumn - 1, QTextCursor::MoveAnchor);
@@ -205,4 +268,6 @@ void MainWindow::markErrors() {
 
     ui->lineNumbers->setExtraSelections(lineExtraSelections);
     ui->plainTextEdit->setExtraSelections(textExtraSelections);
+
+    this->highlightCurrentLine();
 }
