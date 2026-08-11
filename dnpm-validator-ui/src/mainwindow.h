@@ -8,40 +8,47 @@
 #include <QLabel>
 #include <QTextBlock>
 #include <QMessageBox>
+#include <QScrollBar>
 
 #include <lib.rs.h>
 
 QT_BEGIN_NAMESPACE
 
-namespace Ui
-{
+namespace Ui {
     class MainWindow;
 }
 
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget* parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
+
     ~MainWindow() override;
 
 private:
-    Ui::MainWindow* ui;
-    QComboBox* formatSelection;
-    QLabel* positionLabel;
+    Ui::MainWindow *ui;
+    QComboBox *formatSelection;
+    QLabel *positionLabel;
     QList<dnpmvalidation::ValidationError> errorList;
     QString filename;
+
     void markErrors();
 
 private slots:
     void onOpenAction();
+
     void onSaveAction();
+
     void onSaveAsAction();
+
     void onValidateAction();
+
     void onErrorSelected(int index) const;
+
+    void onLineNumbersChanged(int newLineCount) const;
 };
 
 
