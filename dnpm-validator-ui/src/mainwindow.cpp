@@ -74,10 +74,9 @@ void MainWindow::onOpenAction()
 
     if (!this->filename.isEmpty())
     {
-        QFile file(this->filename);
-        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+        if (QFile file(this->filename); file.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            QByteArray content = file.readAll();
+            const QByteArray content = file.readAll();
 
             ui->plainTextEdit->setPlainText(
                 QString::fromUtf8(content)
@@ -95,8 +94,7 @@ void MainWindow::onSaveAction()
 {
     if (!this->filename.isEmpty())
     {
-        QFile file(this->filename);
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+        if (QFile file(this->filename); file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             this->onValidateAction();
             file.write(this->ui->plainTextEdit->toPlainText().toUtf8());
@@ -109,7 +107,7 @@ void MainWindow::onSaveAction()
 
 void MainWindow::onSaveAsAction()
 {
-    auto selectedFilename = QFileDialog::getSaveFileName(
+    const auto selectedFilename = QFileDialog::getSaveFileName(
         this,
         "Save file",
         QDir::homePath(),
@@ -127,7 +125,7 @@ void MainWindow::onSaveAsAction()
 
 void MainWindow::onValidateAction()
 {
-    auto json = ui->plainTextEdit->toPlainText();
+    const auto json = ui->plainTextEdit->toPlainText();
     auto validationType = dnpmvalidation::ValidationType::Mtb;
     if (this->formatSelection->currentIndex() == 1)
     {
@@ -158,10 +156,15 @@ void MainWindow::onValidateAction()
     this->markErrors();
 }
 
-void MainWindow::onErrorSelected(int index)
-{
-    auto error = this->errorList.at(index);
+void MainWindow::onErrorSelected(const int index) const {
+    const auto error = this->errorList.at(index);
     auto cursor = ui->plainTextEdit->textCursor();
+
+    if (error.startLine == 0 || error.startColumn == 0) {
+        return;
+    }
+
+    ui->plainTextEdit->setFocus();
 
     cursor.clearSelection();
     cursor.setPosition(
@@ -182,6 +185,10 @@ void MainWindow::markErrors()
 
     for (const auto& error : this->errorList)
     {
+        if (error.startLine == 0 || error.startColumn == 0) {
+            continue;
+        }
+
         auto startTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.startLine - 1);
         cursor.setPosition(startTextBlock.position() + error.startColumn - 1, QTextCursor::MoveAnchor);
 
