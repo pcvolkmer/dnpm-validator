@@ -1,14 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget* parent) :
-    QMainWindow(parent), ui(new Ui::MainWindow)
-{
+#include <QDebug>
+
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    this->onLineNumbersChanged(1);
 
     QFont monospaceFont("monospace");
     monospaceFont.setStyleHint(QFont::TypeWriter);
 
+    this->ui->lineNumbers->setFont(monospaceFont);
     this->ui->plainTextEdit->setFont(monospaceFont);
     this->ui->errorListWidget->setFont(monospaceFont);
 
@@ -24,26 +26,10 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow::onSaveAction);
     connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::onSaveAsAction);
     connect(ui->actionValidate, &QAction::triggered, this, &MainWindow::onValidateAction);
-    connect(this->formatSelection, &QComboBox::currentTextChanged, [this](const QString&)
-    {
+    connect(this->formatSelection, &QComboBox::currentTextChanged, [this](const QString &) {
         this->onValidateAction();
     });
-    connect(ui->errorListWidget, &QListWidget::itemClicked,
-                  [this](const QListWidgetItem* item)
-                  {
-                      const auto row = item->listWidget()->currentIndex().row();
-                      this->onErrorSelected(row);
-                  });
-    connect(ui->plainTextEdit, &QPlainTextEdit::cursorPositionChanged, [this]
-    {
-        this->positionLabel->setText(
-            QString("[%1:%2]")
-            .arg(ui->plainTextEdit->textCursor().blockNumber() + 1)
-            .arg(ui->plainTextEdit->textCursor().columnNumber() + 1)
-        );
-    });
-    connect(ui->actionAbout, &QAction::triggered, [this]
-    {
+    connect(ui->actionAbout, &QAction::triggered, [this] {
         QMessageBox::about(this,
                            "About DNPM-Validator",
                            R"(
@@ -54,17 +40,26 @@ MainWindow::MainWindow(QWidget* parent) :
 </body></html>)"
         );
     });
+
+    connect(ui->plainTextEdit, &QPlainTextEdit::blockCountChanged, this, &MainWindow::onLineNumbersChanged);
+    connect(ui->plainTextEdit->verticalScrollBar(), &QScrollBar::valueChanged, [this](const int value) {
+        ui->lineNumbers->verticalScrollBar()->setValue(value);
+    });
+
+    connect(ui->errorListWidget, &QListWidget::itemClicked,
+            [this](const QListWidgetItem *item) {
+                const auto row = item->listWidget()->currentIndex().row();
+                this->onErrorSelected(row);
+            });
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete this->formatSelection;
     delete this->positionLabel;
     delete ui;
 }
 
-void MainWindow::onOpenAction()
-{
+void MainWindow::onOpenAction() {
     this->filename = QFileDialog::getOpenFileName(
         this,
         "Open file",
@@ -72,10 +67,8 @@ void MainWindow::onOpenAction()
         "JSON files (*.json);;All files (*.*)"
     );
 
-    if (!this->filename.isEmpty())
-    {
-        if (QFile file(this->filename); file.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
+    if (!this->filename.isEmpty()) {
+        if (QFile file(this->filename); file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             const QByteArray content = file.readAll();
 
             ui->plainTextEdit->setPlainText(
@@ -90,12 +83,9 @@ void MainWindow::onOpenAction()
     this->setWindowTitle("DNPM-Validator");
 }
 
-void MainWindow::onSaveAction()
-{
-    if (!this->filename.isEmpty())
-    {
-        if (QFile file(this->filename); file.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
+void MainWindow::onSaveAction() {
+    if (!this->filename.isEmpty()) {
+        if (QFile file(this->filename); file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             this->onValidateAction();
             file.write(this->ui->plainTextEdit->toPlainText().toUtf8());
             file.close();
@@ -105,16 +95,14 @@ void MainWindow::onSaveAction()
     this->onSaveAsAction();
 }
 
-void MainWindow::onSaveAsAction()
-{
+void MainWindow::onSaveAsAction() {
     const auto selectedFilename = QFileDialog::getSaveFileName(
         this,
         "Save file",
         QDir::homePath(),
         "JSON files (*.json);;All files (*.*)"
     );
-    if (!selectedFilename.isEmpty())
-    {
+    if (!selectedFilename.isEmpty()) {
         this->filename = selectedFilename;
         this->onSaveAction();
         this->setWindowTitle(QString("DNPM-Validator :: %1").arg(QFileInfo(this->filename).fileName()));
@@ -123,12 +111,10 @@ void MainWindow::onSaveAsAction()
     this->setWindowTitle("DNPM-Validator");
 }
 
-void MainWindow::onValidateAction()
-{
+void MainWindow::onValidateAction() {
     const auto json = ui->plainTextEdit->toPlainText();
     auto validationType = dnpmvalidation::ValidationType::Mtb;
-    if (this->formatSelection->currentIndex() == 1)
-    {
+    if (this->formatSelection->currentIndex() == 1) {
         validationType = dnpmvalidation::ValidationType::Rd;
     } else if (this->formatSelection->currentIndex() == 2) {
         validationType = dnpmvalidation::ValidationType::Grz;
@@ -138,21 +124,16 @@ void MainWindow::onValidateAction()
     this->errorList.clear();
     this->ui->errorListWidget->clear();
 
-    if (errors.empty())
-    {
-        this->formatSelection->setStyleSheet("");
+    if (errors.empty()) {
         this->markErrors();
         return;
     }
 
-    for (auto error : errors)
-    {
+    for (auto error: errors) {
         this->errorList.push_back(error);
         ui->errorListWidget->addItem(
             QString("[%1:%2]   %3").arg(error.startLine, 4).arg(error.startColumn, 4).arg(error.message.c_str()));
     }
-
-    this->formatSelection->setStyleSheet("background-color: rgba(200,0,0,80)");
     this->markErrors();
 }
 
@@ -175,19 +156,37 @@ void MainWindow::onErrorSelected(const int index) const {
     cursor.setPosition(startTextBlock.position() + error.startColumn - 1, QTextCursor::MoveAnchor);
     ui->plainTextEdit->setTextCursor(cursor);
     ui->plainTextEdit->ensureCursorVisible();
+
+    ui->lineNumbers->verticalScrollBar()->setValue(ui->plainTextEdit->verticalScrollBar()->value());
 }
 
-void MainWindow::markErrors()
-{
+void MainWindow::onLineNumbersChanged(int lineCount) const {
+    QStringList lines;
+    for (int i = 1; i <= lineCount; i++) {
+        lines += QString::number(i).rightJustified(6, ' ');
+    }
+    this->ui->lineNumbers->setPlainText(lines.join('\n'));
+}
+
+void MainWindow::markErrors() {
     auto cursor = ui->plainTextEdit->textCursor();
 
-    QList<QTextEdit::ExtraSelection> extraSelections;
+    QList<QTextEdit::ExtraSelection> lineExtraSelections;
+    QList<QTextEdit::ExtraSelection> textExtraSelections;
 
-    for (const auto& error : this->errorList)
-    {
+    for (const auto &error: this->errorList) {
         if (error.startLine == 0 || error.startColumn == 0) {
             continue;
         }
+
+        QTextEdit::ExtraSelection lineSelection;
+        lineSelection.cursor = QTextCursor(ui->lineNumbers->document()->findBlockByLineNumber(error.startLine - 1));
+        QTextCharFormat lineFormat;
+        lineFormat.setForeground(Qt::red);
+        lineFormat.setFontWeight(QFont::Bold);
+        lineFormat.setProperty(QTextFormat::FullWidthSelection, true);
+        lineSelection.format = lineFormat;
+        lineExtraSelections.append(lineSelection);
 
         auto startTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.startLine - 1);
         cursor.setPosition(startTextBlock.position() + error.startColumn - 1, QTextCursor::MoveAnchor);
@@ -195,14 +194,15 @@ void MainWindow::markErrors()
         auto endTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.endLine - 1);
         cursor.setPosition(endTextBlock.position() + error.endColumn - 1, QTextCursor::KeepAnchor);
 
-        QTextEdit::ExtraSelection selection;
-        selection.cursor = cursor;
-        QTextCharFormat format;
-        format.setUnderlineStyle(QTextCharFormat::WaveUnderline);
-        format.setUnderlineColor(Qt::red);
-        selection.format = format;
-        extraSelections.append(selection);
+        QTextEdit::ExtraSelection textSelection;
+        textSelection.cursor = cursor;
+        QTextCharFormat textFormat;
+        textFormat.setUnderlineStyle(QTextCharFormat::WaveUnderline);
+        textFormat.setUnderlineColor(Qt::red);
+        textSelection.format = textFormat;
+        textExtraSelections.append(textSelection);
     }
 
-    ui->plainTextEdit->setExtraSelections(extraSelections);
+    ui->lineNumbers->setExtraSelections(lineExtraSelections);
+    ui->plainTextEdit->setExtraSelections(textExtraSelections);
 }
