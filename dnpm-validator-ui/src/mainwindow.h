@@ -41,7 +41,7 @@ private slots:
     void onSaveAction();
     void onSaveAsAction();
     void onValidateAction();
-    void onErrorSelected(int index);
+    void onErrorSelected(int index) const;
 };
 
 
