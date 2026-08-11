@@ -35,6 +35,7 @@ private:
     QList<dnpmvalidation::ValidationError> errorList;
     QString filename;
 
+    void highlightCurrentLine() const;
     void markErrors();
 
 private slots:
