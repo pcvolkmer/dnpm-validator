@@ -17,18 +17,28 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->ui->errorListWidget->setFont(monospaceFont);
 
     this->positionLabel = new QLabel("[1:1]", this);
+    this->ui->statusbar->addPermanentWidget(this->positionLabel);
+
     this->formatSelection = new QComboBox(this);
     this->formatSelection->addItem("DNPM Datenmodell 2.1");
     this->formatSelection->addItem("SE:dip Datenmodell");
     this->formatSelection->addItem("GRZ Metadata 1.3.1");
     this->ui->toolBar->addWidget(this->formatSelection);
-    this->ui->statusbar->addPermanentWidget(this->positionLabel);
+
+    this->severitySelection = new QComboBox(this);
+    this->severitySelection->addItem("Show errors only");
+    this->severitySelection->addItem("Show errors and warnings");
+    this->severitySelection->addItem("Show all notices");
+    this->ui->toolBar->addWidget(this->severitySelection);
 
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::onOpenAction);
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow::onSaveAction);
     connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::onSaveAsAction);
     connect(ui->actionValidate, &QAction::triggered, this, &MainWindow::onValidateAction);
     connect(this->formatSelection, &QComboBox::currentTextChanged, [this](const QString &) {
+        this->onValidateAction();
+    });
+    connect(this->severitySelection, &QComboBox::currentTextChanged, [this](const QString &) {
         this->onValidateAction();
     });
     connect(ui->actionAbout, &QAction::triggered, [this] {
@@ -129,7 +139,13 @@ void MainWindow::onValidateAction() {
     } else if (this->formatSelection->currentIndex() == 2) {
         validationType = dnpmvalidation::ValidationType::Grz;
     }
-    auto errors = dnpmvalidation::validate(rust::String(json.toStdString()), validationType);
+    auto reportSeverity = dnpmvalidation::Severity::Error;
+    if (this->severitySelection->currentIndex() == 1) {
+        reportSeverity = dnpmvalidation::Severity::Warning;
+    } else if (this->severitySelection->currentIndex() == 2) {
+        reportSeverity = dnpmvalidation::Severity::Information;
+    }
+    auto errors = dnpmvalidation::validate(rust::String(json.toStdString()), validationType, reportSeverity);
 
     this->errorList.clear();
     this->ui->errorListWidget->clear();
@@ -151,13 +167,19 @@ void MainWindow::onValidateAction() {
 
         QHBoxLayout layout(itemWidget);
 
-        auto *lineLabel = new QLabel(QString("%1:").arg(error.startLine, 6));
+        auto *lineLabel = new QLabel(QString("%1:").arg(error.start.line, 6));
         lineLabel->setFixedWidth(64);
         lineLabel->setFont(monospaceFont);
         layout.addWidget(lineLabel);
 
         auto *icon = new QLabel();
-        icon->setPixmap(QIcon(":/resources/emblem-error.png").pixmap(12, 12));
+        if (error.severity == dnpmvalidation::Severity::Error) {
+            icon->setPixmap(QIcon(":/resources/emblem-error.png").pixmap(12, 12));
+        } else if (error.severity == dnpmvalidation::Severity::Warning) {
+            icon->setPixmap(QIcon(":/resources/emblem-warning.png").pixmap(12, 12));
+        } else if (error.severity == dnpmvalidation::Severity::Information) {
+            icon->setPixmap(QIcon(":/resources/emblem-information.png").pixmap(12, 12));
+        }
 
         layout.addWidget(icon);
         layout.addWidget(new QLabel(error.message.c_str()));
@@ -183,7 +205,7 @@ void MainWindow::onErrorSelected(const int index) const {
     const auto error = this->errorList.at(index);
     auto cursor = ui->plainTextEdit->textCursor();
 
-    if (error.startLine == 0 || error.startColumn == 0) {
+    if (error.start.line == 0 || error.start.column == 0) {
         return;
     }
 
@@ -194,8 +216,8 @@ void MainWindow::onErrorSelected(const int index) const {
         QTextCursor::Start
     );
 
-    const auto startTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.startLine - 1);
-    cursor.setPosition(startTextBlock.position() + error.startColumn - 1, QTextCursor::MoveAnchor);
+    const auto startTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.start.line - 1);
+    cursor.setPosition(startTextBlock.position() + error.start.column - 1, QTextCursor::MoveAnchor);
     ui->plainTextEdit->setTextCursor(cursor);
     ui->plainTextEdit->ensureCursorVisible();
 
@@ -233,7 +255,8 @@ void MainWindow::highlightCurrentLine() const {
 
         extraSelections.append(textSelection);
         for (const auto &extra_selection: ui->lineNumbers->extraSelections()) {
-            if (extra_selection.format.foreground() == Qt::red) {
+            if (extra_selection.format.foreground() == Qt::red
+                || extra_selection.format.foreground() == Qt::darkYellow) {
                 extraSelections.append(extra_selection);
             }
         }
@@ -267,34 +290,48 @@ void MainWindow::markErrors() {
 
     QList<int> markedLines;
 
-    for (const auto &error: this->errorList) {
-        if (error.startLine == 0 || error.startColumn == 0) {
+    auto errors = std::list(this->errorList.begin(), this->errorList.end());
+    std::ranges::reverse(errors);
+
+    for (const auto &error: errors) {
+        if (error.start.line == 0 || error.start.column == 0 || error.severity ==
+            dnpmvalidation::Severity::Information) {
             continue;
         }
 
-        if (!markedLines.contains(error.startLine - 1)) {
+        if (!markedLines.contains(error.start.line - 1)) {
             QTextEdit::ExtraSelection lineSelection;
-            lineSelection.cursor = QTextCursor(ui->lineNumbers->document()->findBlockByLineNumber(error.startLine - 1));
+            lineSelection.cursor =
+                    QTextCursor(ui->lineNumbers->document()->findBlockByLineNumber(error.start.line - 1));
             QTextCharFormat lineFormat;
-            lineFormat.setForeground(Qt::red);
-            lineFormat.setBackground(QColor::fromRgba(qRgba(200, 0, 0, 24)));
+            if (error.severity == dnpmvalidation::Severity::Error) {
+                lineFormat.setForeground(Qt::red);
+                lineFormat.setBackground(QColor::fromRgba(qRgba(200, 0, 0, 24)));
+            } else if (error.severity == dnpmvalidation::Severity::Warning) {
+                lineFormat.setForeground(Qt::darkYellow);
+                lineFormat.setBackground(QColor::fromRgba(qRgba(200, 200, 0, 24)));
+            }
             lineFormat.setProperty(QTextFormat::FullWidthSelection, true);
             lineSelection.format = lineFormat;
             lineExtraSelections.append(lineSelection);
-            markedLines.append(error.startLine - 1);
+            markedLines.append(error.start.line - 1);
         }
 
-        auto startTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.startLine - 1);
-        cursor.setPosition(startTextBlock.position() + error.startColumn - 1, QTextCursor::MoveAnchor);
+        auto startTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.start.line - 1);
+        cursor.setPosition(startTextBlock.position() + error.start.column - 1, QTextCursor::MoveAnchor);
 
-        auto endTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.endLine - 1);
-        cursor.setPosition(endTextBlock.position() + error.endColumn - 1, QTextCursor::KeepAnchor);
+        auto endTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(error.end.line - 1);
+        cursor.setPosition(endTextBlock.position() + error.end.column - 1, QTextCursor::KeepAnchor);
 
         QTextEdit::ExtraSelection textSelection;
         textSelection.cursor = cursor;
         QTextCharFormat textFormat;
         textFormat.setUnderlineStyle(QTextCharFormat::WaveUnderline);
-        textFormat.setUnderlineColor(Qt::red);
+        if (error.severity == dnpmvalidation::Severity::Error) {
+            textFormat.setUnderlineColor(Qt::red);
+        } else if (error.severity == dnpmvalidation::Severity::Warning) {
+            textFormat.setUnderlineColor(Qt::darkYellow);
+        }
         textSelection.format = textFormat;
         textExtraSelections.append(textSelection);
     }

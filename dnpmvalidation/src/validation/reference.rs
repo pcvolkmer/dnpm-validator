@@ -1,4 +1,6 @@
-use crate::validation::{ValidationError, ValidationType, map_query_ref, map_to_validation_error};
+use crate::validation::{
+    Severity, ValidationError, ValidationType, map_query_ref, map_to_validation_error,
+};
 use jsonpath_rust::JsonPath;
 use serde_json::Value;
 use tree_sitter::Parser;
@@ -128,6 +130,7 @@ fn validate_refs(
                 ),
                 json,
                 &mut parser,
+                &Severity::Error,
             )
         })
         .collect::<Vec<_>>();

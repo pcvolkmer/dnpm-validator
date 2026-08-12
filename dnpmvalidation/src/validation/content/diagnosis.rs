@@ -1,5 +1,6 @@
-use crate::{ValidationError, ValidationType};
+use crate::validation::Severity;
 use crate::validation::content::{validate_contains_oneof, validate_contains_valueof};
+use crate::{ValidationError, ValidationType};
 
 pub fn validate(
     json: &str,
@@ -17,6 +18,7 @@ pub fn validate(
             "tumor staging classification",
             &["tnmClassification", "otherClassifications"],
             "$.diagnoses[*].staging.history[*]",
+            &Severity::Error,
         )?);
 
         errors.append(&mut validate_contains_valueof(
@@ -24,6 +26,7 @@ pub fn validate(
             "tumor staging classification value",
             &["tumor-free", "local", "metastasized"],
             "$.diagnoses[*].staging.history[*].otherClassifications[*].code",
+            &Severity::Error,
         )?);
     }
 
@@ -123,9 +126,9 @@ mod tests {
                   }
             }]
         })
-            .to_string();
+        .to_string();
 
-        let actual = crate::validation::content::validate(&json, ValidationType::Mtb);
+        let actual = validate(&json, ValidationType::Mtb);
 
         assert!(actual.is_ok());
 
@@ -133,7 +136,7 @@ mod tests {
         assert_eq!(actual.len(), 1);
         assert_eq!(
             actual[0].message,
-            "Missing tumor staging classification: should contain one of tnmClassification, otherClassifications"
+            "Missing tumor staging classification: must contain one of tnmClassification, otherClassifications"
         );
     }
 
@@ -204,9 +207,9 @@ mod tests {
                   }
             }]
         })
-            .to_string();
+        .to_string();
 
-        let actual = crate::validation::content::validate(&json, ValidationType::Mtb);
+        let actual = validate(&json, ValidationType::Mtb);
 
         assert!(actual.is_ok());
 
@@ -214,7 +217,7 @@ mod tests {
         assert_eq!(actual.len(), 1);
         assert_eq!(
             actual[0].message,
-            "Invalid tumor staging classification value 'wrong!': should be one of tumor-free, local, metastasized"
+            "Invalid tumor staging classification value 'wrong!': must be one of tumor-free, local, metastasized"
         );
     }
 }

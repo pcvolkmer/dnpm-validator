@@ -31,6 +31,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QComboBox *formatSelection;
+    QComboBox *severitySelection;
     QLabel *positionLabel;
     QList<dnpmvalidation::ValidationError> errorList;
     QString filename;
