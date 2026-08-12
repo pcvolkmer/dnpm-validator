@@ -1,4 +1,4 @@
-use crate::validation::{ValidationError, ValidationType, map_to_validation_error};
+use crate::validation::{ValidationError, ValidationType, map_query_ref, map_to_validation_error};
 use jsonpath_rust::JsonPath;
 use serde_json::Value;
 use tree_sitter::Parser;
@@ -106,7 +106,7 @@ fn validate_refs(
 ) -> Result<Vec<ValidationError>, Box<dyn std::error::Error>> {
     let value = serde_json::from_str::<Value>(json)?;
 
-    let patient = value.query_with_path(item_path)?;
+    let item = value.query_with_path(item_path)?;
     let references = value.query_with_path(ref_path)?;
 
     let mut parser = Parser::new();
@@ -115,30 +115,16 @@ fn validate_refs(
     let errors = references
         .iter()
         .filter(|query_ref| {
-            patient
-                .iter()
+            item.iter()
                 .find(|ref_id| ref_id.val.eq(query_ref.val))
                 .is_none()
         })
-        .map(|id| {
-            let path = id
-                .path
-                .replace("$", "")
-                .replace("'", "")
-                .replace("]", "")
-                .replace("[", "/");
-            let value = id.val.to_string();
-            (path, value)
-        })
+        .map(map_query_ref)
         .map(|(err_path, value)| {
             map_to_validation_error(
                 (
                     err_path,
-                    format!(
-                        "Invalid reference to {} {}",
-                        item_type,
-                        value.replace("\"", "'")
-                    ),
+                    format!("Invalid reference to {} {}", item_type, value),
                 ),
                 json,
                 &mut parser,
