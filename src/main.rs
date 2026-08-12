@@ -13,7 +13,11 @@ pub struct Cli {
     #[arg(help = "The file to be validated")]
     pub file: PathBuf,
 
-    #[arg(long = "type", default_value = "mtb", help = "The schema to be used for validation")]
+    #[arg(
+        long = "type",
+        default_value = "mtb",
+        help = "The schema to be used for validation"
+    )]
     pub schema: SchemaType,
 }
 

@@ -1,5 +1,5 @@
-use ffi::ValidationType as FfiValidationType;
 pub use crate::validation::{ValidationError, ValidationType, validate};
+use ffi::ValidationType as FfiValidationType;
 
 mod validation;
 
@@ -9,7 +9,7 @@ mod ffi {
     pub enum ValidationType {
         Mtb,
         Rd,
-        Grz
+        Grz,
     }
 
     struct ValidationError {
@@ -27,12 +27,15 @@ mod ffi {
 }
 
 pub fn validate_cxx(json: String, validation_type: FfiValidationType) -> Vec<ffi::ValidationError> {
-    match validate(json.as_str(), match validation_type {
-        FfiValidationType::Mtb => ValidationType::Mtb,
-        FfiValidationType::Rd => ValidationType::Rd,
-        FfiValidationType::Grz => ValidationType::Grz,
-        _ => ValidationType::Mtb,
-    }) {
+    match validate(
+        json.as_str(),
+        match validation_type {
+            FfiValidationType::Mtb => ValidationType::Mtb,
+            FfiValidationType::Rd => ValidationType::Rd,
+            FfiValidationType::Grz => ValidationType::Grz,
+            _ => ValidationType::Mtb,
+        },
+    ) {
         Ok(validations) => validations
             .into_iter()
             .map(|validation| ffi::ValidationError {
@@ -40,7 +43,7 @@ pub fn validate_cxx(json: String, validation_type: FfiValidationType) -> Vec<ffi
                 startLine: validation.start.line,
                 startColumn: validation.start.column,
                 endLine: validation.end.line,
-                endColumn: validation.end.column
+                endColumn: validation.end.column,
             })
             .collect(),
         Err(err) => vec![ffi::ValidationError {
@@ -48,7 +51,7 @@ pub fn validate_cxx(json: String, validation_type: FfiValidationType) -> Vec<ffi
             startLine: 0,
             startColumn: 0,
             endLine: 0,
-            endColumn: 0
+            endColumn: 0,
         }],
     }
 }

@@ -1,6 +1,9 @@
+mod content;
 mod reference;
 pub mod schema;
 
+use jsonpath_rust::query::QueryRef;
+use serde_json::Value;
 use tree_sitter::{Node, Parser};
 
 #[allow(unused)]
@@ -30,7 +33,7 @@ impl Position {
 pub enum ValidationType {
     Mtb,
     Rd,
-    Grz
+    Grz,
 }
 
 pub fn validate(
@@ -48,6 +51,7 @@ pub fn validate(
 
     let mut errors = schema::validate(json, schema)?;
     errors.append(&mut reference::validate(json, schema)?);
+    errors.append(&mut content::validate(json, schema)?);
 
     errors.sort_by_key(|ve| ve.start.column);
     errors.sort_by_key(|ve| ve.start.line);
@@ -149,6 +153,17 @@ fn map_to_validation_error(
             path: err_path,
         }
     }
+}
+
+fn map_query_ref(query_ref: &QueryRef<Value>) -> (String, String) {
+    let path = query_ref
+        .path
+        .replace("$", "")
+        .replace("'", "")
+        .replace("]", "")
+        .replace("[", "/");
+    let value = query_ref.val.as_str().unwrap_or_default().to_string();
+    (path, value)
 }
 
 #[cfg(test)]

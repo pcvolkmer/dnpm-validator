@@ -16,6 +16,7 @@ jsonpath-rust = { workspace = true }
 tree-sitter = { workspace = true }
 tree-sitter-json = { workspace = true }
 cxx = "1.0"
+regex = "1.13"
 
 [build-dependencies]
 cxx-build = "1.0"

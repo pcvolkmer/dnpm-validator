@@ -307,6 +307,7 @@ dependencies = [
  "cxx-build",
  "jsonpath-rust",
  "jsonschema",
+ "regex",
  "serde_json",
  "tree-sitter",
  "tree-sitter-json",
