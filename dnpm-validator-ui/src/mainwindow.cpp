@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     QFont monospaceFont("monospace");
     monospaceFont.setStyleHint(QFont::TypeWriter);
+    monospaceFont.setPointSize(10);
 
     this->ui->lineNumbers->setFont(monospaceFont);
     this->ui->plainTextEdit->setFont(monospaceFont);
@@ -138,11 +139,43 @@ void MainWindow::onValidateAction() {
         return;
     }
 
+    QFont monospaceFont("monospace");
+    monospaceFont.setStyleHint(QFont::TypeWriter);
+    monospaceFont.setPointSize(10);
+
     for (auto error: errors) {
         this->errorList.push_back(error);
-        ui->errorListWidget->addItem(
-            QString("[%1:%2]   %3").arg(error.startLine, 4).arg(error.startColumn, 4).arg(error.message.c_str()));
+
+        auto *itemWidget = new QWidget();
+        itemWidget->setFont(monospaceFont);
+
+        QHBoxLayout layout(itemWidget);
+
+        auto *lineLabel = new QLabel(QString("%1:").arg(error.startLine, 6));
+        lineLabel->setFixedWidth(64);
+        lineLabel->setFont(monospaceFont);
+        layout.addWidget(lineLabel);
+
+        auto *icon = new QLabel();
+        icon->setPixmap(QIcon(":/resources/emblem-error.png").pixmap(12, 12));
+
+        layout.addWidget(icon);
+        layout.addWidget(new QLabel(error.message.c_str()));
+
+        if (!error.path.empty()) {
+            auto *pathLabel = new QLabel(QString(" - %1").arg(error.path.c_str()));
+            pathLabel->setStyleSheet("color: gray");
+            pathLabel->setFont(monospaceFont);
+            layout.addWidget(pathLabel);
+        }
+        layout.setContentsMargins(0, 2, 0, 2);
+
+        auto *item = new QListWidgetItem();
+        ui->errorListWidget->addItem(item);
+        ui->errorListWidget->setItemWidget(item, itemWidget);
+        item->setSizeHint(itemWidget->sizeHint());
     }
+    ui->errorListWidget->updateGeometry();
     this->markErrors();
 }
 
@@ -169,7 +202,7 @@ void MainWindow::onErrorSelected(const int index) const {
     this->highlightCurrentLine();
 }
 
-void MainWindow::onLineNumbersChanged(int lineCount) const {
+void MainWindow::onLineNumbersChanged(const int lineCount) const {
     QStringList lines;
     for (int i = 1; i <= lineCount; i++) {
         lines += QString::number(i).rightJustified(6, ' ');

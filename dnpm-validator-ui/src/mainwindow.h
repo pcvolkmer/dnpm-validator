@@ -49,7 +49,7 @@ private slots:
 
     void onErrorSelected(int index) const;
 
-    void onLineNumbersChanged(int newLineCount) const;
+    void onLineNumbersChanged(int lineCount) const;
 };
 
 

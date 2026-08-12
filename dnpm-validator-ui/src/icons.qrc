@@ -4,5 +4,8 @@
     <file>resources/document-save-as.png</file>
     <file>resources/document-save.png</file>
     <file>resources/applications-science.png</file>
+    <file>resources/emblem-error.png</file>
+    <file>resources/emblem-warning.png</file>
+    <file>resources/emblem-information.png</file>
   </qresource>
 </RCC>

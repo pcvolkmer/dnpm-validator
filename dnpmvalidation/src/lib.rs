@@ -18,6 +18,7 @@ mod ffi {
         pub endLine: usize,
         pub endColumn: usize,
         pub message: String,
+        pub path: String,
     }
 
     extern "Rust" {
@@ -40,6 +41,7 @@ pub fn validate_cxx(json: String, validation_type: FfiValidationType) -> Vec<ffi
             .into_iter()
             .map(|validation| ffi::ValidationError {
                 message: validation.message,
+                path: validation.path,
                 startLine: validation.start.line,
                 startColumn: validation.start.column,
                 endLine: validation.end.line,
@@ -48,6 +50,7 @@ pub fn validate_cxx(json: String, validation_type: FfiValidationType) -> Vec<ffi
             .collect(),
         Err(err) => vec![ffi::ValidationError {
             message: err.to_string(),
+            path: "".to_string(),
             startLine: 0,
             startColumn: 0,
             endLine: 0,
