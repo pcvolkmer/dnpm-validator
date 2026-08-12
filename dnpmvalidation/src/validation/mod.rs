@@ -7,6 +7,7 @@ use serde_json::Value;
 use tree_sitter::{Node, Parser};
 
 #[allow(unused)]
+#[derive(Debug)]
 pub struct ValidationError {
     pub start: Position,
     pub end: Position,
@@ -14,6 +15,7 @@ pub struct ValidationError {
     pub path: String,
 }
 
+#[derive(Debug)]
 pub struct Position {
     pub line: usize,
     pub column: usize,

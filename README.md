@@ -40,8 +40,9 @@ This project also provides a desktop UI frontend to validate and edit DNPM/SE:di
 | Therapy references                   | ☑  | ☑ | -   |
 | Medication recommendation references | ☑  | -  | -   |
 | Therapy recommendation references    | -   | ☑ | -   |
+| Required tumor staging category      | ☑  | -  | -   |
 
 JSON-Schema validation for *MTB* and *RD* is based on a more common JSON-Schema format than the one provided by DNPM:
 DIP. Any occurrences of type references like `#Reference` have been replaced with e.g. `#/$defs/Reference` to make the
-validation work.
-JSON-Schema validation for *GRZ* uses [GRZ JSON-Schema 1.3.1 available on GitHub](https://github.com/BfArM-MVH/MVGenomseq_GRZ/blob/v1.3.1/GRZ/grz-schema.json).
+validation work. JSON-Schema validation for *GRZ*
+uses [GRZ JSON-Schema 1.3.1 available on GitHub](https://github.com/BfArM-MVH/MVGenomseq_GRZ/blob/v1.3.1/GRZ/grz-schema.json).
