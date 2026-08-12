@@ -1,4 +1,4 @@
-use crate::validation::{ValidationError, ValidationType, map_to_validation_error};
+use crate::validation::{Severity, ValidationError, ValidationType, map_to_validation_error};
 use tree_sitter::Parser;
 
 pub fn validate(
@@ -24,7 +24,7 @@ pub fn validate(
         .map(|error| {
             let err = error.to_string();
             let err_path = error.instance_path().to_string();
-            map_to_validation_error((err_path, err), json, &mut parser)
+            map_to_validation_error((err_path, err), json, &mut parser, &Severity::default())
         })
         .collect::<Vec<_>>();
 

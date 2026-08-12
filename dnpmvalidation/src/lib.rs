@@ -1,5 +1,4 @@
-pub use crate::validation::{ValidationError, ValidationType, validate};
-use ffi::ValidationType as FfiValidationType;
+pub use crate::validation::{Severity, ValidationError, ValidationType, validate};
 
 mod validation;
 
@@ -13,28 +12,57 @@ mod ffi {
     }
 
     struct ValidationError {
-        pub startLine: usize,
-        pub startColumn: usize,
-        pub endLine: usize,
-        pub endColumn: usize,
+        pub start: Position,
+        pub end: Position,
         pub message: String,
         pub path: String,
+        pub severity: Severity,
+    }
+
+    struct Position {
+        pub line: usize,
+        pub column: usize,
+    }
+
+    enum Severity {
+        Error,
+        Warning,
+        Information,
     }
 
     extern "Rust" {
         #[cxx_name = "validate"]
-        fn validate_cxx(json: String, validation_type: ValidationType) -> Vec<ValidationError>;
+        fn validate_cxx(
+            json: String,
+            validation_type: ValidationType,
+            report_severity: Severity,
+        ) -> Vec<ValidationError>;
     }
 }
 
-pub fn validate_cxx(json: String, validation_type: FfiValidationType) -> Vec<ffi::ValidationError> {
+impl Default for ffi::Position {
+    fn default() -> Self {
+        Self { line: 0, column: 0 }
+    }
+}
+
+pub fn validate_cxx(
+    json: String,
+    validation_type: ffi::ValidationType,
+    report_severity: ffi::Severity,
+) -> Vec<ffi::ValidationError> {
     match validate(
         json.as_str(),
         match validation_type {
-            FfiValidationType::Mtb => ValidationType::Mtb,
-            FfiValidationType::Rd => ValidationType::Rd,
-            FfiValidationType::Grz => ValidationType::Grz,
+            ffi::ValidationType::Mtb => ValidationType::Mtb,
+            ffi::ValidationType::Rd => ValidationType::Rd,
+            ffi::ValidationType::Grz => ValidationType::Grz,
             _ => ValidationType::Mtb,
+        },
+        match report_severity {
+            ffi::Severity::Error => &Severity::Error,
+            ffi::Severity::Warning => &Severity::Warning,
+            _ => &Severity::Information,
         },
     ) {
         Ok(validations) => validations
@@ -42,19 +70,27 @@ pub fn validate_cxx(json: String, validation_type: FfiValidationType) -> Vec<ffi
             .map(|validation| ffi::ValidationError {
                 message: validation.message,
                 path: validation.path,
-                startLine: validation.start.line,
-                startColumn: validation.start.column,
-                endLine: validation.end.line,
-                endColumn: validation.end.column,
+                start: ffi::Position {
+                    line: validation.start.line,
+                    column: validation.start.column,
+                },
+                end: ffi::Position {
+                    line: validation.end.line,
+                    column: validation.end.column,
+                },
+                severity: match validation.severity {
+                    Severity::Error => ffi::Severity::Error,
+                    Severity::Warning => ffi::Severity::Warning,
+                    Severity::Information => ffi::Severity::Information,
+                },
             })
             .collect(),
         Err(err) => vec![ffi::ValidationError {
             message: err.to_string(),
             path: "".to_string(),
-            startLine: 0,
-            startColumn: 0,
-            endLine: 0,
-            endColumn: 0,
+            start: ffi::Position::default(),
+            end: ffi::Position::default(),
+            severity: ffi::Severity::Error,
         }],
     }
 }

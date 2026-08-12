@@ -1,6 +1,6 @@
 mod diagnosis;
 
-use crate::validation::{map_query_ref, map_to_validation_error};
+use crate::validation::{Severity, map_query_ref, map_to_validation_error};
 use crate::{ValidationError, ValidationType};
 use jsonpath_rust::JsonPath;
 use regex::Regex;
@@ -17,12 +17,21 @@ pub fn validate(
         return Ok(vec![]);
     }
 
+    errors.append(&mut validate_contains_oneof(
+        json,
+        "MV-Metadata",
+        &["metadata"],
+        "$",
+        &Severity::Warning,
+    )?);
+
     errors.append(&mut validate_regex(
         json,
         "ATC code",
         &Regex::new("^[ABCDGHJLMNPRSV][0-2][0-9]([A-Z]([A-Z](\\d{2})?)?)?$")
             .expect("Valid regex expected"),
         "$..medication[?(@.system == 'http://fhir.de/CodeSystem/bfarm/atc')].code",
+        &Severity::Error,
     )?);
 
     if validation_type == ValidationType::Mtb {
@@ -37,6 +46,7 @@ fn validate_regex(
     name: &str,
     regex: &Regex,
     path: &str,
+    severity: &Severity,
 ) -> Result<Vec<ValidationError>, Box<dyn std::error::Error>> {
     let value = serde_json::from_str::<Value>(json)?;
 
@@ -55,6 +65,7 @@ fn validate_regex(
                 (err_path, format!("Invalid {name} '{value}'")),
                 json,
                 &mut parser,
+                severity,
             )
         })
         .collect::<Vec<_>>();
@@ -69,6 +80,7 @@ fn validate_contains_oneof(
     name: &str,
     keys: &[&str],
     path: &str,
+    severity: &Severity,
 ) -> Result<Vec<ValidationError>, Box<dyn std::error::Error>> {
     let value = serde_json::from_str::<Value>(json)?;
 
@@ -91,10 +103,29 @@ fn validate_contains_oneof(
             map_to_validation_error(
                 (
                     err_path,
-                    format!("Missing {name}: should contain one of {}", keys.join(", ")),
+                    if keys.len() > 1 {
+                        format!(
+                            "Missing {name}: {} contain one of {}",
+                            match severity {
+                                Severity::Error => "must",
+                                Severity::Warning | Severity::Information => "should",
+                            },
+                            keys.join(", ")
+                        )
+                    } else {
+                        format!(
+                            "Missing {name}: {} contain '{}'",
+                            match severity {
+                                Severity::Error => "must",
+                                Severity::Warning | Severity::Information => "should",
+                            },
+                            keys.first().unwrap_or(&"")
+                        )
+                    },
                 ),
                 json,
                 &mut parser,
+                severity,
             )
         })
         .collect::<Vec<_>>();
@@ -109,6 +140,7 @@ fn validate_contains_valueof(
     name: &str,
     values: &[&str],
     path: &str,
+    severity: &Severity,
 ) -> Result<Vec<ValidationError>, Box<dyn std::error::Error>> {
     let value = serde_json::from_str::<Value>(json)?;
 
@@ -132,12 +164,17 @@ fn validate_contains_valueof(
                 (
                     err_path,
                     format!(
-                        "Invalid {name} '{value}': should be one of {}",
+                        "Invalid {name} '{value}': {} be one of {}",
+                        match severity {
+                            Severity::Error => "must",
+                            Severity::Warning | Severity::Information => "should",
+                        },
                         values.join(", ")
                     ),
                 ),
                 json,
                 &mut parser,
+                severity,
             )
         })
         .collect::<Vec<_>>();
@@ -249,9 +286,13 @@ mod tests {
         assert!(actual.is_ok());
 
         let actual = actual.expect("available validation results");
-        assert_eq!(actual.len(), 3);
-        assert_eq!(actual[0].message, "Invalid ATC code 'Testonimib A'");
-        assert_eq!(actual[1].message, "Invalid ATC code 'Testonimib B'");
-        assert_eq!(actual[2].message, "Invalid ATC code 'Testonimib C'");
+        assert_eq!(actual.len(), 4);
+        assert_eq!(
+            actual[0].message,
+            "Missing MV-Metadata: should contain 'metadata'"
+        );
+        assert_eq!(actual[1].message, "Invalid ATC code 'Testonimib A'");
+        assert_eq!(actual[2].message, "Invalid ATC code 'Testonimib B'");
+        assert_eq!(actual[3].message, "Invalid ATC code 'Testonimib C'");
     }
 }

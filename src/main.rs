@@ -1,6 +1,6 @@
 use clap::{Parser as ClapParser, ValueEnum};
 use console::style;
-use dnpmvalidation::{ValidationType, validate};
+use dnpmvalidation::{Severity, ValidationType, validate};
 use std::fs;
 use std::path::PathBuf;
 use std::process::exit;
@@ -47,6 +47,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             SchemaType::Mtb => ValidationType::Mtb,
             SchemaType::Rd => ValidationType::Rd,
         },
+        &Severity::Information,
     )
     .unwrap_or_default();
 
@@ -67,11 +68,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     errors.iter().for_each(|err| {
         println!(
             "{} {} {}",
-            style(format!(
-                "🔥 Validation error {:<11}",
-                format!("[{}:{}]", err.start.line, err.start.column)
-            ))
-            .red(),
+            match err.severity {
+                Severity::Error => style(format!(
+                    "🔥 Error {:<11}",
+                    format!("[{}:{}]", err.start.line, err.start.column)
+                ))
+                .red(),
+                Severity::Warning => style(format!(
+                    "📢 Warn   {:<11}",
+                    format!("[{}:{}]", err.start.line, err.start.column)
+                ))
+                .yellow(),
+                Severity::Information => style(format!(
+                    "📢 Info   {:<11}",
+                    format!("[{}:{}]", err.start.line, err.start.column)
+                ))
+                .blue(),
+            },
             err.message,
             if err.path.is_empty() {
                 String::new()
