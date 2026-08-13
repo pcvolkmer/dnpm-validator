@@ -41,7 +41,8 @@ This project also provides a desktop UI frontend to validate and edit DNPM/SE:di
 | Medication recommendation references | ☑  | -  | -   |
 | Therapy recommendation references    | -   | ☑ | -   |
 | ATC codes                            | ☑  | ☑ | -   |
-| Required tumor staging category      | ☑  | -  | -   |
+| Tumor grading                        | ☑  | -  | -   |
+| Tumor staging                        | ☑  | -  | -   |
 | MV metadata (warning if missing)     | ☑  | ☑ | -   |
 
 JSON-Schema validation for *MTB* and *RD* is based on a more common JSON-Schema format than the one provided by DNPM:
