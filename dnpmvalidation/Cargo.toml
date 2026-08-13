@@ -17,6 +17,7 @@ tree-sitter = { workspace = true }
 tree-sitter-json = { workspace = true }
 cxx = "1.0"
 regex = "1.13"
+fancy-regex = "0.19"
 
 [build-dependencies]
 cxx-build = "1.0"
