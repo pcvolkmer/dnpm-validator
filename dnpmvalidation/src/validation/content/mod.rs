@@ -75,6 +75,40 @@ fn validate_regex(
     Ok(errors)
 }
 
+fn validate_fancy_regex(
+    json: &str,
+    name: &str,
+    regex: &fancy_regex::Regex,
+    path: &str,
+    severity: &Severity,
+) -> Result<Vec<ValidationError>, Box<dyn std::error::Error>> {
+    let value = serde_json::from_str::<Value>(json)?;
+
+    let mut errors = Vec::new();
+
+    let mut parser = Parser::new();
+    parser.set_language(&tree_sitter_json::LANGUAGE.into())?;
+
+    let mut value = value
+        .query_with_path(path)?
+        .iter()
+        .filter(|item| !regex.is_match(&item.val.as_str().unwrap_or_default()).unwrap_or_default())
+        .map(map_query_ref)
+        .map(|(err_path, value)| {
+            map_to_validation_error(
+                (err_path, format!("Invalid {name} '{value}'")),
+                json,
+                &mut parser,
+                severity,
+            )
+        })
+        .collect::<Vec<_>>();
+
+    errors.append(&mut value);
+
+    Ok(errors)
+}
+
 fn validate_contains_oneof(
     json: &str,
     name: &str,

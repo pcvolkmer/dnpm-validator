@@ -1,6 +1,9 @@
 use crate::validation::Severity;
-use crate::validation::content::{validate_contains_oneof, validate_contains_valueof};
+use crate::validation::content::{
+    validate_contains_oneof, validate_contains_valueof, validate_fancy_regex,
+};
 use crate::{ValidationError, ValidationType};
+use fancy_regex::Regex;
 
 pub fn validate(
     json: &str,
@@ -50,6 +53,33 @@ pub fn validate(
             "tumor staging classification",
             &["tnmClassification", "otherClassifications"],
             "$.diagnoses[*].staging.history[*]",
+            &Severity::Error,
+        )?);
+
+        errors.append(&mut validate_fancy_regex(
+            json,
+            "TNM-T value",
+            // see DNPM:DIP implementation: https://github.com/dnpm-dip/mtb-validation-service/blob/main/impl/src/main/scala/de/dnpm/dip/mtb/validation/impl/TNM.scala
+            &Regex::new(r"^((c|p|yc|yp|r|rp|rc|a))?(T[0-4X]|Ta|Tis)((?<!Ta)[a-d]|(?<=T[34])e|\(?mi\)?)?(\(?(\d|m)\)?)?(\+)?((?<=Tis)\((LAMN|DCIS|LCIS|Paget)\))?$").expect("Valid regex expected"),
+            "$.diagnoses[*].staging.history[*].tnmClassification.tumor.code",
+            &Severity::Error,
+        )?);
+
+        errors.append(&mut validate_fancy_regex(
+            json,
+            "TNM-N value",
+            // see DNPM:DIP implementation: https://github.com/dnpm-dip/mtb-validation-service/blob/main/impl/src/main/scala/de/dnpm/dip/mtb/validation/impl/TNM.scala
+            &Regex::new(r"^((c|p|yc|yp|r|rp|rc|a))?(N[0-3X])([a-d]|\(?mi\)?)?(\(\d/\d\))?(\((i|mol)[\+-]\))?(\(sn\))?$").expect("Valid regex expected"),
+            "$.diagnoses[*].staging.history[*].tnmClassification.nodes.code",
+            &Severity::Error,
+        )?);
+
+        errors.append(&mut validate_fancy_regex(
+            json,
+            "TNM-M value",
+            // see DNPM:DIP implementation: https://github.com/dnpm-dip/mtb-validation-service/blob/main/impl/src/main/scala/de/dnpm/dip/mtb/validation/impl/TNM.scala
+            &Regex::new(r"^((c|p|yc|yp|r|rp|rc|a))?(M[01X])([a-d](\((\d|m)\))?)?(\(cy\+\))?(\((i|mol)\+\))?$").expect("Valid regex expected"),
+            "$.diagnoses[*].staging.history[*].tnmClassification.metastasis.code",
             &Severity::Error,
         )?);
 
