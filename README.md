@@ -33,6 +33,7 @@ This project also provides a desktop UI frontend to validate and edit DNPM/SE:di
 | Validation                           | MTB | RD | GRZ |
 |--------------------------------------|-----|----|-----|
 | JSON-Schema                          | ☑  | ☑ | ☑  |
+| MV metadata (warning if missing)     | ☑  | ☑ | -   |
 | Diagnosis references                 | ☑  | ☑ | -   |
 | Patient references                   | ☑  | ☑ | -   |
 | Recommendation references            | ☑  | ☑ | -   |
@@ -43,7 +44,7 @@ This project also provides a desktop UI frontend to validate and edit DNPM/SE:di
 | ATC codes                            | ☑  | ☑ | -   |
 | Tumor grading                        | ☑  | -  | -   |
 | Tumor staging                        | ☑  | -  | -   |
-| MV metadata (warning if missing)     | ☑  | ☑ | -   |
+| FollowUps                            | ☑  | -  | -   |
 
 JSON-Schema validation for *MTB* and *RD* is based on a more common JSON-Schema format than the one provided by DNPM:
 DIP. Any occurrences of type references like `#Reference` have been replaced with e.g. `#/$defs/Reference` to make the

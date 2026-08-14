@@ -1,4 +1,5 @@
 mod diagnosis;
+mod followup;
 
 use crate::validation::{Severity, map_query_ref, map_to_validation_error};
 use crate::{ValidationError, ValidationType};
@@ -36,6 +37,7 @@ pub fn validate(
 
     if validation_type == ValidationType::Mtb {
         errors.append(&mut diagnosis::validate(json, validation_type)?);
+        errors.append(&mut followup::validate(json, validation_type)?);
     }
 
     Ok(errors)
@@ -92,11 +94,66 @@ fn validate_fancy_regex(
     let mut value = value
         .query_with_path(path)?
         .iter()
-        .filter(|item| !regex.is_match(&item.val.as_str().unwrap_or_default()).unwrap_or_default())
+        .filter(|item| {
+            !regex
+                .is_match(&item.val.as_str().unwrap_or_default())
+                .unwrap_or_default()
+        })
         .map(map_query_ref)
         .map(|(err_path, value)| {
             map_to_validation_error(
                 (err_path, format!("Invalid {name} '{value}'")),
+                json,
+                &mut parser,
+                severity,
+            )
+        })
+        .collect::<Vec<_>>();
+
+    errors.append(&mut value);
+
+    Ok(errors)
+}
+
+fn validate_min_items(
+    json: &str,
+    name: &str,
+    min_items: usize,
+    path: &str,
+    severity: &Severity,
+) -> Result<Vec<ValidationError>, Box<dyn std::error::Error>> {
+    let value = serde_json::from_str::<Value>(json)?;
+
+    let mut errors = Vec::new();
+
+    let mut parser = Parser::new();
+    parser.set_language(&tree_sitter_json::LANGUAGE.into())?;
+
+    let mut value = value
+        .query_with_path(path)?
+        .iter()
+        .filter(|item| {
+            let array = item.val.as_array();
+            array.is_some() && array.expect("Valid array").iter().count() < min_items
+        })
+        .map(map_query_ref)
+        .map(|(err_path, _)| {
+            map_to_validation_error(
+                (
+                    err_path,
+                    format!(
+                        "Invalid {name}: {} contain {}",
+                        match severity {
+                            Severity::Error => "must",
+                            Severity::Warning | Severity::Information => "should",
+                        },
+                        if min_items == 1 {
+                            "some items".into()
+                        } else {
+                            format!("at least {min_items} items")
+                        }
+                    ),
+                ),
                 json,
                 &mut parser,
                 severity,
