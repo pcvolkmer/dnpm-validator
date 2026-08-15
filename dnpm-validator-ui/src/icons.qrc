@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>resources/find.png</file>
     <file>resources/document-open.png</file>
     <file>resources/document-save-as.png</file>
     <file>resources/document-save.png</file>
@@ -7,5 +8,8 @@
     <file>resources/emblem-error.png</file>
     <file>resources/emblem-warning.png</file>
     <file>resources/emblem-information.png</file>
+    <file>resources/go-down.png</file>
+    <file>resources/go-up.png</file>
+    <file>resources/close.png</file>
   </qresource>
 </RCC>

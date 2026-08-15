@@ -9,6 +9,7 @@
 #include <QTextBlock>
 #include <QMessageBox>
 #include <QScrollBar>
+#include <QShortcut>
 
 #include <lib.rs.h>
 

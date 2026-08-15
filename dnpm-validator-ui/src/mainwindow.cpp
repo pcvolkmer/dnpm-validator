@@ -1,4 +1,7 @@
 #include "mainwindow.h"
+
+#include <QAction>
+
 #include "ui_mainwindow.h"
 
 #include <QDebug>
@@ -30,6 +33,45 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->severitySelection->addItem("Show errors and warnings");
     this->severitySelection->addItem("Show all notices");
     this->ui->toolBar->addWidget(this->severitySelection);
+
+    this->ui->findWidget->hide();
+    connect(this->ui->actionFind, &QAction::triggered, this, [this] {
+        if (this->ui->findWidget->isVisible()) {
+            this->ui->findWidget->hide();
+            this->ui->actionFindNext->setDisabled(true);
+            this->ui->actionFindPrevious->setDisabled(true);
+            this->ui->plainTextEdit->setFocus();
+            return;
+        }
+        this->ui->findWidget->show();
+        this->ui->findLineEdit->setFocus();
+        if (!this->ui->findLineEdit->text().isEmpty()) {
+            this->ui->actionFindNext->setEnabled(true);
+            this->ui->actionFindPrevious->setEnabled(true);
+        }
+    });
+    connect(this->ui->actionFindNext, &QAction::triggered, [this]{
+        if (const auto s = this->ui->findLineEdit->text(); this->ui->plainTextEdit->find(s)) {
+            ui->plainTextEdit->setFocus();
+        }
+    });
+    connect(this->ui->actionFindPrevious, &QAction::triggered, [this]{
+        if (const auto s = this->ui->findLineEdit->text(); this->ui->plainTextEdit->find(s, QTextDocument::FindBackward)) {
+            ui->plainTextEdit->setFocus();
+        }
+    });
+    connect(ui->findLineEdit, &QLineEdit::returnPressed, [this]{
+        if (const auto s = this->ui->findLineEdit->text(); this->ui->plainTextEdit->find(s))
+        {
+            if (!this->ui->findLineEdit->text().isEmpty()) {
+                this->ui->actionFindNext->setEnabled(true);
+                this->ui->actionFindPrevious->setEnabled(true);
+            }
+            ui->plainTextEdit->setFocus();
+        }
+    });
+    this->ui->findDownButton->setDefaultAction(this->ui->actionFindNext);
+    this->ui->findUpButton->setDefaultAction(this->ui->actionFindPrevious);
 
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::onOpenAction);
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow::onSaveAction);
@@ -64,6 +106,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
             .arg(ui->plainTextEdit->textCursor().blockNumber() + 1)
             .arg(ui->plainTextEdit->textCursor().columnNumber() + 1)
         );
+    });
+
+    connect(ui->findCloseButton, &QToolButton::clicked, [this]{
+        this->ui->findWidget->hide();
+        this->ui->actionFindNext->setDisabled(true);
+        this->ui->actionFindPrevious->setDisabled(true);
+        this->ui->plainTextEdit->setFocus();
     });
 
     connect(ui->errorListWidget, &QListWidget::itemClicked,
