@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=0.1.0
+Name=DNPM-Validator
+GenericName=DNPM-Validator
+Comment=Application to edit and validate a data set in DNPM Datenmodell 2.1, SE:dip data model and GRZ Metadata format
+Exec=dnpm-validator-ui
+Icon=dnpm-validator
+Terminal=false
+Categories=Development;

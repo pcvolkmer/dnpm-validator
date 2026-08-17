@@ -19,6 +19,72 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Run tests
         run: cargo test --release --verbose --workspace
+  linuxbuild:
+    name: Create Linux Package
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '5.15.*'
+      - name: Setup DEB/RPM build
+        run: sudo apt update && sudo apt install rpm
+      - name: Linux packages
+        run: |
+          cmake -S ./dnpm-validator-ui -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --config Release
+          cpack --config build/CPackConfig.cmake -G DEB -B build/packages
+          cpack --config build/CPackConfig.cmake -G RPM -B build/packages
+      # Only run, if release is created
+      - name: Release
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            build/packages/*.deb
+            build/packages/*.rpm
+  windowsbuild:
+    name: Create Windows Package
+    runs-on: windows-2022
+    needs:
+      - test
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup MSVC v142
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+          toolset: 14.29
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '5.15.*'
+      - name: Windows installer and ZIP
+        run: |
+          cmake -S ./dnpm-validator-ui -B build -G "Visual Studio 17 2022" -A x64 -T v142
+          cmake --build build --config Release
+          cmake --install build --config Release --prefix build/package
+          windeployqt --release build/package/dnpm-validator-ui.exe
+          cpack --config build/CPackConfig.cmake -G NSIS -B build/packages
+          cpack --config build/CPackConfig.cmake -G ZIP -B build/packages
+      # Only run, if release is created
+      - name: Release
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            build/packages/*.exe
+            build/packages/*.zip
