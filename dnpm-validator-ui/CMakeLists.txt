@@ -12,7 +12,23 @@ find_package(Qt5 REQUIRED COMPONENTS
         Gui
         Widgets)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libs)
+find_program(CARGO cargo REQUIRED)
+include(FetchContent)
+FetchContent_Declare(
+        Corrosion
+        GIT_REPOSITORY https://github.com/corrosion-rs/corrosion.git
+        GIT_TAG v0.6
+)
+FetchContent_MakeAvailable(Corrosion)
+corrosion_import_crate(
+        MANIFEST_PATH ../dnpmvalidation/Cargo.toml
+        CRATE_TYPES staticlib
+)
+corrosion_add_cxxbridge(dnpmvalidation-cxx
+        CRATE dnpmvalidation
+        PROFILE release
+        FILES lib.rs
+)
 
 qt5_add_resources(RESOURCES
         src/icons.qrc
@@ -34,11 +50,11 @@ if (WIN32)
     )
 endif (WIN32)
 
-target_link_libraries(dnpm-validator-ui PUBLIC
+target_link_libraries(dnpm-validator-ui PRIVATE
         Qt::Core
         Qt::Gui
         Qt::Widgets
-        ${CMAKE_CURRENT_BINARY_DIR}/../libs/libdnpmvalidation.a
+        dnpmvalidation-cxx
         ${WIN_LIBS}
 )
 
@@ -47,7 +63,12 @@ target_include_directories(dnpm-validator-ui PRIVATE
         ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-message("${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE")
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_custom_command(TARGET dnpm-validator-ui POST_BUILD
+            COMMAND ${CMAKE_STRIP} "$<TARGET_FILE:dnpm-validator-ui>"
+            COMMENT "Stripping dnpm-validator-ui"
+    )
+endif ()
 
 if (WIN32)
     install(TARGETS dnpm-validator-ui DESTINATION .)
