@@ -108,8 +108,36 @@ if (WIN32 AND MINGW)
 endif (WIN32 AND MINGW)
 # Find resources from winqtdeploy
 if (WIN32 AND NOT MINGW)
-    install(TARGETS dnpm-validator-ui DESTINATION .)
+    install(TARGETS dnpm-validator-ui RUNTIME DESTINATION .)
+
+    find_program(WINDEPLOYQT_EXECUTABLE
+            NAMES windeployqt
+            HINTS
+            "${Qt5_DIR}/../../../bin"
+    )
+
+    if(WINDEPLOYQT_EXECUTABLE)
+        install(CODE "
+            execute_process(
+                COMMAND \"${WINDEPLOYQT_EXECUTABLE}\"
+                        --release
+                        --no-translations
+                        \"\${CMAKE_INSTALL_PREFIX}/dnpm-validator-ui.exe\"
+                RESULT_VARIABLE result
+            )
+
+            if(NOT result EQUAL 0)
+                message(FATAL_ERROR
+                    \"windeployqt failed with exit code \${result}\"
+                )
+            endif()
+        ")
+    endif()
+
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE DESTINATION .)
+
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
+    include(InstallRequiredSystemLibraries)
 endif (WIN32 AND NOT MINGW)
 
 # Linux packaging
@@ -119,14 +147,11 @@ if (UNIX AND NOT APPLE)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/resources/dnpm-validator.desktop DESTINATION /usr/local/share/applications/)
 endif (UNIX AND NOT APPLE)
 
-include(InstallRequiredSystemLibraries)
-
+if(NOT CPACK_PACKAGE_VERSION)
+    set(CPACK_PACKAGE_VERSION "0.0.0")
+endif()
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_VENDOR "Paul-Christian Volkmer")
-set(CPACK_PACKAGE_VERSION "0.1.0")
-set(CPACK_PACKAGE_FILE_NAME
-        "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}"
-)
 set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_NAME})
 set(CPACK_GENERATOR "NSIS")
 set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE)
@@ -140,4 +165,5 @@ set(CPACK_NSIS_DISPLAY_NAME "DNPM-Validator")
 set(CPACK_NSIS_INSTALLED_ICON_NAME "${PROJECT_NAME}.exe")
 set(CPACK_NSIS_DISPLAY_NAME "DNPM-Validator")
 set(CPACK_NSIS_MENU_LINKS "${PROJECT_NAME}.exe" "DNPM-Validator")
+set(CPACK_NSIS_MODIFY_PATH ON)
 include(CPack)

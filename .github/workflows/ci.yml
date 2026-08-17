@@ -42,10 +42,21 @@ jobs:
         run: sudo apt update && sudo apt install rpm
       - name: Linux packages
         run: |
-          cmake -S ./dnpm-validator-ui -B build -DCMAKE_BUILD_TYPE=Release
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="0.0.0"
+          fi
+          cmake -S ./dnpm-validator-ui -B build -DCMAKE_BUILD_TYPE=Release -DCPACK_PACKAGE_VERSION="$VERSION"
           cmake --build build --config Release
           cpack --config build/CPackConfig.cmake -G DEB -B build/packages
           cpack --config build/CPackConfig.cmake -G RPM -B build/packages
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dnpm-validator-ui
+          path: build/packages/*
+          retention-days: 1
       # Only run, if release is created
       - name: Release
         if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
@@ -54,6 +65,11 @@ jobs:
           files: |
             build/packages/*.deb
             build/packages/*.rpm
+      - name: Upload to DNPM-Repository
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+        run: |
+          curl -L --user dnpm:${{ secrets.PACKAGE_TOKEN }} --upload-file build/packages/*.deb ${{ vars.DEB_UPLOAD_URL }}
+          curl -L --user dnpm:${{ secrets.PACKAGE_TOKEN }} --upload-file build/packages/*.rpm ${{ vars.RPM_UPLOAD_URL }}
   windowsbuild:
     name: Create Windows Package
     runs-on: windows-2022
@@ -74,12 +90,23 @@ jobs:
           version: '5.15.*'
       - name: Windows installer and ZIP
         run: |
-          cmake -S ./dnpm-validator-ui -B build -G "Visual Studio 17 2022" -A x64 -T v142
+          if ($env:GITHUB_REF_TYPE -eq "tag") {
+            $version = $env:GITHUB_REF_NAME -replace '^v', ''
+          } else {
+            $version = "0.0.0"
+          }
+          "VERSION=$version" >> $env:GITHUB_ENV
+          cmake -S ./dnpm-validator-ui -B build -G "Visual Studio 17 2022" -A x64 -T v142 -DCPACK_PACKAGE_VERSION="$env:VERSION"
           cmake --build build --config Release
           cmake --install build --config Release --prefix build/package
-          windeployqt --release build/package/dnpm-validator-ui.exe
           cpack --config build/CPackConfig.cmake -G NSIS -B build/packages
           cpack --config build/CPackConfig.cmake -G ZIP -B build/packages
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dnpm-validator-ui
+          path: build/packages/*
+          retention-days: 1
       # Only run, if release is created
       - name: Release
         if: ${{ github.event_name == 'release' && github.event.action == 'created' }}

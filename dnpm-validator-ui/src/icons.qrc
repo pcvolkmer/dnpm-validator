@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>resources/logo.png</file>
     <file>resources/find.png</file>
     <file>resources/document-open.png</file>
     <file>resources/document-save-as.png</file>
