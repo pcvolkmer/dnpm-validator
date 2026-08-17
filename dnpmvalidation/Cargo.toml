@@ -3,7 +3,7 @@ name = "dnpmvalidation"
 version = "0.1.0"
 authors = ["Paul-Christian Volkmer"]
 description = "Library for DNPM Datenmodell 2.1, SE:dip data model and GRZ Metadata format validation"
-license = "LGPL-2"
+license = "LGPL-2.1"
 edition = "2024"
 
 [lib]

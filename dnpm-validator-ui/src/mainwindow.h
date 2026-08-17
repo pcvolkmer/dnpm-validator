@@ -11,7 +11,7 @@
 #include <QScrollBar>
 #include <QShortcut>
 
-#include <lib.rs.h>
+#include <dnpmvalidation-cxx/lib.h>
 
 QT_BEGIN_NAMESPACE
 
