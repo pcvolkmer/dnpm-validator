@@ -133,15 +133,16 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::onOpenAction() {
-    this->filename = QFileDialog::getOpenFileName(
+    const auto selectedFilename = QFileDialog::getOpenFileName(
         this,
         "Open file",
         QDir::homePath(),
         "JSON files (*.json);;All files (*.*)"
     );
 
-    if (!this->filename.isEmpty()) {
-        if (QFile file(this->filename); file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (!selectedFilename.isEmpty()) {
+        if (QFile file(selectedFilename); file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            this->filename = selectedFilename;
             const QByteArray content = file.readAll();
 
             ui->plainTextEdit->setPlainText(
