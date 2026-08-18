@@ -95,6 +95,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         );
     });
 
+    connect(ui->actionAboutQt, &QAction::triggered, [this] {
+        QMessageBox::aboutQt(this);
+    });
+
     connect(ui->plainTextEdit, &QPlainTextEdit::blockCountChanged, this, &MainWindow::onLineNumbersChanged);
     connect(ui->plainTextEdit->verticalScrollBar(), &QScrollBar::valueChanged, [this](const int value) {
         ui->lineNumbers->verticalScrollBar()->setValue(value);

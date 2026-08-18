@@ -7,10 +7,18 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5 REQUIRED COMPONENTS
+if (WIN32 AND MINGW)
+    # Only for local cross compilation die to missing mingw64 Qt6
+    find_package(Qt5 REQUIRED COMPONENTS
         Core
         Gui
         Widgets)
+else ()
+    find_package(Qt6 REQUIRED COMPONENTS
+        Core
+        Gui
+        Widgets)
+endif ()
 
 find_program(CARGO cargo REQUIRED)
 include(FetchContent)
@@ -30,7 +38,7 @@ corrosion_add_cxxbridge(dnpmvalidation-cxx
         FILES lib.rs
 )
 
-qt5_add_resources(RESOURCES
+qt_add_resources(RESOURCES
         src/icons.qrc
 )
 
@@ -113,7 +121,7 @@ if (WIN32 AND NOT MINGW)
     find_program(WINDEPLOYQT_EXECUTABLE
             NAMES windeployqt
             HINTS
-            "${Qt5_DIR}/../../../bin"
+            "${Qt6_DIR}/../../../bin"
     )
 
     if(WINDEPLOYQT_EXECUTABLE)
@@ -152,14 +160,15 @@ if(NOT CPACK_PACKAGE_VERSION)
 endif()
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_VENDOR "Paul-Christian Volkmer")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Application to edit and validate a data set in DNPM Datenmodell 2.1, SE:dip data model and GRZ Metadata format")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_NAME})
 set(CPACK_GENERATOR "NSIS")
 set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE)
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Paul-Christian Volkmer")
 set(CPACK_DEBIAN_PACKAGE_LICENSE "GPLv3")
-set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Application to edit and validate a data set in DNPM Datenmodell 2.1, SE:dip data model and GRZ Metadata format")
+set(CPACK_DEBIAN_PACKAGE_DESCRIPTION ${CPACK_PACKAGE_DESCRIPTION_SUMMARY})
 set(CPACK_RPM_PACKAGE_LICENSE "GPLv3")
-set(CPACK_RPM_PACKAGE_DESCRIPTION "Application to edit and validate a data set in DNPM Datenmodell 2.1, SE:dip data model and GRZ Metadata format")
+set(CPACK_RPM_PACKAGE_DESCRIPTION ${CPACK_PACKAGE_DESCRIPTION_SUMMARY})
 set(CPACK_NSIS_PACKAGE_NAME "DNPM-Validator")
 set(CPACK_NSIS_DISPLAY_NAME "DNPM-Validator")
 set(CPACK_NSIS_INSTALLED_ICON_NAME "${PROJECT_NAME}.exe")
