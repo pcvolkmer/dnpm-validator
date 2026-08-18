@@ -15,6 +15,7 @@ pub struct Cli {
 
     #[arg(
         long = "type",
+        alias = "schema",
         default_value = "mtb",
         help = "The schema to be used for validation"
     )]
@@ -25,6 +26,7 @@ pub struct Cli {
 pub enum SchemaType {
     Mtb,
     Rd,
+    Grz,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -37,6 +39,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         style(match cli.schema {
             SchemaType::Mtb => "MTB",
             SchemaType::Rd => "RD",
+            SchemaType::Grz => "GRZ",
         })
         .underlined()
     );
@@ -46,26 +49,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         match cli.schema {
             SchemaType::Mtb => ValidationType::Mtb,
             SchemaType::Rd => ValidationType::Rd,
+            SchemaType::Grz => ValidationType::Grz,
         },
         &Severity::Information,
     )
     .unwrap_or_default();
 
     if errors.is_empty() {
-        println!("{}", style("No validation errors found").green().bold());
+        println!("{}", style("No validation issues found").green().bold());
         return Ok(());
     } else if errors.len() == 1 {
-        println!("{}\n", style("Found 1 validation error").red().bold());
+        println!("{}\n", style("Found 1 validation issue").red().bold());
     } else {
         println!(
             "{}\n",
-            style(format!("Found {} validation errors", errors.len()))
+            style(format!("Found {} validation issues", errors.len()))
                 .red()
                 .bold()
         );
     }
 
-    errors.iter().for_each(|err| {
+    for err in errors {
         println!(
             "{} {} {}",
             match err.severity {
@@ -75,12 +79,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ))
                 .red(),
                 Severity::Warning => style(format!(
-                    "📢 Warn   {:<11}",
+                    "📢 Warn  {:<11}",
                     format!("[{}:{}]", err.start.line, err.start.column)
                 ))
                 .yellow(),
                 Severity::Information => style(format!(
-                    "📢 Info   {:<11}",
+                    "📢 Info  {:<11}",
                     format!("[{}:{}]", err.start.line, err.start.column)
                 ))
                 .blue(),
@@ -91,8 +95,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             } else {
                 format!("at '{}'", err.path)
             }
-        )
-    });
+        );
+    }
 
     exit(1)
 }
