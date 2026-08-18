@@ -80,6 +80,13 @@ pub fn validate(
     Ok(errors)
 }
 
+pub fn pretty_print(
+    json: &str
+) -> Result<String, Box<dyn std::error::Error>> {
+    let value = serde_json::from_str::<Value>(json)?;
+    Ok(serde_json::to_string_pretty(&value)?)
+}
+
 fn find_node<'a>(node: Node<'a>, json: &'a str, path: &[&str]) -> Option<Node<'a>> {
     let mut cursor = node.walk();
 
