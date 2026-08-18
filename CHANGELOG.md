@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/pcvolkmer/dnpm-validator/compare/v0.1.0...v0.1.1) (2026-08-18)
+
+
+### Bug Fixes
+
+* windows package should bundle required DLLs ([#19](https://github.com/pcvolkmer/dnpm-validator/issues/19)) ([f6c7cf2](https://github.com/pcvolkmer/dnpm-validator/commit/f6c7cf2db20c13807c2413b3e68fea85496e8b09))
+
 ## [0.1.0](https://github.com/pcvolkmer/dnpm-validator/compare/v0.1.0...v0.1.0) (2026-08-17)
 
 
