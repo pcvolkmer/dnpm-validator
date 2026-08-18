@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.2](https://github.com/pcvolkmer/dnpm-validator/compare/v0.1.1...v0.1.2) (2026-08-18)
+
+
+### Features
+
+* add GRZ validation for command line tool ([#22](https://github.com/pcvolkmer/dnpm-validator/issues/22)) ([b40f3e8](https://github.com/pcvolkmer/dnpm-validator/commit/b40f3e89ca4de6425304e9354c98a44100be19b1))
+
+
+### Bug Fixes
+
+* do not use empty filename from aborted file dialog ([#24](https://github.com/pcvolkmer/dnpm-validator/issues/24)) ([db3491c](https://github.com/pcvolkmer/dnpm-validator/commit/db3491c4505f3d76611312d1a9f4c19a83ec7c26))
+
 ## [0.1.1](https://github.com/pcvolkmer/dnpm-validator/compare/v0.1.0...v0.1.1) (2026-08-18)
 
 
