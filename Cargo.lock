@@ -292,7 +292,7 @@ dependencies = [
 
 [[package]]
 name = "dnpm-validator"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "clap",
  "console",
@@ -301,7 +301,7 @@ dependencies = [
 
 [[package]]
 name = "dnpmvalidation"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "cxx",
  "cxx-build",
