@@ -1,6 +1,6 @@
 [package]
 name = "dnpm-validator"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Paul-Christian Volkmer"]
 description = "Application to validate a data set in DNPM Datenmodell 2.1, SE:dip data model and GRZ Metadata format"
 license = "GPL-3"
