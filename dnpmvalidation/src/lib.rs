@@ -1,4 +1,4 @@
-pub use crate::validation::{Severity, ValidationError, ValidationType, validate};
+pub use crate::validation::{Severity, ValidationError, ValidationType, pretty_print, validate};
 
 mod validation;
 
@@ -37,6 +37,9 @@ mod ffi {
             validation_type: ValidationType,
             report_severity: Severity,
         ) -> Vec<ValidationError>;
+
+        #[cxx_name = "pretty_print"]
+        fn pretty_print_cxx(json: String) -> String;
     }
 }
 
@@ -93,4 +96,8 @@ pub fn validate_cxx(
             severity: ffi::Severity::Error,
         }],
     }
+}
+
+pub fn pretty_print_cxx(json: String) -> String {
+    pretty_print(json.as_str()).unwrap_or_default()
 }

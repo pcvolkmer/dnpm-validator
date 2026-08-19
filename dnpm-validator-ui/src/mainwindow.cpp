@@ -60,6 +60,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
             ui->plainTextEdit->setFocus();
         }
     });
+    connect(this->ui->actionReformatJson, &QAction::triggered, [this]{
+        if (!this->ui->plainTextEdit->toPlainText().isEmpty())
+        {
+            auto prettyJson = dnpmvalidation::pretty_print(this->ui->plainTextEdit->toPlainText().toStdString());
+            if (!QString(prettyJson.c_str()).isEmpty())
+            {
+                this->ui->plainTextEdit->setPlainText(prettyJson.c_str());
+            }
+        }
+        this->onValidateAction();
+    });
     connect(ui->findLineEdit, &QLineEdit::returnPressed, [this]{
         if (const auto s = this->ui->findLineEdit->text(); this->ui->plainTextEdit->find(s))
         {
