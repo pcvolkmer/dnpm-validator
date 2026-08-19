@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/pcvolkmer/dnpm-validator/compare/v0.1.2...v0.1.3) (2026-08-19)
+
+
+### Features
+
+* (re)format JSON content ([#25](https://github.com/pcvolkmer/dnpm-validator/issues/25)) ([9425fe0](https://github.com/pcvolkmer/dnpm-validator/commit/9425fe059b30753b7a5694a74c51c825be568bb4))
+
 ## [0.1.2](https://github.com/pcvolkmer/dnpm-validator/compare/v0.1.1...v0.1.2) (2026-08-18)
 
 
