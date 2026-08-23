@@ -80,9 +80,7 @@ pub fn validate(
     Ok(errors)
 }
 
-pub fn pretty_print(
-    json: &str
-) -> Result<String, Box<dyn std::error::Error>> {
+pub fn pretty_print(json: &str) -> Result<String, Box<dyn std::error::Error>> {
     let value = serde_json::from_str::<Value>(json)?;
     Ok(serde_json::to_string_pretty(&value)?)
 }
