@@ -33,7 +33,7 @@ This project also provides a desktop UI frontend to validate and edit DNPM/SE:di
 | Validation                           | MTB | RD | GRZ |
 |--------------------------------------|-----|----|-----|
 | JSON-Schema                          | ☑  | ☑ | ☑  |
-| MV metadata (warning if missing)     | ☑  | ☑ | -   |
+| MV metadata (basic validation)       | ☑  | ☑ | -   |
 | Diagnosis references                 | ☑  | ☑ | -   |
 | Patient references                   | ☑  | ☑ | -   |
 | Recommendation references            | ☑  | ☑ | -   |

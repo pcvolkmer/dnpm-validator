@@ -1,5 +1,6 @@
 mod diagnosis;
 mod followup;
+mod metadata;
 
 use crate::validation::{Severity, map_query_ref, map_to_validation_error};
 use crate::{ValidationError, ValidationType};
@@ -58,6 +59,7 @@ pub fn validate(
     errors.append(&mut validate_period(json, "$..period", &Severity::Error)?);
 
     if validation_type == ValidationType::Mtb {
+        errors.append(&mut metadata::validate(json, validation_type)?);
         errors.append(&mut diagnosis::validate(json, validation_type)?);
         errors.append(&mut followup::validate(json, validation_type)?);
     }
