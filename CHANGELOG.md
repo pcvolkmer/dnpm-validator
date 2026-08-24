@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0](https://github.com/pcvolkmer/dnpm-validator/compare/v0.1.2...v0.2.0) (2026-08-24)
+
+
+### Features
+
+* (re)format JSON content ([#25](https://github.com/pcvolkmer/dnpm-validator/issues/25)) ([9425fe0](https://github.com/pcvolkmer/dnpm-validator/commit/9425fe059b30753b7a5694a74c51c825be568bb4))
+* basic metadata validation ([#28](https://github.com/pcvolkmer/dnpm-validator/issues/28)) ([08cabc4](https://github.com/pcvolkmer/dnpm-validator/commit/08cabc46f5bc4f220ad071fbaa9b2954bc6c124b))
+* validate dates and periods ([#27](https://github.com/pcvolkmer/dnpm-validator/issues/27)) ([cad68a1](https://github.com/pcvolkmer/dnpm-validator/commit/cad68a1b33e4462d0a49de18c2f180bb672ef67e))
+
+
+### Miscellaneous Chores
+
+* release 0.2.0 ([5abc51a](https://github.com/pcvolkmer/dnpm-validator/commit/5abc51a226621304f317b0ab0794c42cca288c2c))
+
 ## [0.1.2](https://github.com/pcvolkmer/dnpm-validator/compare/v0.1.1...v0.1.2) (2026-08-18)
 
 
