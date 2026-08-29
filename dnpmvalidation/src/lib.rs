@@ -19,12 +19,14 @@ mod ffi {
         pub severity: Severity,
     }
 
+    #[derive(Default)]
     struct Position {
         pub line: usize,
         pub column: usize,
     }
 
-    enum Severity {
+    #[derive(Debug, Clone, Copy, PartialEq)]
+    pub enum Severity {
         Error,
         Warning,
         Information,
@@ -40,12 +42,6 @@ mod ffi {
 
         #[cxx_name = "pretty_print"]
         fn pretty_print_cxx(json: String) -> String;
-    }
-}
-
-impl Default for ffi::Position {
-    fn default() -> Self {
-        Self { line: 0, column: 0 }
     }
 }
 
@@ -65,7 +61,8 @@ pub fn validate_cxx(
         match report_severity {
             ffi::Severity::Error => &Severity::Error,
             ffi::Severity::Warning => &Severity::Warning,
-            _ => &Severity::Information,
+            ffi::Severity::Information => &Severity::Information,
+            _ => &Severity::Error,
         },
     ) {
         Ok(validations) => validations

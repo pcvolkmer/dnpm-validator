@@ -84,7 +84,7 @@ fn validate_regex(
     let mut value = value
         .query_with_path(path)?
         .iter()
-        .filter(|item| !regex.is_match(&item.val.as_str().unwrap_or_default()))
+        .filter(|item| !regex.is_match(item.val.as_str().unwrap_or_default()))
         .map(map_query_ref)
         .map(|(err_path, value)| {
             map_to_validation_error(
@@ -271,7 +271,7 @@ fn validate_contains_valueof(
             let Some(value) = item.val.as_str() else {
                 return true;
             };
-            !values.iter().any(|&expected_value| expected_value == value)
+            !values.contains(&value)
         })
         .map(map_query_ref)
         .map(|(err_path, value)| {
