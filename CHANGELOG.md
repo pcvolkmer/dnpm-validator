@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/pcvolkmer/dnpm-validator/compare/v0.2.0...v0.2.1) (2026-09-08)
+
+
+### Features
+
+* use latest ATC code validation from DNPM:DIP ([#29](https://github.com/pcvolkmer/dnpm-validator/issues/29)) ([82ea33c](https://github.com/pcvolkmer/dnpm-validator/commit/82ea33cad5a89d18ea9da521381ad0a0594e225a))
+
 ## [0.2.0](https://github.com/pcvolkmer/dnpm-validator/compare/v0.1.2...v0.2.0) (2026-08-24)
 
 
