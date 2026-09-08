@@ -30,7 +30,7 @@ pub fn validate(
     errors.append(&mut validate_regex(
         json,
         "ATC code",
-        &Regex::new("^[ABCDGHJLMNPRSV][0-2][0-9]([A-Z]([A-Z](\\d{2})?)?)?$")
+        &Regex::new("^[ABCDGHJLMNPRSV][0-2][0-9][A-Z][A-Z](\\d{2})?$")
             .expect("Valid regex expected"),
         "$..medication[?(@.system == 'http://fhir.de/CodeSystem/bfarm/atc')].code",
         &Severity::Error,
@@ -420,6 +420,21 @@ mod tests {
                       "display": "Testonimib A",
                       "system": "http://fhir.de/CodeSystem/bfarm/atc",
                       "version": "2025"
+                    }, {
+                      "code": "A00A",
+                      "display": "Testonimib A",
+                      "system": "http://fhir.de/CodeSystem/bfarm/atc",
+                      "version": "2025"
+                    }, {
+                      "code": "A00AA",
+                      "display": "Testonimib A",
+                      "system": "http://fhir.de/CodeSystem/bfarm/atc",
+                      "version": "2025"
+                    }, {
+                      "code": "A00AA00",
+                      "display": "Testonimib A",
+                      "system": "http://fhir.de/CodeSystem/bfarm/atc",
+                      "version": "2025"
                     }
                   ],
                 }, {
@@ -501,14 +516,15 @@ mod tests {
         assert!(actual.is_ok());
 
         let actual = actual.expect("available validation results");
-        assert_eq!(actual.len(), 4);
+        assert_eq!(actual.len(), 5);
         assert_eq!(
             actual[0].message,
             "Missing MV-Metadata: should contain 'metadata'"
         );
         assert_eq!(actual[1].message, "Invalid ATC code 'Testonimib A'");
-        assert_eq!(actual[2].message, "Invalid ATC code 'Testonimib B'");
-        assert_eq!(actual[3].message, "Invalid ATC code 'Testonimib C'");
+        assert_eq!(actual[2].message, "Invalid ATC code 'A00A'");
+        assert_eq!(actual[3].message, "Invalid ATC code 'Testonimib B'");
+        assert_eq!(actual[4].message, "Invalid ATC code 'Testonimib C'");
     }
 
     #[rstest]
