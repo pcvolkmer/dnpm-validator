@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/pcvolkmer/dnpm-validator/compare/v0.2.1...v0.2.2) (2026-10-31)
+
+
+### Features
+
+* update DNPM MTB schema to contain changes in DNPM:DIP 1.3.5 ([#31](https://github.com/pcvolkmer/dnpm-validator/issues/31)) ([18c99d0](https://github.com/pcvolkmer/dnpm-validator/commit/18c99d04770450cf5c393f0c866e5a60253d87b0))
+
 ## [0.2.1](https://github.com/pcvolkmer/dnpm-validator/compare/v0.2.0...v0.2.1) (2026-09-08)
 
 
