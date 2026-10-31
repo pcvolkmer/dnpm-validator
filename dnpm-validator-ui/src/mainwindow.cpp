@@ -23,8 +23,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->ui->statusbar->addPermanentWidget(this->positionLabel);
 
     this->formatSelection = new QComboBox(this);
-    this->formatSelection->addItem("DNPM Datenmodell 2.1");
-    this->formatSelection->addItem("SE:dip Datenmodell");
+    this->formatSelection->addItem("DNPM Datenmodell 2.1 - DNPM:DIP 1.3.5");
+    this->formatSelection->addItem("SE:dip Datenmodell - DNPM:DIP 1.3.5");
     this->formatSelection->addItem("GRZ Metadata 1.3.1");
     this->ui->toolBar->addWidget(this->formatSelection);
 

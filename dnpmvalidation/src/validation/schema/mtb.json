@@ -84,27 +84,6 @@
       "type" : "object",
       "required" : [ "code" ]
     },
-    "Coding_MTBDiagnosis_Type" : {
-      "$anchor" : "Coding_MTBDiagnosis_Type",
-      "properties" : {
-        "code" : {
-          "type" : "string",
-          "enum" : [ "main", "metachronous", "secondary" ]
-        },
-        "display" : {
-          "type" : "string"
-        },
-        "system" : {
-          "type" : "string"
-        },
-        "version" : {
-          "type" : "string"
-        }
-      },
-      "additionalProperties" : false,
-      "type" : "object",
-      "required" : [ "code" ]
-    },
     "Coding_CarePlan_NoSequencingPerformedReason" : {
       "$anchor" : "Coding_CarePlan_NoSequencingPerformedReason",
       "properties" : {
@@ -392,6 +371,27 @@
       "additionalProperties" : false,
       "type" : "object",
       "required" : [ "start" ]
+    },
+    "Coding_MTBRecommendation_Priority" : {
+      "$anchor" : "Coding_MTBRecommendation_Priority",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "1", "6", "8", "4", "12", "11", "9", "7", "3", "10", "2", "5" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
     },
     "NGSReport_Metadata" : {
       "$anchor" : "NGSReport_Metadata",
@@ -925,7 +925,7 @@
       "$anchor" : "MTBStudyEnrollmentRecommendation",
       "properties" : {
         "priority" : {
-          "$ref" : "#/$defs/Coding_Recommendation_Priority"
+          "$ref" : "#/$defs/Coding_MTBRecommendation_Priority"
         },
         "medication" : {
           "type" : "array",
@@ -1234,7 +1234,7 @@
       "$anchor" : "MTBMedicationRecommendation",
       "properties" : {
         "priority" : {
-          "$ref" : "#/$defs/Coding_Recommendation_Priority"
+          "$ref" : "#/$defs/Coding_MTBRecommendation_Priority"
         },
         "medication" : {
           "type" : "array",
@@ -1444,6 +1444,74 @@
         "code" : {
           "type" : "string",
           "enum" : [ "intronic", "regulatory-region", "coding-region", "intergenic", "splicing-region" ]
+        },
+        "display" : {
+          "type" : "string"
+        },
+        "system" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "code" ]
+    },
+    "StudyInclusion" : {
+      "$anchor" : "StudyInclusion",
+      "properties" : {
+        "statusReason" : {
+          "$ref" : "#/$defs/Coding_MTBTherapy_StatusReason"
+        },
+        "medication" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/$defs/Coding_ATC_UnregisteredMedication"
+          },
+          "uniqueItems" : true
+        },
+        "reason" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "id" : {
+          "$ref" : "#/$defs/Id"
+        },
+        "recordedOn" : {
+          "type" : "string",
+          "format" : "date"
+        },
+        "status" : {
+          "$ref" : "#/$defs/Coding_Therapy_Status"
+        },
+        "basedOn" : {
+          "$ref" : "#/$defs/Reference"
+        },
+        "study" : {
+          "type" : "array",
+          "minItems" : 1,
+          "items" : {
+            "$ref" : "#/$defs/Study_Reference"
+          }
+        },
+        "period" : {
+          "$ref" : "#/$defs/Period_Date"
+        },
+        "patient" : {
+          "$ref" : "#/$defs/Reference"
+        }
+      },
+      "additionalProperties" : false,
+      "type" : "object",
+      "required" : [ "id", "patient", "recordedOn", "study", "status" ]
+    },
+    "Coding_MTBDiagnosis_Type" : {
+      "$anchor" : "Coding_MTBDiagnosis_Type",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "main", "metachronous", "secondary" ]
         },
         "display" : {
           "type" : "string"
@@ -1842,7 +1910,7 @@
             "additionalProperties" : false,
             "properties" : {
               "priority" : {
-                "$ref" : "#/$defs/Coding_Recommendation_Priority"
+                "$ref" : "#/$defs/Coding_MTBRecommendation_Priority"
               },
               "supportingVariants" : {
                 "type" : "array",
@@ -2013,7 +2081,7 @@
       },
       "additionalProperties" : false,
       "type" : "object",
-      "required" : [ "id", "patient", "therapy", "effectiveDate", "method", "value" ]
+      "required" : [ "id", "patient", "therapy", "effectiveDate", "value" ]
     },
     "Coding_FollowUp_PatientStatus" : {
       "$anchor" : "Coding_FollowUp_PatientStatus",
@@ -2750,27 +2818,6 @@
       "type" : "string",
       "pattern" : "^\\d{5}$"
     },
-    "Coding_Recommendation_Priority" : {
-      "$anchor" : "Coding_Recommendation_Priority",
-      "properties" : {
-        "code" : {
-          "type" : "string",
-          "enum" : [ "1", "2", "3", "4" ]
-        },
-        "display" : {
-          "type" : "string"
-        },
-        "system" : {
-          "type" : "string"
-        },
-        "version" : {
-          "type" : "string"
-        }
-      },
-      "additionalProperties" : false,
-      "type" : "object",
-      "required" : [ "code" ]
-    },
     "Coding_ClinVar" : {
       "$anchor" : "Coding_ClinVar",
       "properties" : {
@@ -2882,6 +2929,23 @@
       "minItems" : 1,
       "items" : {
         "$ref" : "#/$defs/MTBDiagnosis"
+      }
+    },
+    "studyInclusions" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "additionalProperties" : false,
+        "properties" : {
+          "history" : {
+            "type" : "array",
+            "minItems" : 1,
+            "items" : {
+              "$ref" : "#/$defs/StudyInclusion"
+            }
+          }
+        },
+        "required" : [ "history" ]
       }
     },
     "ngsReports" : {
