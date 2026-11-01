@@ -185,6 +185,36 @@ fn map_to_validation_error(
     }
 }
 
+pub(crate) fn find_position(json: &str, path: &str) -> Position {
+    let mut parser = Parser::new();
+
+    if parser
+        .set_language(&tree_sitter_json::LANGUAGE.into())
+        .is_ok()
+        && let Some(tree) = parser.parse(json, None)
+        && let Some(root) = tree.root_node().child(0)
+    {
+        let path_parts = path
+            .split('/')
+            .filter(|&part| !part.is_empty())
+            .collect::<Vec<&str>>();
+
+        let Some(node) = find_node(root, json, &path_parts) else {
+            return Position::empty();
+        };
+
+        let start = node.start_byte();
+        let line_start = json[..start].rfind('\n').map(|i| i + 1).unwrap_or(0);
+
+        Position::new(
+            node.start_position().row + 1,
+            json[line_start..start].chars().count() + 1,
+        )
+    } else {
+        Position::empty()
+    }
+}
+
 fn map_query_ref(query_ref: &QueryRef<Value>) -> (String, String) {
     let path = query_ref
         .path

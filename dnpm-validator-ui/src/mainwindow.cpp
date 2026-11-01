@@ -1,9 +1,6 @@
 #include "mainwindow.h"
-
-#include <QAction>
-
 #include "ui_mainwindow.h"
-
+#include <QAction>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -122,6 +119,40 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
             .arg(ui->plainTextEdit->textCursor().columnNumber() + 1)
         );
     });
+    connect(ui->plainTextEdit, &QPlainTextEdit::textChanged, [this]
+    {
+        this->updateTree();
+    });
+
+    connect(ui->treeWidget, &QTreeWidget::itemClicked, [this](QTreeWidgetItem * item)
+    {
+        ui->errorListWidget->clearSelection();
+
+        QString path = "";
+        QTreeWidgetItem * currentItem = item;
+        while (currentItem != nullptr)
+        {
+            path.prepend("/" + currentItem->text(0));
+            currentItem = currentItem->parent();
+        }
+
+        auto line = dnpmvalidation::find_position(ui->plainTextEdit->toPlainText().toStdString(), path.toStdString()).line;
+
+        ui->plainTextEdit->setFocus();
+        auto cursor = ui->plainTextEdit->textCursor();
+
+        cursor.clearSelection();
+        cursor.setPosition(
+            QTextCursor::Start
+        );
+
+        const auto startTextBlock = ui->plainTextEdit->document()->findBlockByLineNumber(line - 1);
+        cursor.setPosition(startTextBlock.position(), QTextCursor::MoveAnchor);
+        ui->plainTextEdit->setTextCursor(cursor);
+        ui->plainTextEdit->ensureCursorVisible();
+
+        this->highlightCurrentLine();
+    });
 
     connect(ui->findCloseButton, &QToolButton::clicked, [this]{
         this->ui->findWidget->hide();
@@ -166,6 +197,7 @@ void MainWindow::onOpenAction() {
         return;
     }
     this->setWindowTitle("DNPM-Validator");
+    this->updateTree();
 }
 
 void MainWindow::onSaveAction() {
@@ -255,7 +287,7 @@ void MainWindow::onValidateAction() {
             pathLabel->setFont(monospaceFont);
             layout.addWidget(pathLabel);
         }
-        layout.setContentsMargins(0, 2, 0, 2);
+        layout.setContentsMargins(0, 2, 20, 2);
 
         auto *item = new QListWidgetItem();
         ui->errorListWidget->addItem(item);
@@ -266,7 +298,9 @@ void MainWindow::onValidateAction() {
     this->markErrors();
 }
 
-void MainWindow::onErrorSelected(const int index) const {
+void MainWindow::onErrorSelected(const int index) {
+    ui->treeWidget->clearSelection();
+
     const auto error = this->errorList.at(index);
     auto cursor = ui->plainTextEdit->textCursor();
 
@@ -289,12 +323,13 @@ void MainWindow::onErrorSelected(const int index) const {
     this->highlightCurrentLine();
 }
 
-void MainWindow::onLineNumbersChanged(const int lineCount) const {
+void MainWindow::onLineNumbersChanged(const int lineCount) {
     QStringList lines;
     for (int i = 1; i <= lineCount; i++) {
         lines += QString::number(i).rightJustified(6, ' ');
     }
     this->ui->lineNumbers->setPlainText(lines.join('\n'));
+    this->updateTree();
 }
 
 void MainWindow::highlightCurrentLine() const {
@@ -405,4 +440,72 @@ void MainWindow::markErrors() {
     ui->plainTextEdit->setExtraSelections(textExtraSelections);
 
     this->highlightCurrentLine();
+}
+
+void MainWindow::updateTree()
+{
+    ui->treeWidget->clear();
+
+    auto json = ui->plainTextEdit->toPlainText();
+    auto doc = QJsonDocument::fromJson(json.toUtf8());
+
+    if (doc.isObject())
+    {
+        auto obj = doc.toVariant();
+        for (auto item : obj.toJsonObject().asKeyValueRange())
+        {
+            auto * widget = new QTreeWidgetItem(ui->treeWidget);
+            widget->setText(0, item.first.toString());
+            if (item.second.isObject() || item.second.isArray())
+            {
+                widget->setIcon(0, QIcon(":/resources/node.png").pixmap(12, 12));
+            } else
+            {
+                widget->setIcon(0, QIcon(":/resources/leaf.png").pixmap(12, 12));
+            }
+            this->addSubTreeWidget(widget, item.second);
+            ui->treeWidget->addTopLevelItem(widget);
+        }
+    }
+
+    ui->treeWidget->updateGeometry();
+}
+
+void MainWindow::addSubTreeWidget(QTreeWidgetItem * parent, QJsonValue value)
+{
+    if (value.isObject())
+    {
+        for (auto item : value.toObject().asKeyValueRange())
+        {
+            auto * widget = new QTreeWidgetItem();
+            widget->setText(0, item.first.toString());
+            if (item.second.isObject() || item.second.isArray())
+            {
+                widget->setIcon(0, QIcon(":/resources/node.png").pixmap(12, 12));
+            } else
+            {
+                widget->setIcon(0, QIcon(":/resources/leaf.png").pixmap(12, 12));
+            }
+            this->addSubTreeWidget(widget, item.second);
+            parent->addChild(widget);
+        }
+    }
+    else if (value.isArray())
+    {
+        int i = 0;
+        for (auto item : value.toArray())
+        {
+            auto * widget = new QTreeWidgetItem();
+            widget->setText(0, QString::number(i++));
+            if (item.isObject() || item.isArray())
+            {
+                widget->setIcon(0, QIcon(":/resources/node.png").pixmap(12, 12));
+            } else
+            {
+                widget->setIcon(0, QIcon(":/resources/leaf.png").pixmap(12, 12));
+            }
+            this->addSubTreeWidget(widget, item);
+            parent->addChild(widget);
+        }
+    }
 }

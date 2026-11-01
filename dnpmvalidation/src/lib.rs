@@ -1,4 +1,6 @@
+use crate::ffi::Position;
 pub use crate::validation::{Severity, ValidationError, ValidationType, pretty_print, validate};
+use crate::validation::find_position;
 
 mod validation;
 
@@ -42,6 +44,9 @@ mod ffi {
 
         #[cxx_name = "pretty_print"]
         fn pretty_print_cxx(json: String) -> String;
+
+        #[cxx_name = "find_position"]
+        fn find_position_cxx(json: String, path: String) -> Position;
     }
 }
 
@@ -97,4 +102,12 @@ pub fn validate_cxx(
 
 pub fn pretty_print_cxx(json: String) -> String {
     pretty_print(json.as_str()).unwrap_or_default()
+}
+
+pub fn find_position_cxx(json: String, path: String) -> Position {
+    let pos = find_position(json.as_str(), path.as_str());
+    ffi::Position {
+        line: pos.line,
+        column: pos.column,
+    }
 }

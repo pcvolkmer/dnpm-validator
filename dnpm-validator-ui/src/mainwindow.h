@@ -10,6 +10,10 @@
 #include <QMessageBox>
 #include <QScrollBar>
 #include <QShortcut>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QTreeWidgetItem>
 
 #include <dnpmvalidation-cxx/lib.h>
 
@@ -39,6 +43,8 @@ private:
 
     void highlightCurrentLine() const;
     void markErrors();
+    void updateTree();
+    void addSubTreeWidget(QTreeWidgetItem * item, QJsonValue value);
 
 private slots:
     void onOpenAction();
@@ -49,9 +55,9 @@ private slots:
 
     void onValidateAction();
 
-    void onErrorSelected(int index) const;
+    void onErrorSelected(int index);
 
-    void onLineNumbersChanged(int lineCount) const;
+    void onLineNumbersChanged(int lineCount);
 };
 
 

@@ -12,5 +12,7 @@
     <file>resources/go-down.png</file>
     <file>resources/go-up.png</file>
     <file>resources/close.png</file>
+    <file>resources/leaf.png</file>
+    <file>resources/node.png</file>
   </qresource>
 </RCC>
