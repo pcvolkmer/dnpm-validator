@@ -451,19 +451,19 @@ void MainWindow::updateTree()
 
     if (doc.isObject())
     {
-        auto obj = doc.toVariant();
-        for (auto item : obj.toJsonObject().asKeyValueRange())
+        for (const auto obj = doc.toVariant().toJsonObject(); const auto& key : obj.keys())
         {
             auto * widget = new QTreeWidgetItem(ui->treeWidget);
-            widget->setText(0, item.first.toString());
-            if (item.second.isObject() || item.second.isArray())
+            widget->setText(0, key);
+            auto value = obj.value(key);
+            if (value.isObject() || value.isArray())
             {
                 widget->setIcon(0, QIcon(":/resources/node.png").pixmap(12, 12));
             } else
             {
                 widget->setIcon(0, QIcon(":/resources/leaf.png").pixmap(12, 12));
             }
-            this->addSubTreeWidget(widget, item.second);
+            this->addSubTreeWidget(widget, value);
             ui->treeWidget->addTopLevelItem(widget);
         }
     }
@@ -471,22 +471,23 @@ void MainWindow::updateTree()
     ui->treeWidget->updateGeometry();
 }
 
-void MainWindow::addSubTreeWidget(QTreeWidgetItem * parent, QJsonValue value)
+void MainWindow::addSubTreeWidget(QTreeWidgetItem * parent, const QJsonValue& value)
 {
     if (value.isObject())
     {
-        for (auto item : value.toObject().asKeyValueRange())
+        for (const auto obj = value.toVariant().toJsonObject(); const auto& key : obj.keys())
         {
             auto * widget = new QTreeWidgetItem();
-            widget->setText(0, item.first.toString());
-            if (item.second.isObject() || item.second.isArray())
+            widget->setText(0, key);
+            auto current_value = obj.value(key);
+            if (current_value.isObject() || current_value.isArray())
             {
                 widget->setIcon(0, QIcon(":/resources/node.png").pixmap(12, 12));
             } else
             {
                 widget->setIcon(0, QIcon(":/resources/leaf.png").pixmap(12, 12));
             }
-            this->addSubTreeWidget(widget, item.second);
+            this->addSubTreeWidget(widget, current_value);
             parent->addChild(widget);
         }
     }

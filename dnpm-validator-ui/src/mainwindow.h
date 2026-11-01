@@ -44,7 +44,7 @@ private:
     void highlightCurrentLine() const;
     void markErrors();
     void updateTree();
-    void addSubTreeWidget(QTreeWidgetItem * item, QJsonValue value);
+    void addSubTreeWidget(QTreeWidgetItem * item, const QJsonValue& value);
 
 private slots:
     void onOpenAction();
