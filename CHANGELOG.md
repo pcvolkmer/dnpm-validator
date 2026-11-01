@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/pcvolkmer/dnpm-validator/compare/v0.2.2...v0.2.3) (2026-11-01)
+
+
+### Features
+
+* add content tree to show document structure ([#33](https://github.com/pcvolkmer/dnpm-validator/issues/33)) ([a4785ac](https://github.com/pcvolkmer/dnpm-validator/commit/a4785acbffd8fa00027b6cd55ec3fc8f69d4526a))
+
 ## [0.2.2](https://github.com/pcvolkmer/dnpm-validator/compare/v0.2.1...v0.2.2) (2026-10-31)
 
 
