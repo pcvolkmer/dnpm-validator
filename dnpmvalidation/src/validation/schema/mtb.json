@@ -2922,7 +2922,7 @@
       "required" : [ "type", "transferTAN", "modelProjectConsent" ]
     }
   },
-  "$id" : "MTB-Patient-Record",
+  "$id" : "http://dnpm-dip/schema/mtb-submission",
   "properties" : {
     "diagnoses" : {
       "type" : "array",
