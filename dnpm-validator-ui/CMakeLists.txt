@@ -8,7 +8,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 if (WIN32 AND MINGW)
-    # Only for local cross compilation die to missing mingw64 Qt6
+    # Only for local cross compilation due to missing mingw64 Qt6
     find_package(Qt5 REQUIRED COMPONENTS
         Core
         Gui

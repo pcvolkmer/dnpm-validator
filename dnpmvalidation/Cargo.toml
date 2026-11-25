@@ -17,14 +17,14 @@ tree-sitter = { workspace = true }
 tree-sitter-json = { workspace = true }
 cxx = "1.0"
 regex = "1.13"
-fancy-regex = "0.19"
+fancy-regex = "0.20"
 chrono = "0.4"
 
 [build-dependencies]
 cxx-build = "1.0"
 
 [dev-dependencies]
-rstest = "0.26"
+rstest = "0.28"
 
 [package.metadata.deb]
 name = "libdnpmvalidation"
