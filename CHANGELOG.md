@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.1](https://github.com/pcvolkmer/dnpm-validator/compare/v0.3.0...v0.3.1) (2026-11-27)
+
+
+### Features
+
+* add validation for CarePlan BoardType ([#35](https://github.com/pcvolkmer/dnpm-validator/issues/35)) ([f159a82](https://github.com/pcvolkmer/dnpm-validator/commit/f159a825531dcb247f04af98493be69208fce82b))
+* add validation for study inclusion references ([#36](https://github.com/pcvolkmer/dnpm-validator/issues/36)) ([ddfa8cc](https://github.com/pcvolkmer/dnpm-validator/commit/ddfa8cca39ce601afb0a6141784943724ad82516))
+
 ## [0.3.0](https://github.com/pcvolkmer/dnpm-validator/compare/v0.2.2...v0.3.0) (2026-11-25)
 
 
