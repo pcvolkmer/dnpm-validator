@@ -86,7 +86,13 @@ pub fn validate(
             json,
             "Recommendation",
             "$..medicationRecommendations[*].id",
-            "$..basedOn.id",
+            "$.systemicTherapies..basedOn.id",
+        )?);
+        errors.append(&mut validate_refs(
+            json,
+            "Recommendation",
+            "$..studyEnrollmentRecommendations[*].id",
+            "$.studyInclusions..basedOn.id",
         )?);
     } else if validation_type == ValidationType::Rd {
         errors.append(&mut validate_refs(
