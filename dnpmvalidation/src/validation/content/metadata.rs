@@ -1,6 +1,5 @@
 use crate::validation::Severity;
-use crate::validation::content::{validate_contains_valueof, validate_regex,
-};
+use crate::validation::content::{validate_contains_valueof, validate_regex};
 use crate::{ValidationError, ValidationType};
 use regex::Regex;
 
@@ -86,7 +85,10 @@ mod tests {
     #[case("other-patient-reason", true)]
     #[case("technical-issues", false)]
     #[case("organizational-issues", false)]
-    fn test_should_find_reason_research_consent_missing_errors(#[case] reason: &str, #[case] is_valid: bool) {
+    fn test_should_find_reason_research_consent_missing_errors(
+        #[case] reason: &str,
+        #[case] is_valid: bool,
+    ) {
         let json = json!({
             "metadata": {
                 "type": "initial",
@@ -94,7 +96,7 @@ mod tests {
                 "reasonResearchConsentMissing": reason
             }
         })
-            .to_string();
+        .to_string();
 
         let actual = validate(&json, ValidationType::Mtb);
 
@@ -108,7 +110,9 @@ mod tests {
             assert_eq!(actual.len(), 1);
             assert_eq!(
                 actual[0].message,
-                format!("Invalid reason missing broad consent (since 2026-06-01) '{reason}': must be one of patient-inability, patient-refusal, consent-not-returned, other-patient-reason")
+                format!(
+                    "Invalid reason missing broad consent (since 2026-06-01) '{reason}': must be one of patient-inability, patient-refusal, consent-not-returned, other-patient-reason"
+                )
             );
         }
     }

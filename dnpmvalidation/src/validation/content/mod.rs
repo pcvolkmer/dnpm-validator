@@ -1,3 +1,4 @@
+mod careplan;
 mod diagnosis;
 mod followup;
 mod metadata;

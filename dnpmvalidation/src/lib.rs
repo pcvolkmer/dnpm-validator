@@ -1,6 +1,6 @@
 use crate::ffi::Position;
-pub use crate::validation::{Severity, ValidationError, ValidationType, pretty_print, validate};
 use crate::validation::find_position;
+pub use crate::validation::{Severity, ValidationError, ValidationType, pretty_print, validate};
 
 mod validation;
 
