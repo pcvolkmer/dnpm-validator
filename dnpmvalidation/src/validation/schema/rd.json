@@ -1647,7 +1647,7 @@
       "required" : [ "code" ]
     }
   },
-  "$id" : "RD-Patient-Record",
+  "$id" : "http://dnpm-dip/schema/rd-submission",
   "properties" : {
     "diagnoses" : {
       "type" : "array",

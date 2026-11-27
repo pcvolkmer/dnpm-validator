@@ -1,6 +1,6 @@
 [package]
 name = "dnpmvalidation"
-version = "0.2.2"
+version = "0.3.0"
 authors = ["Paul-Christian Volkmer"]
 description = "Library for DNPM Datenmodell 2.1, SE:dip data model and GRZ Metadata format validation"
 license = "LGPL-2.1"
@@ -17,14 +17,14 @@ tree-sitter = { workspace = true }
 tree-sitter-json = { workspace = true }
 cxx = "1.0"
 regex = "1.13"
-fancy-regex = "0.19"
+fancy-regex = "0.20"
 chrono = "0.4"
 
 [build-dependencies]
 cxx-build = "1.0"
 
 [dev-dependencies]
-rstest = "0.26"
+rstest = "0.28"
 
 [package.metadata.deb]
 name = "libdnpmvalidation"
