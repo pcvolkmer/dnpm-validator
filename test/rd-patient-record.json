@@ -1,12 +1,12 @@
 {
   "patient": {
-    "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+    "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
     "gender": {
-      "code": "male",
-      "display": "Männlich",
+      "code": "female",
+      "display": "Weiblich",
       "system": "Gender"
     },
-    "birthDate": "1986-03",
+    "birthDate": "1986-10",
     "healthInsurance": {
       "type": {
         "code": "GKV",
@@ -35,54 +35,55 @@
   },
   "episodesOfCare": [
     {
-      "id": "298c6330-955f-4c62-85f8-a672a94644e8",
+      "id": "fe709289-b222-463d-9484-41ad226e1385",
       "patient": {
-        "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+        "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
         "type": "Patient"
       },
       "period": {
-        "start": "2026-08-08"
+        "start": "2026-11-27"
       }
     }
   ],
   "diagnoses": [
     {
-      "id": "01faa43d-13b8-4b26-a5b5-1cfafdeb9111",
+      "id": "13a8df8d-8bc1-4d4e-b9fe-45981ad00990",
       "patient": {
-        "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+        "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
         "type": "Patient"
       },
-      "recordedOn": "2026-08-08",
-      "onsetDate": "2025-10",
+      "recordedOn": "2026-11-27",
+      "onsetDate": "2026-04",
       "familyControlLevel": {
-        "code": "trio-genome",
-        "display": "Triogenom",
+        "code": "single-genome",
+        "display": "Einzelgenom",
         "system": "dnpm-dip/rd/diagnosis/family-control-level"
       },
       "verificationStatus": {
-        "code": "partial",
-        "display": "Klinischer Phänotyp nur partiell gelöst",
+        "code": "provisional",
+        "display": "Genetische Verdachtsdiagnose",
         "system": "dnpm-dip/rd/diagnosis/verification-status"
       },
       "codes": [
         {
-          "code": "I97591",
-          "display": "Nierenkrankheit bei Schistosomiasis",
+          "code": "I81361",
+          "display": "Barraquer-Simons-Syndrom",
           "system": "https://www.bfarm.de/DE/Kodiersysteme/Terminologien/Alpha-ID-SE",
           "version": "2026"
         },
         {
-          "code": "ORPHA:1247",
-          "display": "Schistosomiasis",
+          "code": "ORPHA:79087",
+          "display": "Lipodystrophie, partielle erworbene",
           "system": "https://www.orpha.net",
-          "version": "4.8"
+          "version": "4.9"
+        },
+        {
+          "code": "E88.1",
+          "display": "Lipodystrophie, anderenorts nicht klassifiziert",
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2026"
         }
       ],
-      "missingCodeReason": {
-        "code": "no-matching-code",
-        "display": "Kein geeigneter Code (ICD-10-GM, ORDO, Alpha-ID-SE) verfügbar",
-        "system": "dnpm-dip/rd/diagnosis/missing-code-reason"
-      },
       "notes": [
         "Notes on the disease..."
       ]
@@ -90,12 +91,12 @@
   ],
   "gmfcsStatus": [
     {
-      "id": "e2fdd785-3661-4d86-a43d-84c8bfbe81fe",
+      "id": "81b9699a-2651-4b6d-9914-6e1a0eda0a34",
       "patient": {
-        "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+        "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
         "type": "Patient"
       },
-      "effectiveDate": "2026-08-08",
+      "effectiveDate": "2026-11-27",
       "value": {
         "code": "II",
         "display": "Level II",
@@ -105,50 +106,25 @@
   ],
   "hospitalization": {
     "numberOfStays": {
-      "code": "up-to-fifteen",
-      "display": "Bis zu 15",
+      "code": "up-to-ten",
+      "display": "Bis zu 10",
       "system": "dnpm-dip/rd/hospitalization/number-of-stays"
     },
     "numberOfDays": {
-      "code": "unknown",
-      "display": "Unbekannt",
+      "code": "up-to-fifty",
+      "display": "Bis zu 50",
       "system": "dnpm-dip/rd/hospitalization/number-of-days"
     }
   },
   "hpoTerms": [
     {
-      "id": "d1f78e76-118a-4be5-9f59-a4bdd07c2d92",
+      "id": "e396091c-b185-4d00-920f-0afb7633a13c",
       "patient": {
-        "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+        "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
         "type": "Patient"
       },
-      "recordedOn": "2026-06-08",
-      "onsetDate": "2026-02",
-      "value": {
-        "code": "HP:0100869",
-        "system": "https://hpo.jax.org"
-      },
-      "status": {
-        "history": [
-          {
-            "status": {
-              "code": "degraded",
-              "display": "Verschlechtert",
-              "system": "dnpm-dip/rd/hpo-term/status"
-            },
-            "date": "2026-08-08"
-          }
-        ]
-      }
-    },
-    {
-      "id": "8ece876f-105c-4c6f-94ea-0fbd24db8775",
-      "patient": {
-        "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
-        "type": "Patient"
-      },
-      "recordedOn": "2026-06-08",
-      "onsetDate": "2026-02",
+      "recordedOn": "2026-09-27",
+      "onsetDate": "2026-05",
       "value": {
         "code": "HP:0100861",
         "system": "https://hpo.jax.org"
@@ -161,21 +137,21 @@
               "display": "Verschlechtert",
               "system": "dnpm-dip/rd/hpo-term/status"
             },
-            "date": "2026-08-08"
+            "date": "2026-11-27"
           }
         ]
       }
     },
     {
-      "id": "26ebbb00-97b2-4c37-b151-c21d6a8e440b",
+      "id": "832cfdd7-b61e-4a6c-81e5-be2f12e584ef",
       "patient": {
-        "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+        "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
         "type": "Patient"
       },
-      "recordedOn": "2026-06-08",
-      "onsetDate": "2026-02",
+      "recordedOn": "2026-09-27",
+      "onsetDate": "2026-05",
       "value": {
-        "code": "HP:0100864",
+        "code": "HP:0100871",
         "system": "https://hpo.jax.org"
       },
       "status": {
@@ -186,7 +162,32 @@
               "display": "Weggefallen",
               "system": "dnpm-dip/rd/hpo-term/status"
             },
-            "date": "2026-08-08"
+            "date": "2026-11-27"
+          }
+        ]
+      }
+    },
+    {
+      "id": "48d9a4ab-8403-47f5-b34c-a2f275d3769a",
+      "patient": {
+        "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
+        "type": "Patient"
+      },
+      "recordedOn": "2026-09-27",
+      "onsetDate": "2026-05",
+      "value": {
+        "code": "HP:0100869",
+        "system": "https://hpo.jax.org"
+      },
+      "status": {
+        "history": [
+          {
+            "status": {
+              "code": "unchanged",
+              "display": "Unverändert",
+              "system": "dnpm-dip/rd/hpo-term/status"
+            },
+            "date": "2026-11-27"
           }
         ]
       }
@@ -194,12 +195,12 @@
   ],
   "ngsReports": [
     {
-      "id": "41c93d82-d5b9-4b1a-8e50-39b1a6b24083",
+      "id": "28cdd267-d9b4-4a0d-a4d3-5ad90c6c651b",
       "patient": {
-        "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+        "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
         "type": "Patient"
       },
-      "issuedOn": "2026-08-08",
+      "issuedOn": "2026-11-27",
       "type": {
         "code": "exome",
         "display": "Exome",
@@ -214,282 +215,27 @@
         "kit": "Kit..."
       },
       "conclusion": {
-        "code": "structural-variant-with-unclear-breakpoint",
-        "display": "Strukturvariante mit unklarem Bruchpunkt",
+        "code": "partial-phenotype",
+        "display": "Phänotyp nicht komplett geklärt",
         "system": "dnpm-dip/rd/diagnostics/conclusion"
       },
       "results": {
         "autozygosity": {
-          "id": "bdbb44de-7e01-463a-9bbe-a501f36d02be",
+          "id": "7a49a033-f8a5-4399-92a2-9b1fdf20975d",
           "patient": {
-            "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+            "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
             "type": "Patient"
           },
-          "value": 0.79345655
+          "value": 0.67410064
         },
         "smallVariants": [
           {
-            "id": "09638fab-dd67-4ec8-b172-4b4490cacc84",
+            "id": "8ba78d70-897d-4939-be9e-6453d0742f0a",
             "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+              "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
               "type": "Patient"
             },
-            "chromosome": "chr10",
-            "genes": [
-              {
-                "code": "HGNC:20",
-                "display": "AARS1",
-                "system": "https://www.genenames.org/"
-              }
-            ],
-            "localization": [
-              {
-                "code": "regulatory-region",
-                "display": "Regulatory region",
-                "system": "dnpm-dip/variant/localization"
-              }
-            ],
-            "startPosition": 947439942,
-            "endPosition": 947439943,
-            "ref": "A",
-            "alt": "G",
-            "cDNAChange": "NC_000023.11:g.32343183dup",
-            "gDNAChange": "NC_000023.11:g.32343183dup",
-            "proteinChange": "LRG_199p1:p.Trp24Ter (p.Trp24*)",
-            "acmgClass": {
-              "code": "1",
-              "display": "Benign",
-              "system": "https://www.acmg.net/class"
-            },
-            "acmgCriteria": [
-              {
-                "value": {
-                  "code": "PM3",
-                  "display": "For recessive disorders, detected in trans with a pathogenic variant. \\n\\nNote: This requires testing of parents (or offspring) to determine phase.",
-                  "system": "https://www.acmg.net/criteria/type"
-                },
-                "modifier": {
-                  "code": "ps",
-                  "display": "strong pathogenic",
-                  "system": "https://www.acmg.net/criteria/modifier"
-                }
-              }
-            ],
-            "zygosity": {
-              "code": "homozygous",
-              "display": "Homozygous",
-              "system": "dnpm-dip/rd/variant/zygosity"
-            },
-            "segregationAnalysis": {
-              "code": "not-performed",
-              "display": "not performed",
-              "system": "dnpm-dip/rd/variant/segregation-analysis"
-            },
-            "modeOfInheritance": {
-              "code": "recessive",
-              "display": "Recessive",
-              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
-            },
-            "significance": {
-              "code": "candidate",
-              "display": "Candidate variant",
-              "system": "dnpm-dip/rd/variant/significance"
-            },
-            "externalIds": [
-              {
-                "value": "b568d04d-bd39-42ba-a57b-31ff3f615f87",
-                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
-              }
-            ],
-            "publications": [
-              {
-                "id": "561359902",
-                "system": "https://pubmed.ncbi.nlm.nih.gov",
-                "type": "Publication"
-              }
-            ]
-          },
-          {
-            "id": "7e028b9d-07c8-49c6-8c4a-c922b2e38bae",
-            "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
-              "type": "Patient"
-            },
-            "chromosome": "chr16",
-            "genes": [
-              {
-                "code": "HGNC:21",
-                "display": "AATK",
-                "system": "https://www.genenames.org/"
-              }
-            ],
-            "localization": [
-              {
-                "code": "intergenic",
-                "display": "Intergenic",
-                "system": "dnpm-dip/variant/localization"
-              }
-            ],
-            "startPosition": 1789541389,
-            "endPosition": 1789541390,
-            "ref": "C",
-            "alt": "G",
-            "cDNAChange": "NC_000023.11:g.33344590_33344592=/dup",
-            "gDNAChange": "NC_000023.11:g.33344590_33344592=/dup",
-            "proteinChange": "LRG_199p1:p.Trp24Cys",
-            "acmgClass": {
-              "code": "1",
-              "display": "Benign",
-              "system": "https://www.acmg.net/class"
-            },
-            "acmgCriteria": [
-              {
-                "value": {
-                  "code": "BS4",
-                  "display": "Lack of segregation in affected members of a family. \\n\\nCaveat: The presence of phenocopies for common phenotypes (i.e. cancer, epilepsy) can mimic lack of segregation among affected individuals. Also, families may have more than one pathogenic variant contributing to an autosomal dominant disorder, further confounding an apparent lack of segregation.",
-                  "system": "https://www.acmg.net/criteria/type"
-                },
-                "modifier": {
-                  "code": "ba",
-                  "display": "stand-alone benign",
-                  "system": "https://www.acmg.net/criteria/modifier"
-                }
-              },
-              {
-                "value": {
-                  "code": "BA1",
-                  "display": "Allele frequency is above 5% in Exome Sequencing Project, 1000 Genomes, or ExAC.",
-                  "system": "https://www.acmg.net/criteria/type"
-                },
-                "modifier": {
-                  "code": "ps",
-                  "display": "strong pathogenic",
-                  "system": "https://www.acmg.net/criteria/modifier"
-                }
-              }
-            ],
-            "zygosity": {
-              "code": "heteroplasmic",
-              "display": "Heteroplasmic",
-              "system": "dnpm-dip/rd/variant/zygosity"
-            },
-            "segregationAnalysis": {
-              "code": "not-performed",
-              "display": "not performed",
-              "system": "dnpm-dip/rd/variant/segregation-analysis"
-            },
-            "modeOfInheritance": {
-              "code": "recessive",
-              "display": "Recessive",
-              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
-            },
-            "significance": {
-              "code": "candidate",
-              "display": "Candidate variant",
-              "system": "dnpm-dip/rd/variant/significance"
-            },
-            "externalIds": [
-              {
-                "value": "e987a49c-1cbe-4cfa-9ad9-e78b9c135238",
-                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
-              }
-            ],
-            "publications": [
-              {
-                "id": "903215230",
-                "system": "https://pubmed.ncbi.nlm.nih.gov",
-                "type": "Publication"
-              }
-            ]
-          },
-          {
-            "id": "0f8f93b5-0504-466e-8fe5-cccd44060e1d",
-            "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
-              "type": "Patient"
-            },
-            "chromosome": "chr15",
-            "genes": [
-              {
-                "code": "HGNC:20",
-                "display": "AARS1",
-                "system": "https://www.genenames.org/"
-              }
-            ],
-            "localization": [
-              {
-                "code": "splicing-region",
-                "display": "splicing region",
-                "system": "dnpm-dip/variant/localization"
-              }
-            ],
-            "startPosition": 1778422853,
-            "endPosition": 1778422854,
-            "ref": "A",
-            "alt": "G",
-            "cDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
-            "gDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
-            "proteinChange": "LRG_199p1:p.Trp24=/Cys",
-            "acmgClass": {
-              "code": "2",
-              "display": "Likely benign",
-              "system": "https://www.acmg.net/class"
-            },
-            "acmgCriteria": [
-              {
-                "value": {
-                  "code": "PVS1",
-                  "display": "Null variant (nonsense, frameshift, canonical +/-1 or 2 splice sites, initiation codon, single or multi-exon deletion) in a gene where loss of function (LOF) is a known mechanism of disease \\n\\nCaveats: \\n- Beware of genes where LOF is not a known disease mechanism (e.g. GFAP, MYH7) \\n- Use caution interpreting LOF variants at the extreme 3\\' end of a gene \\n- Use caution with splice variants that are predicted to lead to exon skipping but leave the remainder of the protein intact \\n- Use caution in the presence of multiple transcripts",
-                  "system": "https://www.acmg.net/criteria/type"
-                },
-                "modifier": {
-                  "code": "pp",
-                  "display": "supporting pathogenic",
-                  "system": "https://www.acmg.net/criteria/modifier"
-                }
-              }
-            ],
-            "zygosity": {
-              "code": "hemi",
-              "display": "Hemizygous",
-              "system": "dnpm-dip/rd/variant/zygosity"
-            },
-            "segregationAnalysis": {
-              "code": "from-father",
-              "display": "Transmitted from father",
-              "system": "dnpm-dip/rd/variant/segregation-analysis"
-            },
-            "modeOfInheritance": {
-              "code": "mitochondrial",
-              "display": "Mitochondrial",
-              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
-            },
-            "significance": {
-              "code": "incidental",
-              "display": "Incidental finding",
-              "system": "dnpm-dip/rd/variant/significance"
-            },
-            "externalIds": [
-              {
-                "value": "48bedd51-8bb6-4091-8dbe-9a27992b8735",
-                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
-              }
-            ],
-            "publications": [
-              {
-                "id": "287903130",
-                "system": "https://pubmed.ncbi.nlm.nih.gov",
-                "type": "Publication"
-              }
-            ]
-          },
-          {
-            "id": "7d143921-4219-4241-8595-59b41acd375e",
-            "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
-              "type": "Patient"
-            },
-            "chromosome": "chr11",
+            "chromosome": "chr6",
             "genes": [
               {
                 "code": "HGNC:20",
@@ -504,16 +250,97 @@
                 "system": "dnpm-dip/variant/localization"
               }
             ],
-            "startPosition": 1032539077,
-            "endPosition": 1032539078,
-            "ref": "A",
+            "startPosition": 1371976680,
+            "endPosition": 1371976681,
+            "ref": "G",
             "alt": "T",
-            "cDNAChange": "NC_000023.10:g.33038255C>A",
-            "gDNAChange": "NC_000023.10:g.33038255C>A",
-            "proteinChange": "LRG_199p1:p.Trp24Cys",
+            "cDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
+            "gDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
+            "proteinChange": "LRG_199p1:p.Trp24=/Cys",
             "acmgClass": {
-              "code": "1",
-              "display": "Benign",
+              "code": "3",
+              "display": "Unclear",
+              "system": "https://www.acmg.net/class"
+            },
+            "acmgCriteria": [
+              {
+                "value": {
+                  "code": "PS1",
+                  "display": "Same amino acid change as a previously established pathogenic variant regardless of nucleotide change. \\n\\nExample: Val->Leu caused by either G>C or G>T in the same codon \\nCaveat: Beware of changes that impact splicing rather than at the amino acid/protein level",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "bs",
+                  "display": "strong benign",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
+              }
+            ],
+            "zygosity": {
+              "code": "homozygous",
+              "display": "Homozygous",
+              "system": "dnpm-dip/rd/variant/zygosity"
+            },
+            "segregationAnalysis": {
+              "code": "from-father",
+              "display": "Transmitted from father",
+              "system": "dnpm-dip/rd/variant/segregation-analysis"
+            },
+            "modeOfInheritance": {
+              "code": "unclear",
+              "display": "Unclear",
+              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
+            },
+            "significance": {
+              "code": "primary",
+              "display": "Variant in context of patient's disease",
+              "system": "dnpm-dip/rd/variant/significance"
+            },
+            "externalIds": [
+              {
+                "value": "1e72ba16-d671-4111-b471-ee41aa2ca5ee",
+                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
+              }
+            ],
+            "publications": [
+              {
+                "id": "1341663758",
+                "system": "https://pubmed.ncbi.nlm.nih.gov",
+                "type": "Publication"
+              }
+            ]
+          },
+          {
+            "id": "ff8637d4-322b-4acb-b17e-c48a563bb8f3",
+            "patient": {
+              "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
+              "type": "Patient"
+            },
+            "chromosome": "chr17",
+            "genes": [
+              {
+                "code": "HGNC:21",
+                "display": "AATK",
+                "system": "https://www.genenames.org/"
+              }
+            ],
+            "localization": [
+              {
+                "code": "splicing-region",
+                "display": "splicing region",
+                "system": "dnpm-dip/variant/localization"
+              }
+            ],
+            "startPosition": 1672739468,
+            "endPosition": 1672739469,
+            "ref": "C",
+            "alt": "A",
+            "cDNAChange": "NC_000023.11:g.32343183dup",
+            "gDNAChange": "NC_000023.11:g.32343183dup",
+            "proteinChange": "NP_003997.1:p.(Gly56Ala^Ser^Cys)",
+            "acmgClass": {
+              "code": "2",
+              "display": "Likely benign",
               "system": "https://www.acmg.net/class"
             },
             "acmgCriteria": [
@@ -524,25 +351,25 @@
                   "system": "https://www.acmg.net/criteria/type"
                 },
                 "modifier": {
-                  "code": "pp",
-                  "display": "supporting pathogenic",
+                  "code": "pm",
+                  "display": "medium pathogenic",
                   "system": "https://www.acmg.net/criteria/modifier"
                 }
               }
             ],
             "zygosity": {
-              "code": "heteroplasmic",
-              "display": "Heteroplasmic",
+              "code": "comp-het",
+              "display": "Compound heterozygous",
               "system": "dnpm-dip/rd/variant/zygosity"
             },
             "segregationAnalysis": {
-              "code": "de-novo",
-              "display": "de-novo",
+              "code": "from-mother",
+              "display": "Transmitted from mother",
               "system": "dnpm-dip/rd/variant/segregation-analysis"
             },
             "modeOfInheritance": {
-              "code": "X-linked",
-              "display": "X-linked",
+              "code": "unclear",
+              "display": "Unclear",
               "system": "dnpm-dip/rd/variant/mode-of-inheritance"
             },
             "significance": {
@@ -552,24 +379,22 @@
             },
             "externalIds": [
               {
-                "value": "621ab30f-eeec-46c5-962c-3c3d9c2e2102",
+                "value": "c4ab44eb-2275-4af8-8b2d-861126c10ebb",
                 "system": "https://www.ncbi.nlm.nih.gov/clinvar"
               }
             ],
             "publications": [
               {
-                "id": "1960864698",
+                "id": "2020680312",
                 "system": "https://pubmed.ncbi.nlm.nih.gov",
                 "type": "Publication"
               }
             ]
-          }
-        ],
-        "copyNumberVariants": [
+          },
           {
-            "id": "586ccbdd-9e90-436d-8584-e2aa3062d482",
+            "id": "4ec36f7c-78d2-45a6-bab3-9e5e94c2bc47",
             "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+              "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
               "type": "Patient"
             },
             "chromosome": "chr14",
@@ -582,106 +407,19 @@
             ],
             "localization": [
               {
-                "code": "regulatory-region",
-                "display": "Regulatory region",
+                "code": "intronic",
+                "display": "Intronic",
                 "system": "dnpm-dip/variant/localization"
               }
             ],
-            "startPosition": 2102076116,
-            "endPosition": 1869628078,
-            "type": {
-              "code": "gain",
-              "display": "Gain",
-              "system": "dnpm-dip/rd/cnv/type"
-            },
-            "cDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
-            "gDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
+            "startPosition": 229356349,
+            "endPosition": 229356350,
+            "ref": "G",
+            "alt": "A",
+            "cDNAChange": "NC_000023.10:g.33038255C>A",
+            "gDNAChange": "NC_000023.10:g.33038255C>A",
             "proteinChange": "NP_003997.2:p.Val7dup",
             "acmgClass": {
-              "code": "2",
-              "display": "Likely benign",
-              "system": "https://www.acmg.net/class"
-            },
-            "acmgCriteria": [
-              {
-                "value": {
-                  "code": "BP3",
-                  "display": "In-frame deletions/insertions in a repetitive region without a known function",
-                  "system": "https://www.acmg.net/criteria/type"
-                },
-                "modifier": {
-                  "code": "bs",
-                  "display": "strong benign",
-                  "system": "https://www.acmg.net/criteria/modifier"
-                }
-              }
-            ],
-            "zygosity": {
-              "code": "heterozygous",
-              "display": "Heterozygous",
-              "system": "dnpm-dip/rd/variant/zygosity"
-            },
-            "segregationAnalysis": {
-              "code": "from-both-parents",
-              "display": "Transmitted from father and mother",
-              "system": "dnpm-dip/rd/variant/segregation-analysis"
-            },
-            "modeOfInheritance": {
-              "code": "recessive",
-              "display": "Recessive",
-              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
-            },
-            "significance": {
-              "code": "candidate",
-              "display": "Candidate variant",
-              "system": "dnpm-dip/rd/variant/significance"
-            },
-            "externalIds": [
-              {
-                "value": "1c56eb2c-6e33-4d00-95a6-12504886e9d5",
-                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
-              }
-            ],
-            "publications": [
-              {
-                "id": "155136228",
-                "system": "https://pubmed.ncbi.nlm.nih.gov",
-                "type": "Publication"
-              }
-            ]
-          },
-          {
-            "id": "5e86d246-421a-47c5-9d92-de2f5e30eb73",
-            "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
-              "type": "Patient"
-            },
-            "chromosome": "chr13",
-            "genes": [
-              {
-                "code": "HGNC:51526",
-                "display": "AATBC",
-                "system": "https://www.genenames.org/"
-              }
-            ],
-            "localization": [
-              {
-                "code": "regulatory-region",
-                "display": "Regulatory region",
-                "system": "dnpm-dip/variant/localization"
-              }
-            ],
-            "startPosition": 62758947,
-            "endPosition": 1348942583,
-            "type": {
-              "code": "gain",
-              "display": "Gain",
-              "system": "dnpm-dip/rd/cnv/type"
-            },
-            "cDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
-            "gDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
-            "proteinChange": "LRG_199p1:p.Trp24Cys",
-            "acmgClass": {
               "code": "5",
               "display": "Pathogenic",
               "system": "https://www.acmg.net/class"
@@ -689,279 +427,8 @@
             "acmgCriteria": [
               {
                 "value": {
-                  "code": "BS3",
-                  "display": "Well-established in vitro or in vivo functional studies shows no damaging effect on protein function or splicing.",
-                  "system": "https://www.acmg.net/criteria/type"
-                },
-                "modifier": {
-                  "code": "ba",
-                  "display": "stand-alone benign",
-                  "system": "https://www.acmg.net/criteria/modifier"
-                }
-              }
-            ],
-            "zygosity": {
-              "code": "homozygous",
-              "display": "Homozygous",
-              "system": "dnpm-dip/rd/variant/zygosity"
-            },
-            "segregationAnalysis": {
-              "code": "from-both-parents",
-              "display": "Transmitted from father and mother",
-              "system": "dnpm-dip/rd/variant/segregation-analysis"
-            },
-            "modeOfInheritance": {
-              "code": "X-linked",
-              "display": "X-linked",
-              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
-            },
-            "significance": {
-              "code": "primary",
-              "display": "Variant in context of patient's disease",
-              "system": "dnpm-dip/rd/variant/significance"
-            },
-            "externalIds": [
-              {
-                "value": "36aebe3b-9f59-4924-9274-c4de5eaec7fe",
-                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
-              }
-            ],
-            "publications": [
-              {
-                "id": "855032867",
-                "system": "https://pubmed.ncbi.nlm.nih.gov",
-                "type": "Publication"
-              }
-            ]
-          },
-          {
-            "id": "9d77aba7-3eb1-4e18-bd46-0c2a8da049fa",
-            "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
-              "type": "Patient"
-            },
-            "chromosome": "chr18",
-            "genes": [
-              {
-                "code": "HGNC:17929",
-                "display": "AADAT",
-                "system": "https://www.genenames.org/"
-              }
-            ],
-            "localization": [
-              {
-                "code": "splicing-region",
-                "display": "splicing region",
-                "system": "dnpm-dip/variant/localization"
-              }
-            ],
-            "startPosition": 287182377,
-            "endPosition": 624421415,
-            "type": {
-              "code": "gain",
-              "display": "Gain",
-              "system": "dnpm-dip/rd/cnv/type"
-            },
-            "cDNAChange": "NC_000023.11:g.33344590_33344592=/dup",
-            "gDNAChange": "NC_000023.11:g.33344590_33344592=/dup",
-            "proteinChange": "NP_003997.1:p.(Gly56Ala^Ser^Cys)",
-            "acmgClass": {
-              "code": "5",
-              "display": "Pathogenic",
-              "system": "https://www.acmg.net/class"
-            },
-            "acmgCriteria": [
-              {
-                "value": {
-                  "code": "PP3",
-                  "display": "Multiple lines of computational evidence support a deleterious effect on the gene or gene product (conservation, evolutionary, splicing impact, etc). \\n\\nCaveat: As many in silico algorithms use the same or very similar input for their predictions, each algorithm should not be counted as an independent criterion. PP3 can be used only once in any evaluation of a variant.",
-                  "system": "https://www.acmg.net/criteria/type"
-                },
-                "modifier": {
-                  "code": "bp",
-                  "display": "supporting benign",
-                  "system": "https://www.acmg.net/criteria/modifier"
-                }
-              },
-              {
-                "value": {
-                  "code": "PM1",
-                  "display": "Located in a mutational hot spot and/or critical and well-established functional domain (e.g. active site of an enzyme) without benign variation.",
-                  "system": "https://www.acmg.net/criteria/type"
-                },
-                "modifier": {
-                  "code": "bp",
-                  "display": "supporting benign",
-                  "system": "https://www.acmg.net/criteria/modifier"
-                }
-              }
-            ],
-            "zygosity": {
-              "code": "heteroplasmic",
-              "display": "Heteroplasmic",
-              "system": "dnpm-dip/rd/variant/zygosity"
-            },
-            "segregationAnalysis": {
-              "code": "not-performed",
-              "display": "not performed",
-              "system": "dnpm-dip/rd/variant/segregation-analysis"
-            },
-            "modeOfInheritance": {
-              "code": "recessive",
-              "display": "Recessive",
-              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
-            },
-            "significance": {
-              "code": "primary",
-              "display": "Variant in context of patient's disease",
-              "system": "dnpm-dip/rd/variant/significance"
-            },
-            "externalIds": [
-              {
-                "value": "db8e4580-94c7-4729-a972-b6a773c9face",
-                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
-              }
-            ],
-            "publications": [
-              {
-                "id": "1534378085",
-                "system": "https://pubmed.ncbi.nlm.nih.gov",
-                "type": "Publication"
-              }
-            ]
-          },
-          {
-            "id": "09765c10-bed4-4f6b-9395-5c858e27e0f3",
-            "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
-              "type": "Patient"
-            },
-            "chromosome": "chr21",
-            "genes": [
-              {
-                "code": "HGNC:20",
-                "display": "AARS1",
-                "system": "https://www.genenames.org/"
-              }
-            ],
-            "localization": [
-              {
-                "code": "regulatory-region",
-                "display": "Regulatory region",
-                "system": "dnpm-dip/variant/localization"
-              }
-            ],
-            "startPosition": 334803711,
-            "endPosition": 241273997,
-            "type": {
-              "code": "loss",
-              "display": "Loss",
-              "system": "dnpm-dip/rd/cnv/type"
-            },
-            "cDNAChange": "NC_000023.11:g.pter_qtersup",
-            "gDNAChange": "NC_000023.11:g.pter_qtersup",
-            "proteinChange": "LRG_199p1:p.Trp24Cys",
-            "acmgClass": {
-              "code": "1",
-              "display": "Benign",
-              "system": "https://www.acmg.net/class"
-            },
-            "acmgCriteria": [
-              {
-                "value": {
-                  "code": "BP1",
-                  "display": "Missense variant in a gene for which primarily truncating variants are known to cause disease",
-                  "system": "https://www.acmg.net/criteria/type"
-                },
-                "modifier": {
-                  "code": "pvs",
-                  "display": "very strong pathogenic",
-                  "system": "https://www.acmg.net/criteria/modifier"
-                }
-              },
-              {
-                "value": {
-                  "code": "PP1",
-                  "display": "Co-segregation with disease in multiple affected family members in a gene definitively known to cause the disease. \\n\\nNote: May be used as stronger evidence with increasing segregation data.",
-                  "system": "https://www.acmg.net/criteria/type"
-                },
-                "modifier": {
-                  "code": "bs",
-                  "display": "strong benign",
-                  "system": "https://www.acmg.net/criteria/modifier"
-                }
-              }
-            ],
-            "zygosity": {
-              "code": "heteroplasmic",
-              "display": "Heteroplasmic",
-              "system": "dnpm-dip/rd/variant/zygosity"
-            },
-            "segregationAnalysis": {
-              "code": "from-mother",
-              "display": "Transmitted from mother",
-              "system": "dnpm-dip/rd/variant/segregation-analysis"
-            },
-            "modeOfInheritance": {
-              "code": "X-linked",
-              "display": "X-linked",
-              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
-            },
-            "significance": {
-              "code": "candidate",
-              "display": "Candidate variant",
-              "system": "dnpm-dip/rd/variant/significance"
-            },
-            "externalIds": [
-              {
-                "value": "bbb95653-76e2-483a-8308-b73756a3aa0b",
-                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
-              }
-            ],
-            "publications": [
-              {
-                "id": "1909366050",
-                "system": "https://pubmed.ncbi.nlm.nih.gov",
-                "type": "Publication"
-              }
-            ]
-          }
-        ],
-        "structuralVariants": [
-          {
-            "id": "7c3008c0-237f-4c8a-8c3f-abe492d61fde",
-            "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
-              "type": "Patient"
-            },
-            "genes": [
-              {
-                "code": "HGNC:51526",
-                "display": "AATBC",
-                "system": "https://www.genenames.org/"
-              }
-            ],
-            "localization": [
-              {
-                "code": "coding-region",
-                "display": "Coding region",
-                "system": "dnpm-dip/variant/localization"
-              }
-            ],
-            "iscnDescription": "ISCN description...",
-            "cDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
-            "gDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
-            "proteinChange": "LRG_199p1:p.Trp24Cys",
-            "acmgClass": {
-              "code": "5",
-              "display": "Pathogenic",
-              "system": "https://www.acmg.net/class"
-            },
-            "acmgCriteria": [
-              {
-                "value": {
-                  "code": "PP3",
-                  "display": "Multiple lines of computational evidence support a deleterious effect on the gene or gene product (conservation, evolutionary, splicing impact, etc). \\n\\nCaveat: As many in silico algorithms use the same or very similar input for their predictions, each algorithm should not be counted as an independent criterion. PP3 can be used only once in any evaluation of a variant.",
+                  "code": "PM5",
+                  "display": "Novel missense change at an amino acid residue where a different missense change determined to be pathogenic has been seen before. \\n\\nExample: Arg156His is pathogenic; now you observe Arg156Cys. \\nCaveat: Beware of changes that impact splicing rather than at the amino acid/protein level.",
                   "system": "https://www.acmg.net/criteria/type"
                 },
                 "modifier": {
@@ -969,11 +436,23 @@
                   "display": "medium benign",
                   "system": "https://www.acmg.net/criteria/modifier"
                 }
+              },
+              {
+                "value": {
+                  "code": "PVS1",
+                  "display": "Null variant (nonsense, frameshift, canonical +/-1 or 2 splice sites, initiation codon, single or multi-exon deletion) in a gene where loss of function (LOF) is a known mechanism of disease \\n\\nCaveats: \\n- Beware of genes where LOF is not a known disease mechanism (e.g. GFAP, MYH7) \\n- Use caution interpreting LOF variants at the extreme 3\\' end of a gene \\n- Use caution with splice variants that are predicted to lead to exon skipping but leave the remainder of the protein intact \\n- Use caution in the presence of multiple transcripts",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "pm",
+                  "display": "medium pathogenic",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
               }
             ],
             "zygosity": {
-              "code": "hemi",
-              "display": "Hemizygous",
+              "code": "heteroplasmic",
+              "display": "Heteroplasmic",
               "system": "dnpm-dip/rd/variant/zygosity"
             },
             "segregationAnalysis": {
@@ -982,8 +461,8 @@
               "system": "dnpm-dip/rd/variant/segregation-analysis"
             },
             "modeOfInheritance": {
-              "code": "mitochondrial",
-              "display": "Mitochondrial",
+              "code": "dominant",
+              "display": "Dominant",
               "system": "dnpm-dip/rd/variant/mode-of-inheritance"
             },
             "significance": {
@@ -993,24 +472,25 @@
             },
             "externalIds": [
               {
-                "value": "bb6086b3-f393-4e51-a00c-adf6ea9fd25e",
+                "value": "9278d844-0a03-4df9-80b3-9a8e7572decc",
                 "system": "https://www.ncbi.nlm.nih.gov/clinvar"
               }
             ],
             "publications": [
               {
-                "id": "110586652",
+                "id": "168905967",
                 "system": "https://pubmed.ncbi.nlm.nih.gov",
                 "type": "Publication"
               }
             ]
           },
           {
-            "id": "cc6db6af-41c9-4802-ada6-083fa9f786b4",
+            "id": "6963d93a-9c9a-4f6b-b070-2c953643a69b",
             "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+              "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
               "type": "Patient"
             },
+            "chromosome": "chr5",
             "genes": [
               {
                 "code": "HGNC:51526",
@@ -1025,13 +505,16 @@
                 "system": "dnpm-dip/variant/localization"
               }
             ],
-            "iscnDescription": "ISCN description...",
-            "cDNAChange": "NC_000023.11:g.pter_qtersup",
-            "gDNAChange": "NC_000023.11:g.pter_qtersup",
-            "proteinChange": "NP_003997.1:p.(Gly56Ala^Ser^Cys)",
+            "startPosition": 1143261561,
+            "endPosition": 1143261562,
+            "ref": "G",
+            "alt": "T",
+            "cDNAChange": "NC_000023.11:g.32343183dup",
+            "gDNAChange": "NC_000023.11:g.32343183dup",
+            "proteinChange": "LRG_199p1:p.Trp24=/Cys",
             "acmgClass": {
-              "code": "2",
-              "display": "Likely benign",
+              "code": "5",
+              "display": "Pathogenic",
               "system": "https://www.acmg.net/class"
             },
             "acmgCriteria": [
@@ -1049,13 +532,111 @@
               }
             ],
             "zygosity": {
-              "code": "hemi",
-              "display": "Hemizygous",
+              "code": "homoplasmic",
+              "display": "Homoplasmic",
               "system": "dnpm-dip/rd/variant/zygosity"
             },
             "segregationAnalysis": {
-              "code": "from-father",
-              "display": "Transmitted from father",
+              "code": "from-mother",
+              "display": "Transmitted from mother",
+              "system": "dnpm-dip/rd/variant/segregation-analysis"
+            },
+            "modeOfInheritance": {
+              "code": "mitochondrial",
+              "display": "Mitochondrial",
+              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
+            },
+            "significance": {
+              "code": "candidate",
+              "display": "Candidate variant",
+              "system": "dnpm-dip/rd/variant/significance"
+            },
+            "externalIds": [
+              {
+                "value": "32185f62-226b-48fb-b416-efb25bd321dc",
+                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
+              }
+            ],
+            "publications": [
+              {
+                "id": "946565675",
+                "system": "https://pubmed.ncbi.nlm.nih.gov",
+                "type": "Publication"
+              }
+            ]
+          }
+        ],
+        "copyNumberVariants": [
+          {
+            "id": "21397185-8999-4e69-98a5-b42b7a9af2ef",
+            "patient": {
+              "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
+              "type": "Patient"
+            },
+            "chromosome": "chr8",
+            "genes": [
+              {
+                "code": "HGNC:20",
+                "display": "AARS1",
+                "system": "https://www.genenames.org/"
+              }
+            ],
+            "localization": [
+              {
+                "code": "intronic",
+                "display": "Intronic",
+                "system": "dnpm-dip/variant/localization"
+              }
+            ],
+            "startPosition": 688883662,
+            "endPosition": 850240081,
+            "type": {
+              "code": "loss",
+              "display": "Loss",
+              "system": "dnpm-dip/rd/cnv/type"
+            },
+            "cDNAChange": "NC_000023.10:g.33038255C>A",
+            "gDNAChange": "NC_000023.10:g.33038255C>A",
+            "proteinChange": "LRG_199p1:p.Trp24Ter (p.Trp24*)",
+            "acmgClass": {
+              "code": "5",
+              "display": "Pathogenic",
+              "system": "https://www.acmg.net/class"
+            },
+            "acmgCriteria": [
+              {
+                "value": {
+                  "code": "PM3",
+                  "display": "For recessive disorders, detected in trans with a pathogenic variant. \\n\\nNote: This requires testing of parents (or offspring) to determine phase.",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "bp",
+                  "display": "supporting benign",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
+              },
+              {
+                "value": {
+                  "code": "PP1",
+                  "display": "Co-segregation with disease in multiple affected family members in a gene definitively known to cause the disease. \\n\\nNote: May be used as stronger evidence with increasing segregation data.",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "pvs",
+                  "display": "very strong pathogenic",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
+              }
+            ],
+            "zygosity": {
+              "code": "comp-het",
+              "display": "Compound heterozygous",
+              "system": "dnpm-dip/rd/variant/zygosity"
+            },
+            "segregationAnalysis": {
+              "code": "from-both-parents",
+              "display": "Transmitted from father and mother",
               "system": "dnpm-dip/rd/variant/segregation-analysis"
             },
             "modeOfInheritance": {
@@ -1070,24 +651,25 @@
             },
             "externalIds": [
               {
-                "value": "3b792206-1ff5-400b-b5ac-65863ae9d369",
+                "value": "5525b857-547c-4354-94f8-c2522260be66",
                 "system": "https://www.ncbi.nlm.nih.gov/clinvar"
               }
             ],
             "publications": [
               {
-                "id": "475594309",
+                "id": "920089199",
                 "system": "https://pubmed.ncbi.nlm.nih.gov",
                 "type": "Publication"
               }
             ]
           },
           {
-            "id": "2f19d0b9-4518-456b-afe8-4ddf7cae5973",
+            "id": "239784f8-58ea-44ad-9541-88abe00d5396",
             "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+              "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
               "type": "Patient"
             },
+            "chromosome": "chr20",
             "genes": [
               {
                 "code": "HGNC:17929",
@@ -1102,28 +684,22 @@
                 "system": "dnpm-dip/variant/localization"
               }
             ],
-            "iscnDescription": "ISCN description...",
+            "startPosition": 383784306,
+            "endPosition": 723710799,
+            "type": {
+              "code": "gain",
+              "display": "Gain",
+              "system": "dnpm-dip/rd/cnv/type"
+            },
             "cDNAChange": "NC_000023.11:g.33344590_33344592=/dup",
             "gDNAChange": "NC_000023.11:g.33344590_33344592=/dup",
             "proteinChange": "LRG_199p1:p.Trp24=/Cys",
             "acmgClass": {
-              "code": "2",
-              "display": "Likely benign",
+              "code": "1",
+              "display": "Benign",
               "system": "https://www.acmg.net/class"
             },
             "acmgCriteria": [
-              {
-                "value": {
-                  "code": "PP1",
-                  "display": "Co-segregation with disease in multiple affected family members in a gene definitively known to cause the disease. \\n\\nNote: May be used as stronger evidence with increasing segregation data.",
-                  "system": "https://www.acmg.net/criteria/type"
-                },
-                "modifier": {
-                  "code": "bp",
-                  "display": "supporting benign",
-                  "system": "https://www.acmg.net/criteria/modifier"
-                }
-              },
               {
                 "value": {
                   "code": "PM2",
@@ -1131,8 +707,104 @@
                   "system": "https://www.acmg.net/criteria/type"
                 },
                 "modifier": {
-                  "code": "ps",
-                  "display": "strong pathogenic",
+                  "code": "ba",
+                  "display": "stand-alone benign",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
+              },
+              {
+                "value": {
+                  "code": "BS1",
+                  "display": "Allele frequency is greater than expected for disorder.",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "bp",
+                  "display": "supporting benign",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
+              }
+            ],
+            "zygosity": {
+              "code": "comp-het",
+              "display": "Compound heterozygous",
+              "system": "dnpm-dip/rd/variant/zygosity"
+            },
+            "segregationAnalysis": {
+              "code": "from-both-parents",
+              "display": "Transmitted from father and mother",
+              "system": "dnpm-dip/rd/variant/segregation-analysis"
+            },
+            "modeOfInheritance": {
+              "code": "recessive",
+              "display": "Recessive",
+              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
+            },
+            "significance": {
+              "code": "primary",
+              "display": "Variant in context of patient's disease",
+              "system": "dnpm-dip/rd/variant/significance"
+            },
+            "externalIds": [
+              {
+                "value": "3ded026d-4d50-49ce-bc47-657a67238d89",
+                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
+              }
+            ],
+            "publications": [
+              {
+                "id": "1811468355",
+                "system": "https://pubmed.ncbi.nlm.nih.gov",
+                "type": "Publication"
+              }
+            ]
+          },
+          {
+            "id": "f0d8ac82-a64e-41a1-bd39-707fbd4d9b2a",
+            "patient": {
+              "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
+              "type": "Patient"
+            },
+            "chromosome": "chr6",
+            "genes": [
+              {
+                "code": "HGNC:20",
+                "display": "AARS1",
+                "system": "https://www.genenames.org/"
+              }
+            ],
+            "localization": [
+              {
+                "code": "splicing-region",
+                "display": "splicing region",
+                "system": "dnpm-dip/variant/localization"
+              }
+            ],
+            "startPosition": 1909749502,
+            "endPosition": 1955933191,
+            "type": {
+              "code": "gain",
+              "display": "Gain",
+              "system": "dnpm-dip/rd/cnv/type"
+            },
+            "cDNAChange": "NC_000023.11:g.pter_qtersup",
+            "gDNAChange": "NC_000023.11:g.pter_qtersup",
+            "proteinChange": "LRG_199p1:p.Trp24=/Cys",
+            "acmgClass": {
+              "code": "1",
+              "display": "Benign",
+              "system": "https://www.acmg.net/class"
+            },
+            "acmgCriteria": [
+              {
+                "value": {
+                  "code": "PM3",
+                  "display": "For recessive disorders, detected in trans with a pathogenic variant. \\n\\nNote: This requires testing of parents (or offspring) to determine phase.",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "bm",
+                  "display": "medium benign",
                   "system": "https://www.acmg.net/criteria/modifier"
                 }
               }
@@ -1159,57 +831,59 @@
             },
             "externalIds": [
               {
-                "value": "e4c4f34a-c32c-4301-abac-5f9ed02d43f2",
+                "value": "0b84b9f5-2c1b-439f-a9f6-354741d80d77",
                 "system": "https://www.ncbi.nlm.nih.gov/clinvar"
               }
             ],
             "publications": [
               {
-                "id": "317055043",
+                "id": "1555089213",
                 "system": "https://pubmed.ncbi.nlm.nih.gov",
                 "type": "Publication"
               }
             ]
-          },
+          }
+        ],
+        "structuralVariants": [
           {
-            "id": "f361fbc6-37ba-4542-ad2e-22eb433348a7",
+            "id": "9ba978aa-268c-4834-ac19-7289f1b326f4",
             "patient": {
-              "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+              "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
               "type": "Patient"
             },
             "genes": [
               {
-                "code": "HGNC:17929",
-                "display": "AADAT",
+                "code": "HGNC:51526",
+                "display": "AATBC",
                 "system": "https://www.genenames.org/"
               }
             ],
             "localization": [
               {
-                "code": "regulatory-region",
-                "display": "Regulatory region",
+                "code": "intergenic",
+                "display": "Intergenic",
                 "system": "dnpm-dip/variant/localization"
               }
             ],
             "iscnDescription": "ISCN description...",
-            "cDNAChange": "NC_000023.10:g.33038255C>A",
-            "gDNAChange": "NC_000023.10:g.33038255C>A",
+            "cDNAChange": "NC_000023.11:g.33344590_33344592=/dup",
+            "gDNAChange": "NC_000023.11:g.33344590_33344592=/dup",
             "proteinChange": "LRG_199p1:p.Trp24Cys",
             "acmgClass": {
-              "code": "2",
-              "display": "Likely benign",
+              "code": "3",
+              "display": "Unclear",
               "system": "https://www.acmg.net/class"
             },
             "acmgCriteria": [
               {
                 "value": {
-                  "code": "BP2",
-                  "display": "Observed in trans with a pathogenic variant for a fully penetrant dominant gene/disorder; or observed in cis with a pathogenic variant in any inheritance pattern.",
+                  "code": "PS3",
+                  "display": "Well-established in vitro or in vivo functional studies supportive of a damaging effect on the gene or gene product. \\n\\nNote: Functional studies that have been validated and shown to be reproducible and robust in a clinical diagnostic laboratory setting are considered the most well-established.",
                   "system": "https://www.acmg.net/criteria/type"
                 },
                 "modifier": {
-                  "code": "pp",
-                  "display": "supporting pathogenic",
+                  "code": "ba",
+                  "display": "stand-alone benign",
                   "system": "https://www.acmg.net/criteria/modifier"
                 }
               }
@@ -1220,8 +894,8 @@
               "system": "dnpm-dip/rd/variant/zygosity"
             },
             "segregationAnalysis": {
-              "code": "from-father",
-              "display": "Transmitted from father",
+              "code": "from-both-parents",
+              "display": "Transmitted from father and mother",
               "system": "dnpm-dip/rd/variant/segregation-analysis"
             },
             "modeOfInheritance": {
@@ -1230,19 +904,286 @@
               "system": "dnpm-dip/rd/variant/mode-of-inheritance"
             },
             "significance": {
-              "code": "candidate",
-              "display": "Candidate variant",
+              "code": "incidental",
+              "display": "Incidental finding",
               "system": "dnpm-dip/rd/variant/significance"
             },
             "externalIds": [
               {
-                "value": "fac72806-341b-415a-b7bd-293afd34ebe9",
+                "value": "c92fbdb8-add7-4ed9-8261-25e0e14d5c46",
                 "system": "https://www.ncbi.nlm.nih.gov/clinvar"
               }
             ],
             "publications": [
               {
-                "id": "1044935998",
+                "id": "1287437020",
+                "system": "https://pubmed.ncbi.nlm.nih.gov",
+                "type": "Publication"
+              }
+            ]
+          },
+          {
+            "id": "e0b9540f-250b-43bc-9c95-fc2e9bb9bd76",
+            "patient": {
+              "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
+              "type": "Patient"
+            },
+            "genes": [
+              {
+                "code": "HGNC:20",
+                "display": "AARS1",
+                "system": "https://www.genenames.org/"
+              }
+            ],
+            "localization": [
+              {
+                "code": "intergenic",
+                "display": "Intergenic",
+                "system": "dnpm-dip/variant/localization"
+              }
+            ],
+            "iscnDescription": "ISCN description...",
+            "cDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
+            "gDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
+            "proteinChange": "LRG_199p1:p.Trp24Cys",
+            "acmgClass": {
+              "code": "5",
+              "display": "Pathogenic",
+              "system": "https://www.acmg.net/class"
+            },
+            "acmgCriteria": [
+              {
+                "value": {
+                  "code": "PP5",
+                  "display": "Reputable source recently reports variant as pathogenic but the evidence is not available to the laboratory to perform an independent evaluation.",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "pm",
+                  "display": "medium pathogenic",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
+              },
+              {
+                "value": {
+                  "code": "PM6",
+                  "display": "Assumed de novo, but without confirmation of paternity and maternity.",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "ps",
+                  "display": "strong pathogenic",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
+              }
+            ],
+            "zygosity": {
+              "code": "homozygous",
+              "display": "Homozygous",
+              "system": "dnpm-dip/rd/variant/zygosity"
+            },
+            "segregationAnalysis": {
+              "code": "from-mother",
+              "display": "Transmitted from mother",
+              "system": "dnpm-dip/rd/variant/segregation-analysis"
+            },
+            "modeOfInheritance": {
+              "code": "X-linked",
+              "display": "X-linked",
+              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
+            },
+            "significance": {
+              "code": "incidental",
+              "display": "Incidental finding",
+              "system": "dnpm-dip/rd/variant/significance"
+            },
+            "externalIds": [
+              {
+                "value": "9d05a9b8-13c1-4987-ba90-154dcbaff787",
+                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
+              }
+            ],
+            "publications": [
+              {
+                "id": "931166928",
+                "system": "https://pubmed.ncbi.nlm.nih.gov",
+                "type": "Publication"
+              }
+            ]
+          },
+          {
+            "id": "f17ee5ce-b035-4f66-b102-f8c77d9649e8",
+            "patient": {
+              "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
+              "type": "Patient"
+            },
+            "genes": [
+              {
+                "code": "HGNC:20",
+                "display": "AARS1",
+                "system": "https://www.genenames.org/"
+              }
+            ],
+            "localization": [
+              {
+                "code": "intronic",
+                "display": "Intronic",
+                "system": "dnpm-dip/variant/localization"
+              }
+            ],
+            "iscnDescription": "ISCN description...",
+            "cDNAChange": "NC_000023.11:g.33344590_33344592=/dup",
+            "gDNAChange": "NC_000023.11:g.33344590_33344592=/dup",
+            "proteinChange": "LRG_199p1:p.Trp24Cys",
+            "acmgClass": {
+              "code": "1",
+              "display": "Benign",
+              "system": "https://www.acmg.net/class"
+            },
+            "acmgCriteria": [
+              {
+                "value": {
+                  "code": "PM6",
+                  "display": "Assumed de novo, but without confirmation of paternity and maternity.",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "ps",
+                  "display": "strong pathogenic",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
+              },
+              {
+                "value": {
+                  "code": "PP3",
+                  "display": "Multiple lines of computational evidence support a deleterious effect on the gene or gene product (conservation, evolutionary, splicing impact, etc). \\n\\nCaveat: As many in silico algorithms use the same or very similar input for their predictions, each algorithm should not be counted as an independent criterion. PP3 can be used only once in any evaluation of a variant.",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "pvs",
+                  "display": "very strong pathogenic",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
+              }
+            ],
+            "zygosity": {
+              "code": "heteroplasmic",
+              "display": "Heteroplasmic",
+              "system": "dnpm-dip/rd/variant/zygosity"
+            },
+            "segregationAnalysis": {
+              "code": "from-mother",
+              "display": "Transmitted from mother",
+              "system": "dnpm-dip/rd/variant/segregation-analysis"
+            },
+            "modeOfInheritance": {
+              "code": "dominant",
+              "display": "Dominant",
+              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
+            },
+            "significance": {
+              "code": "primary",
+              "display": "Variant in context of patient's disease",
+              "system": "dnpm-dip/rd/variant/significance"
+            },
+            "externalIds": [
+              {
+                "value": "86f7ef4c-227b-4385-934c-e76ded65f7be",
+                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
+              }
+            ],
+            "publications": [
+              {
+                "id": "269669810",
+                "system": "https://pubmed.ncbi.nlm.nih.gov",
+                "type": "Publication"
+              }
+            ]
+          },
+          {
+            "id": "08dbfcd0-c20b-44f9-a2ed-bcab5e9e19d0",
+            "patient": {
+              "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
+              "type": "Patient"
+            },
+            "genes": [
+              {
+                "code": "HGNC:20",
+                "display": "AARS1",
+                "system": "https://www.genenames.org/"
+              }
+            ],
+            "localization": [
+              {
+                "code": "intergenic",
+                "display": "Intergenic",
+                "system": "dnpm-dip/variant/localization"
+              }
+            ],
+            "iscnDescription": "ISCN description...",
+            "cDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
+            "gDNAChange": "NC_000023.11:g.(31060227_31100351)_(33274278_33417151)dup",
+            "proteinChange": "NP_003997.2:p.Val7dup",
+            "acmgClass": {
+              "code": "2",
+              "display": "Likely benign",
+              "system": "https://www.acmg.net/class"
+            },
+            "acmgCriteria": [
+              {
+                "value": {
+                  "code": "BA1",
+                  "display": "Allele frequency is above 5% in Exome Sequencing Project, 1000 Genomes, or ExAC.",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "pvs",
+                  "display": "very strong pathogenic",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
+              },
+              {
+                "value": {
+                  "code": "BP1",
+                  "display": "Missense variant in a gene for which primarily truncating variants are known to cause disease",
+                  "system": "https://www.acmg.net/criteria/type"
+                },
+                "modifier": {
+                  "code": "bm",
+                  "display": "medium benign",
+                  "system": "https://www.acmg.net/criteria/modifier"
+                }
+              }
+            ],
+            "zygosity": {
+              "code": "homozygous",
+              "display": "Homozygous",
+              "system": "dnpm-dip/rd/variant/zygosity"
+            },
+            "segregationAnalysis": {
+              "code": "not-performed",
+              "display": "not performed",
+              "system": "dnpm-dip/rd/variant/segregation-analysis"
+            },
+            "modeOfInheritance": {
+              "code": "recessive",
+              "display": "Recessive",
+              "system": "dnpm-dip/rd/variant/mode-of-inheritance"
+            },
+            "significance": {
+              "code": "primary",
+              "display": "Variant in context of patient's disease",
+              "system": "dnpm-dip/rd/variant/significance"
+            },
+            "externalIds": [
+              {
+                "value": "ebacb4c8-b656-4ea3-8489-3830c9817aed",
+                "system": "https://www.ncbi.nlm.nih.gov/clinvar"
+              }
+            ],
+            "publications": [
+              {
+                "id": "1587637635",
                 "system": "https://pubmed.ncbi.nlm.nih.gov",
                 "type": "Publication"
               }
@@ -1254,12 +1195,12 @@
   ],
   "carePlans": [
     {
-      "id": "db745b98-c175-4de4-8c2a-f6f4ad96a6d7",
+      "id": "3972dc53-9abe-42e3-b2e7-47f272f6627b",
       "patient": {
-        "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+        "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
         "type": "Patient"
       },
-      "issuedOn": "2026-07-25",
+      "issuedOn": "2026-11-13",
       "boardType": {
         "code": "indication-board",
         "display": "Indikations-Board",
@@ -1267,12 +1208,12 @@
       }
     },
     {
-      "id": "faca3870-40d6-4003-bfd1-d488948e5375",
+      "id": "a72e9596-6b1f-481e-afa8-98e97c20eb85",
       "patient": {
-        "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+        "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
         "type": "Patient"
       },
-      "issuedOn": "2026-08-08",
+      "issuedOn": "2026-11-27",
       "boardType": {
         "code": "therapy-board",
         "display": "Befund-Board",
@@ -1282,26 +1223,26 @@
       "reevaluationRecommended": true,
       "therapyRecommendations": [
         {
-          "id": "56d57a42-9aba-44cb-a224-7ae0b1594cf0",
+          "id": "9e8866e9-e1bf-4da5-aede-ef75a1fecad5",
           "patient": {
-            "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+            "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
             "type": "Patient"
           },
-          "issuedOn": "2026-08-08",
+          "issuedOn": "2026-11-27",
           "category": {
             "code": "symptomatic",
             "display": "Symptomatisch",
             "system": "dnpm-dip/rd/therapy/category"
           },
           "type": {
-            "code": "other",
-            "display": "Andere",
+            "code": "prophylactic",
+            "display": "Prophylaxe",
             "system": "dnpm-dip/rd/therapy/type"
           },
           "medication": [
             {
-              "code": "C10AX14",
-              "display": "Alirocumab",
+              "code": "C10AA08",
+              "display": "Pitavastatin",
               "system": "http://fhir.de/CodeSystem/bfarm/atc",
               "version": "2026"
             }
@@ -1309,7 +1250,7 @@
           "supportingVariants": [
             {
               "variant": {
-                "id": "586ccbdd-9e90-436d-8584-e2aa3062d482",
+                "id": "e0b9540f-250b-43bc-9c95-fc2e9bb9bd76",
                 "type": "Variant"
               }
             }
@@ -1318,23 +1259,23 @@
       ],
       "studyEnrollmentRecommendations": [
         {
-          "id": "e0890f87-7c98-4bc0-a363-64a2322be5c2",
+          "id": "4e320bb8-269e-4187-b7be-d40a42ad63e3",
           "patient": {
-            "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+            "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
             "type": "Patient"
           },
-          "issuedOn": "2026-08-08",
+          "issuedOn": "2026-11-27",
           "supportingVariants": [
             {
               "variant": {
-                "id": "586ccbdd-9e90-436d-8584-e2aa3062d482",
+                "id": "e0b9540f-250b-43bc-9c95-fc2e9bb9bd76",
                 "type": "Variant"
               }
             }
           ],
           "study": [
             {
-              "id": "DRKS00023473",
+              "id": "DRKS00039432",
               "system": "DRKS",
               "type": "Study"
             }
@@ -1342,15 +1283,15 @@
         }
       ],
       "clinicalManagementRecommendation": {
-        "id": "10d3d788-7f48-4e5a-962a-dc01e8f6e095",
+        "id": "4bd9377e-9acd-4d76-aece-526bf42ea630",
         "patient": {
-          "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+          "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
           "type": "Patient"
         },
-        "issuedOn": "2026-08-08",
+        "issuedOn": "2026-11-27",
         "type": {
-          "code": "university-ambulatory-care",
-          "display": "Andere Hochschulambulanz",
+          "code": "gp",
+          "display": "Hausarzt",
           "system": "dnpm-dip/rd/clinical-management/type"
         },
         "notes": [
@@ -1364,48 +1305,48 @@
   ],
   "followUps": [
     {
-      "date": "2026-08-08",
+      "date": "2026-11-27",
       "patient": {
-        "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+        "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
         "type": "Patient"
       },
-      "lastContactDate": "2026-08-05"
+      "lastContactDate": "2026-11-24"
     }
   ],
   "therapies": [
     {
       "history": [
         {
-          "id": "2dd62e0f-ec2e-4052-8c0b-eb325ac312d9",
+          "id": "fc195906-abae-46ca-8166-5457966817f8",
           "patient": {
-            "id": "5f2d9af9-7f86-48b9-a642-18711eb12e36",
+            "id": "9fb7bc41-4ad7-42a5-af9e-65db8a0993e7",
             "type": "Patient"
           },
           "basedOn": {
-            "id": "56d57a42-9aba-44cb-a224-7ae0b1594cf0",
+            "id": "9e8866e9-e1bf-4da5-aede-ef75a1fecad5",
             "type": "RDTherapyRecommendation"
           },
-          "recordedOn": "2026-08-08",
+          "recordedOn": "2026-11-27",
           "category": {
             "code": "symptomatic",
             "display": "Symptomatisch",
             "system": "dnpm-dip/rd/therapy/category"
           },
           "type": {
-            "code": "other",
-            "display": "Andere",
+            "code": "prophylactic",
+            "display": "Prophylaxe",
             "system": "dnpm-dip/rd/therapy/type"
           },
           "medication": [
             {
-              "code": "C10AX14",
-              "display": "Alirocumab",
+              "code": "C10AA08",
+              "display": "Pitavastatin",
               "system": "http://fhir.de/CodeSystem/bfarm/atc",
               "version": "2026"
             }
           ],
           "period": {
-            "start": "2026-08-08"
+            "start": "2026-11-27"
           },
           "notes": [
             "Notes on the therapy..."
